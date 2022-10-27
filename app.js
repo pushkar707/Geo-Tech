@@ -87,26 +87,6 @@ app.post('/login/:user',async(req,res)=>{
     }
 })
 
-app.get('/manager',(req,res)=>{
-    res.render('manager_login.ejs')
-})
-
-app.get('/cse',(req,res)=>{
-    res.render('cse_login.ejs')
-})
-
-app.get('/main-manager',(req,res)=>{
-    res.render('main_manager.ejs')
-})
-
-app.get('/main-account',(req,res)=>{
-    res.render('main_manager.ejs')
-})
-
-app.get('/main-courier',(req,res)=>{
-    res.render('main_manager.ejs')
-})
-
 
 app.get("/forgot",(req,res)=>{
     res.render('forgot.ejs')
