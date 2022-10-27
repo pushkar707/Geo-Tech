@@ -62,8 +62,8 @@ app.get('/',(req,res)=>{
     res.redirect('/login/admin')
 })
 
-app.get('/login/:user',(req,res)=>{
-    res.render('login.ejs',{user:req.params.user})
+app.get('/login/:user/:city?',(req,res)=>{
+    res.render('login.ejs',{user:req.params.user,city:req.params.city})
 })
 
 app.post('/login/:user',async(req,res)=>{
@@ -87,71 +87,25 @@ app.post('/login/:user',async(req,res)=>{
     }
 })
 
-// app.get('/register',(req,res)=>{
-//     res.render('register.ejs')
-// })
+app.get('/manager',(req,res)=>{
+    res.render('manager_login.ejs')
+})
 
-// app.post('/register',async(req,res)=>{
-//     const {email,password,name,position,city} = req.body
-//     const unique = await User.findOne({email})
-//     if(unique){
-//         res.send("Email already in use")
-//     }else{
-//         const user = new User({email,password,position,city,name})
-//         await user.save()
-//         req.session.user_id = user._id;
-//         // res.redirect(`/welcome/${user._id}`);
-//         res.redirect('/register')
-//     }
-// })
+app.get('/cse',(req,res)=>{
+    res.render('cse_login.ejs')
+})
 
-// app.get('/login',(req,res)=>{
-//     res.render('login.ejs')
-// })
+app.get('/main-manager',(req,res)=>{
+    res.render('main_manager.ejs')
+})
 
+app.get('/main-account',(req,res)=>{
+    res.render('main_manager.ejs')
+})
 
-// app.post('/login',async(req,res)=>{
-//     const {email,password} = req.body
-//     const foundUser = await User.findAndValidate(email,password)
-//     console.log(foundUser);
-//     if (foundUser){
-//         req.session.user_id = foundUser._id;
-//         res.redirect(`/welcome/${foundUser._id}`);
-//     }
-//     else {
-//         res.redirect('/login')
-//     }
-// })
-
-// app.get('/welcome/:id',loginRequired,async(req,res)=>{
-//     const {id} = req.params
-//     const user = await User.findById(id)
-//     if(user){
-//         res.render('user.ejs',{user})
-//     }else{
-//         res.send("Not found")
-//     }
-// })
-
-// app.get('/manager',(req,res)=>{
-//     res.render('manager_login.ejs')
-// })
-
-// app.get('/cse',(req,res)=>{
-//     res.render('cse_login.ejs')
-// })
-
-// app.get('/main-manager',(req,res)=>{
-//     res.render('main_manager.ejs')
-// })
-
-// app.get('/main-account',(req,res)=>{
-//     res.render('main_manager.ejs')
-// })
-
-// app.get('/main-courier',(req,res)=>{
-//     res.render('main_manager.ejs')
-// })
+app.get('/main-courier',(req,res)=>{
+    res.render('main_manager.ejs')
+})
 
 
 app.get("/forgot",(req,res)=>{

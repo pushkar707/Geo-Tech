@@ -66,6 +66,26 @@
                                             <h5 class="mb-0">Welcome Back !</h5>
                                             <% if (user == "admin") { %>
                                                 <p class="text-muted mt-2">Sign in to continue to <span><b><u>SUPER - ADMIN</u> &nbsp; </b></span>.</p>
+                                            <% } else if (user == "courier") { %>
+                                                <p class="text-muted mt-2">Sign in to continue to <span><b><u>MAIN - COURIER</u> &nbsp; </b></span>.</p>
+                                            <% } else if (user == "account") { %>
+                                                <p class="text-muted mt-2">Sign in to continue to <span><b><u>MAIN - ACCOUNT</u> &nbsp; </b></span>.</p>
+                                            <% }else if(user=="manager") {%>
+                                                <% if (city=="vad") { %>
+                                                    <p class="text-muted mt-2">Sign in to continue to <span><b><u>MANAGER</u> &nbsp; VAD</b></span>.</p>
+                                                <% } else if(city=="city-2") { %>
+                                                    <p class="text-muted mt-2">Sign in to continue to <span><b><u>MANAGER</u> &nbsp; CITY - 2</b></span>.</p>
+                                                <% } else if(city=="city-3") { %>
+                                                    <p class="text-muted mt-2">Sign in to continue to <span><b><u>MANAGER</u> &nbsp; CITY - 3</b></span>.</p>
+                                                <% } %>
+                                            <% } else if(user="cse") { %>
+                                                <% if (city == "vad") { %>
+                                                    <p class="text-muted mt-2">Sign in to continue to <span><b><u>CSE</u> &nbsp; VAD</b></span>.</p>
+                                                <% } else if (city == "city-2") { %>
+                                                    <p class="text-muted mt-2">Sign in to continue to <span><b><u>CSE</u> &nbsp; CITY - 2</b></span>.</p>
+                                                <% } else if (city == "city-3") { %>
+                                                    <p class="text-muted mt-2">Sign in to continue to <span><b><u>CSE</u> &nbsp; CITY - 3</b></span>.</p>
+                                                <% } %>
                                             <% } %>
                                         </div>
                                         <form class="mt-4 pt-2" action="/login/<%= user %>" method="post">
