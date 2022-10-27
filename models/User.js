@@ -12,9 +12,12 @@ const userSchema = new mongoose.Schema({
     city:String
 })
 
-userSchema.statics.findAndValidate = async function (email, password) {
+userSchema.statics.findAndValidate = async function (email, password, position) {
     const foundUser = await this.findOne({ email });
     if(foundUser){
+        if(foundUser.position!=position){
+            return false
+        }
         const isValid = await bcrypt.compare(password, foundUser.password);
         return isValid ? foundUser : false;
     }else{

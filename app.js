@@ -34,7 +34,35 @@ const loginRequired = (req,res,next)=>{
 
 const adminLoginRequired = (req,res,next) => {
     if(!req.session.admin){
-        return res.redirect('/admin-login')
+        return res.redirect('/login/admin')
+    }
+    next();
+}
+
+const cseLoginRequired = (req,res,next) => {
+    if(!req.session.cse){
+        return res.redirect('/login/cse')
+    }
+    next();
+}
+
+const managerLoginRequired = (req,res,next) => {
+    if(!req.session.manager){
+        return res.redirect('/login/cse')
+    }
+    next();
+}
+
+const accountsLoginRequired = (req,res,next) => {
+    if(!req.session.accounts){
+        return res.redirect('/login/cse')
+    }
+    next();
+}
+
+const courierLoginRequired = (req,res,next) => {
+    if(!req.session.courier){
+        return res.redirect('/login/cse')
     }
     next();
 }
@@ -68,24 +96,68 @@ app.get('/login/:user/:city?',(req,res)=>{
 
 app.post('/login/:user',async(req,res)=>{
     const {email,password} = req.body
+    const {user} = req.params
     try{
-        const user = User.findAndValidate(email,password)
-        if(user){
+        const validUser = await User.findAndValidate(email,password,user)
+        if(validUser){
             req.session.user_id = user._id
-            if(req.params.user === "admin"){
+            if(user === "admin"){
                 req.session.admin = true
                 res.redirect("/admin")
             }
+            else if(user === "cse"){
+                res.session.cse = true
+                res.send("done")
+            }
+            else if(user === "manager"){
+                res.session.manager = true
+                res.send("done")
+            }
+            else if(user === "courier"){
+                res.session.courier = true
+                res.send("done")
+            }
+            else if(user === "accounts"){
+                res.session.accounts = true
+                res.send("done")
+            }
         }else{
             req.flash("error","Invalid login details")
-            res.redirect("/login/admin")
+            res.redirect("/login/"+user)
         }
     }
     catch(e){
         console.log(e);
-        res.redirect('/login/admin')
+        res.redirect("/login/"+user)
     }
 })
+
+app.get('/admin',adminLoginRequired,async(req,res)=>{
+    const users = await User.find({})
+    res.render('admin.ejs',{users})
+})
+
+app.put('/user/:id',async(req,res)=>{
+    const {id} = req.params
+    const {email,password} = req.body
+    const unique = await User.findOne({email})
+    if(unique){
+        req.flash('error',"Email already in use")
+        res.redirect('/admin')
+    }else{
+        const user = await User.findById(id)
+        user.email = email
+        user.password = password
+        await user.save()
+        req.flash('success','Email Changed Successfully')
+        res.redirect('/admin')
+    }
+})
+
+// app.post('/material/new',cseLoginRequired,(req,res)=>{
+//     const {name} = req.body
+//     const material = new Material
+// })
 
 
 app.get("/forgot",(req,res)=>{
@@ -147,28 +219,6 @@ app.post('/changePass/:id',async(req,res)=>{
         user.password = newPass
         await user.save()
         res.send("Password Changed")
-    }
-})
-
-app.get('/admin',adminLoginRequired,async(req,res)=>{
-    const users = await User.find({})
-    res.render('admin.ejs',{users})
-})
-
-app.put('/user/:id',async(req,res)=>{
-    const {id} = req.params
-    const {email,password} = req.body
-    const unique = await User.findOne({email})
-    if(unique){
-        req.flash('error',"Email already in use")
-        res.redirect('/admin')
-    }else{
-        const user = await User.findById(id)
-        user.email = email
-        user.password = password
-        await user.save()
-        req.flash('success','Email Changed Successfully')
-        res.redirect('/admin')
     }
 })
 
