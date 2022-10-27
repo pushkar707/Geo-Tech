@@ -59,88 +59,100 @@ app.use((req,res,next)=>{
 })
 
 app.get('/',(req,res)=>{
-    res.redirect('/register')
+    res.redirect('/login/admin')
 })
 
-app.get('/register',(req,res)=>{
-    res.render('register.ejs')
+app.get('/login/:user',(req,res)=>{
+    res.render('login.ejs',{user:req.params.user})
 })
 
-app.post('/register',async(req,res)=>{
-    const {email,password,name,position,city} = req.body
-    const unique = await User.findOne({email})
-    if(unique){
-        res.send("Email already in use")
-    }else{
-        const user = new User({email,password,position,city,name})
-        await user.save()
-        req.session.user_id = user._id;
-        res.redirect(`/welcome/${user._id}`);
-        // res.redirect('/register')
-    }
-})
-
-app.get('/login',(req,res)=>{
-    res.render('login.ejs')
-})
-
-
-app.post('/login',async(req,res)=>{
+app.post('/login/:user',async(req,res)=>{
     const {email,password} = req.body
-    const foundUser = await User.findAndValidate(email,password)
-    console.log(foundUser);
-    if (foundUser){
-        req.session.user_id = foundUser._id;
-        res.redirect(`/welcome/${foundUser._id}`);
+    try{
+        const user = User.findAndValidate(email,password)
+        if(user){
+            req.session.user_id = user._id
+            if(req.params.user === "admin"){
+                req.session.admin = true
+                res.redirect("/admin")
+            }
+        }else{
+            req.flash("error","Invalid login details")
+            res.redirect("/login/admin")
+        }
     }
-    else {
-        res.redirect('/login')
-    }
-})
-
-app.get('/welcome/:id',loginRequired,async(req,res)=>{
-    const {id} = req.params
-    const user = await User.findById(id)
-    if(user){
-        res.render('user.ejs',{user})
-    }else{
-        res.send("Not found")
+    catch(e){
+        console.log(e);
+        res.redirect('/login/admin')
     }
 })
 
-app.get('/admin-login',(req,res)=>{
-    res.render('admin_login.ejs')
-})
+// app.get('/register',(req,res)=>{
+//     res.render('register.ejs')
+// })
 
-app.get('/manager',(req,res)=>{
-    res.render('manager_login.ejs')
-})
+// app.post('/register',async(req,res)=>{
+//     const {email,password,name,position,city} = req.body
+//     const unique = await User.findOne({email})
+//     if(unique){
+//         res.send("Email already in use")
+//     }else{
+//         const user = new User({email,password,position,city,name})
+//         await user.save()
+//         req.session.user_id = user._id;
+//         // res.redirect(`/welcome/${user._id}`);
+//         res.redirect('/register')
+//     }
+// })
 
-app.get('/cse',(req,res)=>{
-    res.render('cse_login.ejs')
-})
+// app.get('/login',(req,res)=>{
+//     res.render('login.ejs')
+// })
 
-app.get('/main-manager',(req,res)=>{
-    res.render('main_manager.ejs')
-})
 
-app.get('/main-account',(req,res)=>{
-    res.render('main_manager.ejs')
-})
+// app.post('/login',async(req,res)=>{
+//     const {email,password} = req.body
+//     const foundUser = await User.findAndValidate(email,password)
+//     console.log(foundUser);
+//     if (foundUser){
+//         req.session.user_id = foundUser._id;
+//         res.redirect(`/welcome/${foundUser._id}`);
+//     }
+//     else {
+//         res.redirect('/login')
+//     }
+// })
 
-app.get('/main-courier',(req,res)=>{
-    res.render('main_manager.ejs')
-})
+// app.get('/welcome/:id',loginRequired,async(req,res)=>{
+//     const {id} = req.params
+//     const user = await User.findById(id)
+//     if(user){
+//         res.render('user.ejs',{user})
+//     }else{
+//         res.send("Not found")
+//     }
+// })
 
-app.post('/admin-login',(req,res)=>{
-    const {email,password} = req.body
-    if(email=="geotech611@gmail.com"&&password=="ankusaini00"){
-        req.session.admin = true
-        res.redirect("/admin")
-    }else{
-        res.redirect('/admin/login')
-    }
-})
+// app.get('/manager',(req,res)=>{
+//     res.render('manager_login.ejs')
+// })
+
+// app.get('/cse',(req,res)=>{
+//     res.render('cse_login.ejs')
+// })
+
+// app.get('/main-manager',(req,res)=>{
+//     res.render('main_manager.ejs')
+// })
+
+// app.get('/main-account',(req,res)=>{
+//     res.render('main_manager.ejs')
+// })
+
+// app.get('/main-courier',(req,res)=>{
+//     res.render('main_manager.ejs')
+// })
+
 
 app.get("/forgot",(req,res)=>{
     res.render('forgot.ejs')
