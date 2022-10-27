@@ -8,10 +8,12 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const User = require('./models/User')
+const Material = require('./models/Material')
 const nodemailer = require('nodemailer');
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate')
+const bodyParser = require('body-parser')
 
 mongoose.connect(process.env.MONGODB_URI,{
     useUnifiedTopology: true,
@@ -24,6 +26,21 @@ mongoose.connect(process.env.MONGODB_URI,{
     console.log("Could not connect to mongoose");
     console.log(e);
 })
+
+
+app.set('view engine', 'ejs');
+app.engine('ejs',ejsMate)
+
+app.set('views',path.join(__dirname,'views'))
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: process.env.SECRET,resave:false,saveUninitialized:true }))
+
+app.use(methodOverride('_method'))
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json())
+app.use(flash());
 
 const loginRequired = (req,res,next)=>{
     if(!req.session.user_id){
@@ -40,9 +57,9 @@ const adminLoginRequired = (req,res,next) => {
 }
 
 const cseLoginRequired = (req,res,next) => {
-    if(!req.session.cse){
-        return res.redirect('/login/cse')
-    }
+    // if(!req.session.cse){
+    //     return res.redirect('/login/cse')
+    // }
     next();
 }
 
@@ -67,17 +84,6 @@ const courierLoginRequired = (req,res,next) => {
     next();
 }
 
-app.set('view engine', 'ejs');
-app.engine('ejs',ejsMate)
-
-app.set('views',path.join(__dirname,'views'))
-app.use(express.static(path.join(__dirname, 'public')))
-
-app.use(express.urlencoded({ extended: true }));
-app.use(session({ secret: process.env.SECRET,resave:false,saveUninitialized:true }))
-
-app.use(methodOverride('_method'))
-app.use(flash());
 
 app.use((req,res,next)=>{
     res.locals.currentUser = req.user
@@ -154,11 +160,37 @@ app.put('/user/:id',async(req,res)=>{
     }
 })
 
-// app.post('/material/new',cseLoginRequired,(req,res)=>{
-//     const {name} = req.body
-//     const material = new Material
-// })
+app.post('/material/new',cseLoginRequired, async(req,res)=>{
+    const {name} = req.body
+    const material = new Material({name})
+    await material.save()
+    res.send(material)
+})
 
+app.get('/material/:id',cseLoginRequired, async(req,res)=>{
+    const {id} = req.params
+    const material = await Material.findById(id)//.populate('physical').populate('che')
+    res.send(material)
+})
+
+app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
+    const {id,type} = req.params
+    let newMaterial
+    if(type == "physical"){
+        newMaterial = await Material.findByIdAndUpdate(id,{$push:{physical:req.body}})
+    }else if(type == "chemical"){
+        newMaterial = await Material.findByIdAndUpdate(id,{$push:{chemical:req.body}})
+    }else if(type == "other"){
+        newMaterial = await Material.findByIdAndUpdate(id,{$push:{other:req.body}})
+    }
+    await res.send(newMaterial)
+})
+
+app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
+    const {id} = req.params
+    const deleteMaterial = await Material.findByIdAndDelete(id)
+    res.send(deleteMaterial)
+})
 
 app.get("/forgot",(req,res)=>{
     res.render('forgot.ejs')
