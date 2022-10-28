@@ -160,6 +160,11 @@ app.put('/user/:id',async(req,res)=>{
     }
 })
 
+app.get('/materials',cseLoginRequired,async(req,res)=>{
+    const materials = await Material.find({})
+    res.render("all-tests.ejs",{materials})
+})
+
 app.post('/material/new',cseLoginRequired, async(req,res)=>{
     const {name} = req.body
     const material = new Material({name})
@@ -170,7 +175,7 @@ app.post('/material/new',cseLoginRequired, async(req,res)=>{
 app.get('/material/:id',cseLoginRequired, async(req,res)=>{
     const {id} = req.params
     const material = await Material.findById(id)//.populate('physical').populate('che')
-    res.send(material)
+    res.render('add-tests',{material})
 })
 
 app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
@@ -189,7 +194,8 @@ app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
 app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
     const {id} = req.params
     const deleteMaterial = await Material.findByIdAndDelete(id)
-    res.send(deleteMaterial)
+    req.flash('success',`${deleteMaterial.name} deleted successfully`)
+    res.redirect('/materials')
 })
 
 app.get("/forgot",(req,res)=>{
@@ -200,7 +206,8 @@ app.post('/forgot',async(req,res)=>{
     const {email} = req.body
     const user = await User.findOne({email})
     if(!user){
-        res.send("No account registered on that mail")
+        req.flash('error',"No account registered on that mail")
+        res.redirect('/forgot')
     }else{
         const {_id} = user
 
@@ -223,10 +230,11 @@ app.post('/forgot',async(req,res)=>{
 
         transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-              console.log(error);
-              res.send(error)
+                req.flash('error',error)
+                res.redirect('/forgot')
             } else {
-              res.send("Mail sent!")
+                req.flash('success',"Mail Sent")
+                res.redirect('/forgot')
             }
         });  
     }
@@ -245,12 +253,14 @@ app.post('/changePass/:id',async(req,res)=>{
     const {id} = req.params
     const {newPass,confirmPass} = req.body
     if(newPass!=confirmPass){
-        return res.send("Passwords don't match")
+        req.flash('error',"Passwords don't match")
+        res.redirect('/changepass/'+id)
     }else{
         const user = await User.findById(id)
         user.password = newPass
         await user.save()
-        res.send("Password Changed")
+        req.flash('success',"Password Changed")
+        res.redirect('/changepass/'+id)
     }
 })
 
