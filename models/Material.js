@@ -9,9 +9,11 @@ const testSchema = new mongoose.Schema({
 
 const materialSchema = new mongoose.Schema({
     name:String,
-    physical:[testSchema],
-    chemical:[testSchema],
-    other:[testSchema]
+    tests:{
+        physical:[testSchema],
+        chemical:[testSchema],
+        other:[testSchema]
+    }
 })
 
 module.exports = mongoose.model('Material',materialSchema)

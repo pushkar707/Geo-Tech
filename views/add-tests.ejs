@@ -354,41 +354,24 @@
         
         
                                             <tbody>
-                                            <tr>
-                                               
-                                                <td>Test Number 1</td>
-                                                <td>₹ 100</td>
-                                                <td>₹ 400</td>
-                                                <td>₹ 500</td>
-                                                
-                                                <td>
-                                                    <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                               
-                                                <td>Test Number 1 of cement material</td>
-                                                <td>₹ 100</td>
-                                                <td>₹ 400</td>
-                                                <td>₹ 500</td>
-                                                <td>
-                                                    <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                           
+                                            <% material.physical.forEach(test=> { %>
+                                                <tr>                                              
+                                                    <td><%= test.name %></td>
+                                                    <td>₹ <%= test.govt %></td>
+                                                    <td>₹ <%= test.pvt %></td>
+                                                    <td>₹ <%= test.thirdParty %></td>
+                                                    
+                                                    <td>
+                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                            <i class=" bx bx-edit"></i>
+                                                        </a>
+    
+                                                        <a href="" class="btn btn-danger waves-effect waves-light me-1">
+                                                            <i class=" bx bxs-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>                                           
                                             
                                             </tbody>
                                         </table>
@@ -458,47 +441,28 @@
                                                     <th>3rd Party Price (in ₹)</th>
                                                     <th>Action</th>
                                                 </tr>
-                                                </thead>
+                                            </thead>
             
             
-                                                <tbody>
-                                                <tr>
-                                                   
-                                                    <td>Test Number 1</td>
-                                                    <td>₹ 100</td>
-                                                    <td>₹ 400</td>
-                                                    <td>₹ 500</td>
-                                                    
-                                                    <td>
-                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                            <i class=" bx bx-edit"></i>
-                                                        </a>
-    
-                                                        <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                            <i class=" bx bxs-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                   
-                                                    <td>Test Number 1 of cement material</td>
-                                                    <td>₹ 100</td>
-                                                    <td>₹ 400</td>
-                                                    <td>₹ 500</td>
-                                                
-                                                <td>
-                                                    <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                           
-                                            
+                                            <tbody>
+                                                <% material.chemical.forEach(test=> { %>
+                                                    <tr>                                              
+                                                        <td><%= test.name %></td>
+                                                        <td>₹ <%= test.govt %></td>
+                                                        <td>₹ <%= test.pvt %></td>
+                                                        <td>₹ <%= test.thirdParty %></td>
+                                                        
+                                                        <td>
+                                                            <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                                <i class=" bx bx-edit"></i>
+                                                            </a>
+        
+                                                            <a href="" class="btn btn-danger waves-effect waves-light me-1">
+                                                                <i class=" bx bxs-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -575,43 +539,25 @@
                                                 </thead>
             
             
-                                                <tbody>
-                                                <tr>
-                                                   
-                                                    <td>Test Number 1</td>
-                                                    <td>₹ 100</td>
-                                                    <td>₹ 400</td>
-                                                    <td>₹ 500</td>
-                                                    
-                                                    <td>
-                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                            <i class=" bx bx-edit"></i>
-                                                        </a>
-    
-                                                        <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                            <i class=" bx bxs-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                   
-                                                    <td>Test Number 1 of cement material</td>
-                                                    <td>₹ 100</td>
-                                                    <td>₹ 400</td>
-                                                    <td>₹ 500</td>
-                                                <td>
-                                                    <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                           
-                                            
+                                            <tbody>
+                                                <% material.other.forEach(test=> { %>
+                                                    <tr>                                              
+                                                        <td><%= test.name %></td>
+                                                        <td>₹ <%= test.govt %></td>
+                                                        <td>₹ <%= test.pvt %></td>
+                                                        <td>₹ <%= test.thirdParty %></td>
+                                                        
+                                                        <td>
+                                                            <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                                <i class=" bx bx-edit"></i>
+                                                            </a>
+        
+                                                            <a href="" class="btn btn-danger waves-effect waves-light me-1">
+                                                                <i class=" bx bxs-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %> 
                                             </tbody>
                                         </table>
                                     </div>
