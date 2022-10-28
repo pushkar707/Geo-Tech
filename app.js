@@ -208,11 +208,13 @@ app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
 
 // FOR TESTS
 
-// app.put('/test/:id',cseLoginRequired,async(req,res)=>{
-//     const {id} = req.params
-//     const {name} = req.body
-//     await Test.findByIdAndUpdate(id,{name})
-// })
+app.put('/test/:id',cseLoginRequired,async(req,res)=>{
+    const {id} = req.params
+    const {name} = req.body
+    const test = await Test.findByIdAndUpdate(id,{name})
+    req.flash('success',"Test edited Successfully")
+    res.redirect('/material/'+test.material)
+})
 
 app.delete('/test/:id',cseLoginRequired,async(req,res)=>{
     const {id} = req.params

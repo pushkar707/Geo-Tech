@@ -363,6 +363,7 @@
       <!-- ============================================================== -->
       <div class="main-content">
         <div class="page-content">
+          <%- include('flash.ejs') %>
           <div class="row">
             <% let index = 0 %> 
             <% categories.forEach((category) => { %>
@@ -478,6 +479,7 @@
                                     class="btn btn-info waves-effect waves-light me-1"
                                     data-bs-toggle="modal"
                                     data-bs-target="#staticBackdrop"
+                                    onclick="handleClick('<%= test._id %>')"
                                   >
                                     <i class="bx bx-edit"></i>
                                   </a> 
@@ -502,6 +504,7 @@
                                       class="btn btn-info waves-effect waves-light me-1"
                                       data-bs-toggle="modal"
                                       data-bs-target="#staticBackdrop"
+                                      onclick="handleClick('<%= test._id %>')"
                                     >
                                       <i class="bx bx-edit"></i>
                                     </a>
@@ -527,6 +530,7 @@
                                           class="btn btn-info waves-effect waves-light me-1"
                                           data-bs-toggle="modal"
                                           data-bs-target="#staticBackdrop"
+                                          onclick="handleClick('<%= test._id %>')"
                                         >
                                           <i class="bx bx-edit"></i>
                                         </a>
@@ -861,7 +865,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="staticBackdropLabel">
-              Add New Material
+              Edit Test
             </h5>
             <button
               type="button"
@@ -870,25 +874,28 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="example-text-input" class="form-label"
-                >Material</label
-              >
-              <input
-                class="form-control"
-                type="text"
-                placeholder="Add Material Name"
-                id="example-text-input"
-              />
+          <form action="" method="POST" id="change-test">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="example-text-input" class="form-label"
+                  >Test</label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Add Test Name"
+                  id="example-text-input"
+                  name="name"
+                />
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save</button>
-          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -904,6 +911,11 @@
             if (confirm(text) == true) {
                 deleteForm.submit()
             }
+        }
+
+        const handleClick = (id) => {
+          const changeForm = document.getElementById('change-test')
+          changeForm.setAttribute("action",`/test/${id}?_method=PUT`)
         }
     </script>
     <script src="/assets/libs/jquery/jquery.min.js"></script>
