@@ -727,7 +727,7 @@
       
                             <tbody>
                                 
-                              <% category == "physical" && material['physical'].forEach(test=> { %>
+                              <% category == "physical" && material['physical'].forEach((test,index)=> { %>
                               <tr>
                                 <td><%= test.name %></td>
                                 <td>₹ <%= test.govt %></td>
@@ -742,14 +742,12 @@
                                     data-bs-target="#staticBackdrop"
                                   >
                                     <i class="bx bx-edit"></i>
-                                  </a>
-      
-                                  <a
-                                    href=""
-                                    class="btn btn-danger waves-effect waves-light me-1"
-                                  >
-                                    <i class="bx bxs-trash"></i>
-                                  </a>
+                                  </a> 
+                                  <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= index %>">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light me-1" onclick="//handleDelete('<%= index %>','<%= material.name %>')">
+                                        <i class=" bx bxs-trash"></i>
+                                    </button>
+                                  </form>
                                 </td>
                               </tr>
                               <% }) %>

@@ -208,10 +208,12 @@ app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
 
 // FOR TESTS
 
-app.delete('/test/:testId',cseLoginRequired,async(req,res)=>{
-    const {matId,testId} = req.params
-    const test = await Test.findByIdAndDelete(testId)
-    
+app.delete('/test/:id',cseLoginRequired,async(req,res)=>{
+    console.log("HELLO");
+    const {id} = req.params
+    const test = await Test.findById(id)
+    const material = await Material.findById(test.material).populate([test.category])
+    res.send(material) 
 })
 
 app.get("/forgot",(req,res)=>{
