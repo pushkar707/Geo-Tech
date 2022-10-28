@@ -208,10 +208,16 @@ app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
 
 // FOR TESTS
 
+// app.put('/test/:id',cseLoginRequired,async(req,res)=>{
+//     const {id} = req.params
+//     const {name} = req.body
+//     await Test.findByIdAndUpdate(id,{name})
+// })
+
 app.delete('/test/:id',cseLoginRequired,async(req,res)=>{
     const {id} = req.params
     const test = await Test.findByIdAndDelete(id)
-    const material = await Material.findByIdAndUpdate(test.material,{$pull:{physical:id}})
+    await Material.findByIdAndUpdate(test.material,{$pull:{physical:id}})
     req.flash("success","Test deleted successfully")
     res.redirect('/material/'+test.material) 
 })

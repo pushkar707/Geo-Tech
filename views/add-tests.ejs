@@ -364,270 +364,8 @@
       <div class="main-content">
         <div class="page-content">
           <div class="row">
-            <!-- <div class="col-md-12">
-              <br />
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">
-                    Cement : <code>PHYSICAL TEST</code>
-                  </h4>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-lg-12 mb-4">
-                      <form
-                        class="row gx-3 gy-2 align-items-center mb-4 mb-lg-0"
-                        action="/material/add/physical/<%= material._id %>?_method=PUT"
-                        method="POST"
-                      >
-                        <div class="col-sm-4">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >Test Name</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="name"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-2">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >Government Price</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="govt"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-2">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >PVT Price</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="pvt"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-2">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >3rd Party Price</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="thirdParty"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="col-sm-auto">
-                            <br />
-                            <button type="submit" class="btn btn-primary">
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-
-                    <table
-                      id=""
-                      class="table table-bordered dt-responsive nowrap w-100"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Test Name</th>
-                          <th>Government Price (in ₹)</th>
-                          <th>PVT Price (in ₹)</th>
-                          <th>3rd Party Price (in ₹)</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <% material.physical.forEach(test=> { %>
-                        <tr>
-                          <td><%= test.name %></td>
-                          <td>₹ <%= test.govt %></td>
-                          <td>₹ <%= test.pvt %></td>
-                          <td>₹ <%= test.thirdParty %></td>
-
-                          <td>
-                            <a
-                              href=""
-                              class="btn btn-info waves-effect waves-light me-1"
-                              data-bs-toggle="modal"
-                              data-bs-target="#staticBackdrop"
-                            >
-                              <i class="bx bx-edit"></i>
-                            </a>
-
-                            <a
-                              href=""
-                              class="btn btn-danger waves-effect waves-light me-1"
-                            >
-                              <i class="bx bxs-trash"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <% }) %>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <br />
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">
-                    Cement : <code>CHEMICAL TEST</code>
-                  </h4>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-lg-12 mb-4">
-                      <form
-                        class="row gx-3 gy-2 align-items-center mb-4 mb-lg-0"
-                        action="/material/add/chemical/<%= material._id %>?_method=PUT"
-                        method="POST"
-                      >
-                        <div class="col-sm-4">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >Test Name</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="name"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-2">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >Government Price</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="govt"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-2">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >PVT Price</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="pvt"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-2">
-                          <div>
-                            <label class="visually" for="specificSizeInputName"
-                              >3rd Party Price</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="specificSizeInputName"
-                              placeholder="Enter Name"
-                              name="thirdParty"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="col-sm-auto">
-                            <br />
-                            <button type="submit" class="btn btn-primary">
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-
-                    <table
-                      id=""
-                      class="table table-bordered dt-responsive nowrap w-100"
-                    >
-                      <thead>
-                        <tr></tr>
-                        <tr>
-                          <th>Test Name</th>
-                          <th>Government Price (in ₹)</th>
-                          <th>PVT Price (in ₹)</th>
-                          <th>3rd Party Price (in ₹)</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <% material.chemical.forEach(test=> { %>
-                        <tr>
-                          <td><%= test.name %></td>
-                          <td>₹ <%= test.govt %></td>
-                          <td>₹ <%= test.pvt %></td>
-                          <td>₹ <%= test.thirdParty %></td>
-
-                          <td>
-                            <a
-                              href=""
-                              class="btn btn-info waves-effect waves-light me-1"
-                              data-bs-toggle="modal"
-                              data-bs-target="#staticBackdrop"
-                            >
-                              <i class="bx bx-edit"></i>
-                            </a>
-
-                            <a
-                              href=""
-                              class="btn btn-danger waves-effect waves-light me-1"
-                            >
-                              <i class="bx bxs-trash"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <% }) %>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
-            <% categories.forEach(category => { %>
+            <% let index = 0 %> 
+            <% categories.forEach((category) => { %>
                 <div class="col-md-12">
                     <br />
                     <div class="card">
@@ -727,7 +465,7 @@
       
                             <tbody>
                                 
-                              <% category == "physical" && material['physical'].forEach((test,index)=> { %>
+                              <% category == "physical" && material['physical'].forEach((test)=> { %>
                               <tr>
                                 <td><%= test.name %></td>
                                 <td>₹ <%= test.govt %></td>
@@ -743,8 +481,8 @@
                                   >
                                     <i class="bx bx-edit"></i>
                                   </a> 
-                                  <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= index %>">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light me-1" onclick="//handleDelete('<%= index %>','<%= material.name %>')">
+                                  <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
                                         <i class=" bx bxs-trash"></i>
                                     </button>
                                   </form>
@@ -768,12 +506,11 @@
                                       <i class="bx bx-edit"></i>
                                     </a>
         
-                                    <a
-                                      href=""
-                                      class="btn btn-danger waves-effect waves-light me-1"
-                                    >
-                                      <i class="bx bxs-trash"></i>
-                                    </a>
+                                    <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
+                                        <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
+                                            <i class=" bx bxs-trash"></i>
+                                        </button>
+                                    </form>
                                   </td>
                                 </tr>
                                 <% }) %>
@@ -794,12 +531,11 @@
                                           <i class="bx bx-edit"></i>
                                         </a>
             
-                                        <a
-                                          href=""
-                                          class="btn btn-danger waves-effect waves-light me-1"
-                                        >
-                                          <i class="bx bxs-trash"></i>
-                                        </a>
+                                        <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
+                                            <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
+                                                <i class=" bx bxs-trash"></i>
+                                            </button>
+                                        </form>
                                       </td>
                                     </tr>
                                 <% }) %>
@@ -1161,6 +897,15 @@
     <div class="rightbar-overlay"></div>
 
     <!-- JAVASCRIPT -->
+    <script>
+        const handleDelete = (index,material) => {
+            const deleteForm = document.getElementById(`delete-form-${index}`)
+            let text = `Are you sure you want to delete ${material}`;
+            if (confirm(text) == true) {
+                deleteForm.submit()
+            }
+        }
+    </script>
     <script src="/assets/libs/jquery/jquery.min.js"></script>
     <script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/libs/metismenu/metisMenu.min.js"></script>
