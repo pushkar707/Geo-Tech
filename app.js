@@ -188,7 +188,8 @@ app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
     }else if(type == "other"){
         newMaterial = await Material.findByIdAndUpdate(id,{$push:{other:req.body}})
     }
-    await res.send(newMaterial)
+    req.flash("success",'Test added')
+    await res.redirect('/material/'+id)
 })
 
 app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
