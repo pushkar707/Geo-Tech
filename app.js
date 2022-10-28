@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const User = require('./models/User')
 const Material = require('./models/Material')
+const Test = require('./models/Test')
 const nodemailer = require('nodemailer');
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
@@ -179,17 +180,21 @@ app.get('/material/:id',cseLoginRequired, async(req,res)=>{
 })
 
 app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
+    console.log("hello");
     const {id,type} = req.params
+    const test = new Test(req.body)
+    await test.save()
     let newMaterial
     if(type == "physical"){
-        newMaterial = await Material.findByIdAndUpdate(id,{$push:{physical:req.body}})
+        newMaterial = await Material.findByIdAndUpdate(id,{$push:{physical:test._id}})
     }else if(type == "chemical"){
-        newMaterial = await Material.findByIdAndUpdate(id,{$push:{chemical:req.body}})
+        newMaterial = await Material.findByIdAndUpdate(id,{$push:{chemical:test._id}})
     }else if(type == "other"){
-        newMaterial = await Material.findByIdAndUpdate(id,{$push:{other:req.body}})
+        newMaterial = await Material.findByIdAndUpdate(id,{$push:{other:test._id}})
     }
-    req.flash("success",'Test added')
-    await res.redirect('/material/'+id)
+    res.send("done")
+    // req.flash("success",'Test added')
+    // await res.redirect('/material/'+id)
 })
 
 app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
