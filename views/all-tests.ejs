@@ -332,7 +332,7 @@
                                                     <td><%= material.chemical.length %></td>
                                                     <td><%= material.other.length %></td>
                                                     <td>
-                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdropEdit" onclick="handleEdit('<%= material._id %>','<%= material.name %>')">
                                                             <i class=" bx bx-edit"></i>
                                                         </a>
     
@@ -528,16 +528,41 @@
                                         <h5 class="modal-title" id="staticBackdropLabel">Add New Material</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="example-text-input" class="form-label">Material</label>
-                                            <input class="form-control" type="text" placeholder="Add Material Name" id="example-text-input">
+                                    <form action="/material/new" method="POST">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">Material</label>
+                                                <input class="form-control" type="text" placeholder="Add Material Name" id="example-text-input" name="name">
+                                            </div>
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="staticBackdropEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Edit Material</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save</button>
-                                    </div>
+                                    <form action="" method="POST" id="edit-material">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="example-text-input" class="form-label">Material</label>
+                                                <input class="form-control" type="text" placeholder="Add Material Name" id="edit-material-input" name="name">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -555,6 +580,14 @@
                 if (confirm(text) == true) {
                     deleteForm.submit()
                 }
+            }
+
+            const handleEdit = (id,name) => {
+                const editForm = document.getElementById('edit-material')
+                const editMaterialInput = document.getElementById('edit-material-input')
+                editForm.setAttribute('action',`/material/${id}?_method=PUT`)
+                editMaterialInput.setAttribute('value',name)
+                
             }
         </script>
 

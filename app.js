@@ -170,7 +170,8 @@ app.post('/material/new',cseLoginRequired, async(req,res)=>{
     const {name} = req.body
     const material = new Material({name})
     await material.save()
-    res.send(material)
+    req.flash("success","Material Added Successfully")
+    res.redirect('/materials')
 })
 
 app.get('/material/:id',cseLoginRequired, async(req,res)=>{
@@ -178,6 +179,14 @@ app.get('/material/:id',cseLoginRequired, async(req,res)=>{
     const material = await Material.findById(id).populate('physical').populate('chemical').populate('other')
     const categories = ["physical","chemical","other"]
     res.render('add-tests',{material,categories})
+})
+
+app.put('/material/:id',cseLoginRequired,async(req,res)=>{
+    const {id} = req.params
+    const {name} = req.body
+    await Material.findByIdAndUpdate(id,{name})
+    req.flash("success","Material Name Changed")
+    res.redirect('/materials')
 })
 
 app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
