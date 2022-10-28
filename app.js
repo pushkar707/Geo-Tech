@@ -175,14 +175,16 @@ app.post('/material/new',cseLoginRequired, async(req,res)=>{
 
 app.get('/material/:id',cseLoginRequired, async(req,res)=>{
     const {id} = req.params
-    const material = await Material.findById(id)//.populate('physical').populate('che')
-    res.render('add-tests',{material})
+    const material = await Material.findById(id).populate('physical').populate('chemical').populate('other')
+    const categories = ["physical","chemical","other"]
+    res.render('add-tests',{material,categories})
 })
 
 app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
     console.log("hello");
     const {id,type} = req.params
     const test = new Test(req.body)
+    test.material = id
     await test.save()
     let newMaterial
     if(type == "physical"){
@@ -192,9 +194,9 @@ app.put('/material/add/:type/:id',cseLoginRequired,async(req,res)=>{
     }else if(type == "other"){
         newMaterial = await Material.findByIdAndUpdate(id,{$push:{other:test._id}})
     }
-    res.send("done")
-    // req.flash("success",'Test added')
-    // await res.redirect('/material/'+id)
+    // res.send("done")
+    req.flash("success",'Test added')
+    await res.redirect('/material/'+id)
 })
 
 app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
@@ -202,6 +204,14 @@ app.delete('/material/:id',cseLoginRequired,async(req,res)=>{
     const deleteMaterial = await Material.findByIdAndDelete(id)
     req.flash('success',`${deleteMaterial.name} deleted successfully`)
     res.redirect('/materials')
+})
+
+// FOR TESTS
+
+app.delete('/test/:testId',cseLoginRequired,async(req,res)=>{
+    const {matId,testId} = req.params
+    const test = await Test.findByIdAndDelete(testId)
+    
 })
 
 app.get("/forgot",(req,res)=>{

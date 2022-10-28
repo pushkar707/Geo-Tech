@@ -6,6 +6,7 @@ const testSchema = new Schema({
     govt:Number,
     pvt:Number,
     thirdParty:Number,
+    category:String,
     material: {
         type: Schema.Types.ObjectId,
         ref:"Material"
