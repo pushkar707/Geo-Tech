@@ -62,11 +62,15 @@ app.get('/',(req,res)=>{
     res.redirect('/login/admin')
 })
 
+//LOGIN
 app.use('/login/:user',logins)
-app.use('/material',users)
-app.use('/test',tests)
 app.use('/forgot',forgot)
 app.use('/changePass',changePass)
+// CSE
+app.use('/material',users)
+app.use('/test',tests)
+
+
 
 // ADMIN ROUTES
 

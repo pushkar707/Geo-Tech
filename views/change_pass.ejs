@@ -1,49 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Changing password of account with mail <%= user.email %> <br> <br>
-    <form action="/changePass/<%= user._id %>" method="post">
-        <label for="newPass">New Password: </label>
-        <input type="password" name="newPass" id="newPass"> <br>
-        <label for="confirmPass">Confirm Password: </label>
-        <input type="password" name="confirmPass" id="confirmPass"> <br>
-        <input type="submit" value="Submit">
-    </form>
-</body>
-</html> -->
-
-<!doctype html>
-<html lang="en">
-
-    
-<!-- Mirrored from themesbrand.com/GEO DESIGN/layouts/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jun 2022 06:57:08 GMT -->
-<head>
-
-        <meta charset="utf-8" />
-        <title>Login | GEO DESIGN - Minimal Admin & Dashboard Template</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-        <meta content="Themesbrand" name="author" />
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-        <!-- preloader css -->
-        <link rel="stylesheet" href="/assets/css/preloader.min.css" type="text/css" />
-        <!-- Bootstrap Css -->
-        <link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-        <!-- Icons Css -->
-        <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-        <!-- App Css-->
-        <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-    </head>
-
-    <body>
+<% layout('/includes/boilerplate') -%> 
 
     <!-- <body data-layout="horizontal"> -->
         <div class="auth-page">
@@ -208,22 +163,3 @@
             </div>
             <!-- end container fluid -->
         </div>
-
-
-        <!-- JAVASCRIPT -->
-        <script src="/assets/libs/jquery/jquery.min.js"></script>
-        <script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="/assets/libs/metismenu/metisMenu.min.js"></script>
-        <script src="/assets/libs/simplebar/simplebar.min.js"></script>
-        <script src="/assets/libs/node-waves/waves.min.js"></script>
-        <script src="/assets/libs/feather-icons/feather.min.js"></script>
-        <!-- pace js -->
-        <script src="/assets/libs/pace-js/pace.min.js"></script>
-        <!-- password addon init -->
-        <script src="/assets/js/pages/pass-addon.init.js"></script>
-
-    </body>
-
-
-<!-- Mirrored from themesbrand.com/GEO DESIGN/layouts/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jun 2022 06:57:08 GMT -->
-</html>
