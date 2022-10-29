@@ -59,8 +59,15 @@ app.use((req,res,next)=>{
 })
 
 app.get('/',(req,res)=>{
+    res.redirect('/login/admin')
+})
+
+app.get('/client/all',(req,res)=>{
+    res.render('all-clients')
+})
+
+app.get('/client/new',(req,res)=>{
     res.render('add-client')
-    // res.redirect('/login/admin')
 })
 
 //LOGIN
