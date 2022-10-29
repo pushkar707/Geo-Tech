@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router({mergeParams:true})
-const {cseLoginRequired} = require('../../loginMiddleware')
+const {loginRequired} = require('../../loginMiddleware')
 const Material = require('../../models/Material')
 const Test = require('../../models/Test')
 
 router.route('/all')
-.get(cseLoginRequired,async(req,res)=>{
+.get(loginRequired('cse'),async(req,res)=>{
     const materials = await Material.find({})
     res.render("all-tests.ejs",{materials})
 })
 
 router.route('/new')
-.post(cseLoginRequired, async(req,res)=>{
+.post(loginRequired('cse'), async(req,res)=>{
     const {name} = req.body
     const material = new Material({name})
     await material.save()
@@ -20,20 +20,20 @@ router.route('/new')
 })
 
 router.route('/:id')
-.get(cseLoginRequired, async(req,res)=>{
+.get(loginRequired('cse'), async(req,res)=>{
     const {id} = req.params
     const material = await Material.findById(id).populate('physical').populate('chemical').populate('other')
     const categories = ["physical","chemical","other"]
     res.render('add-tests',{material,categories})
 })
-.put(cseLoginRequired,async(req,res)=>{
+.put(loginRequired('cse'),async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
     await Material.findByIdAndUpdate(id,{name})
     req.flash("success","Material Name Changed")
     res.redirect('/material/all')
 })
-.delete(cseLoginRequired,async(req,res)=>{
+.delete(loginRequired('cse'),async(req,res)=>{
     const {id} = req.params
     const deleteMaterial = await Material.findByIdAndDelete(id)
     req.flash('success',`${deleteMaterial.name} deleted successfully`)
@@ -41,7 +41,7 @@ router.route('/:id')
 })
 
 router.route('/add/:type/:id')
-.put(cseLoginRequired,async(req,res)=>{
+.put(loginRequired('cse'),async(req,res)=>{
     console.log("hello");
     const {id,type} = req.params
     const test = new Test(req.body)

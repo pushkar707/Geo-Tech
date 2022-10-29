@@ -18,7 +18,7 @@ const logins = require('./routes/Login/login')
 const forgot = require('./routes/Login/forgot')
 const changePass = require('./routes/Login/changePass')
 //
-const {loginRequired,adminLoginRequired,cseLoginRequired} = require('./loginMiddleware')
+const {loginRequired} = require('./loginMiddleware')
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate')
@@ -70,7 +70,7 @@ app.use('/changePass',changePass)
 
 // ADMIN ROUTES
 
-app.get('/admin',adminLoginRequired,async(req,res)=>{
+app.get('/admin',loginRequired('admin'),async(req,res)=>{
     const users = await User.find({})
     res.render('admin.ejs',{users})
 })
