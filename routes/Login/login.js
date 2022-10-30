@@ -14,24 +14,20 @@ router.route('/:city?')
         const validUser = await User.findAndValidate(email,password,user)
         if(validUser){
             req.session.user_id = user._id
+            req.session.userPos = user
             if(user === "admin"){
-                req.session.admin = true
                 res.redirect("/admin")
             }
             else if(user === "cse"){
-                req.session.cse = true
                 res.redirect('/material/all')
             }
             else if(user === "manager"){
-                req.session.manager = true
                 res.send("done")
             }
             else if(user === "courier"){
-                req.session.courier = true
                 res.send("done")
             }
             else if(user === "accounts"){
-                req.session.accounts = true
                 res.send("done")
             }
         }else{
