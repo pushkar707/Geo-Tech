@@ -113,7 +113,7 @@ app.all('*',(req,res)=>{
 app.use((err, req, res, next) => {
     const { status = 500} = err;
     if(!err.message){err.message ="Something went wrong"}
-    res.status(status).send(err.message);
+    res.send(err.message);
 })
 
 app.listen(process.env.PORT,()=>{

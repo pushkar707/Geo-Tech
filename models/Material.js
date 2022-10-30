@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const {Schema} = require('mongoose')
 
 const materialSchema = new mongoose.Schema({
-    name:String,    
+    name:String,
     physical:[{
         type: Schema.Types.ObjectId,
         ref:'Test'

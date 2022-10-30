@@ -4,6 +4,7 @@ const {loginRequired} = require('../../utils/loginMiddleware')
 const Material = require('../../models/Material')
 const Test = require('../../models/Test')
 const wrapAsync = require('../../utils/wrapAsync')
+const { validateMaterial,validateNewTest } = require('../../utils/cse')
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -12,7 +13,7 @@ router.route('/all')
 }))
 
 router.route('/new')
-.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.post(loginRequired('cse'),validateMaterial,wrapAsync(async(req,res)=>{
     const {name} = req.body
     const material = new Material({name})
     await material.save()
@@ -31,7 +32,7 @@ router.route('/:id')
     const categories = ["physical","chemical","other"]
     res.render('add-tests',{material,categories})
 }))
-.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.put(loginRequired('cse'),validateMaterial,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
     const material = await Material.findByIdAndUpdate(id,{name})
@@ -54,7 +55,7 @@ router.route('/:id')
 }))
 
 router.route('/add/:type/:id')
-.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.put(loginRequired('cse'),validateNewTest,wrapAsync(async(req,res)=>{
     const {id,type} = req.params
     const test = new Test(req.body)
     test.material = id
