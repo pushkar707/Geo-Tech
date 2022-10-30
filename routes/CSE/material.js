@@ -4,7 +4,7 @@ const {loginRequired} = require('../../utils/loginMiddleware')
 const Material = require('../../models/Material')
 const Test = require('../../models/Test')
 const wrapAsync = require('../../utils/wrapAsync')
-const { validateMaterial,validateNewTest } = require('../../utils/cse')
+const { validateMaterial,validateNewTest } = require('../../schemas/cse')
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -29,6 +29,7 @@ router.route('/:id')
         req.flash("error","No Such material found")
         res.redirect('/material/all')
     }
+    req.session.material_id = id
     const categories = ["physical","chemical","other"]
     res.render('add-tests',{material,categories})
 }))

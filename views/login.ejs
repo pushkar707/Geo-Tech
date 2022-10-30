@@ -31,7 +31,7 @@
                                         <form class="mt-4 pt-2" action="/login/<%= user %>/<%= city %>" method="post">
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
-                                                <input type="email" name="email" class="form-control" id="username" placeholder="Enter Your Email">
+                                                <input required type="email" name="email" class="form-control" id="username" placeholder="Enter Your Email">
                                             </div>
                                             <div class="mb-3">
                                                 <div class="d-flex align-items-start">
@@ -46,7 +46,7 @@
                                                 </div>
                                                 
                                                 <div class="input-group auth-pass-inputgroup">
-                                                    <input type="password" name="password" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
+                                                    <input required type="password" name="password" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
                                                     <button class="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
                                                 </div>
                                             </div>

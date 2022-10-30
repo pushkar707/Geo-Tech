@@ -22,11 +22,11 @@
                                         <form class="mt-4 pt-2" action="/changePass/<%= user._id %>" method="post">
                                             <div class="mb-3">
                                                 <label class="form-label" id="newPass">New Password</label>
-                                                <input type="password" name="newPass" class="form-control" id="newPass" placeholder="New Password">
+                                                <input type="password" name="newPass" class="form-control" id="newPass" placeholder="New Password" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" id="confirmPass">Confirm Password</label>
-                                                <input type="password" name="confirmPass" class="form-control" id="confirmPass" placeholder="Confirm New Password">
+                                                <input type="password" name="confirmPass" class="form-control" id="confirmPass" placeholder="Confirm New Password" required>
                                             </div>
                                             <div class="mb-3">
                                                 <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Send Reset Link</button>

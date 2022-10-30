@@ -36,8 +36,9 @@
                                     type="text"
                                     class="form-control"
                                     id="specificSizeInputName"
-                                    placeholder="Enter Name"
+                                    placeholder="Enter Test Name"
                                     name="name"
+                                    required
                                   />
                                 </div>
                               </div>
@@ -50,8 +51,9 @@
                                     type="text"
                                     class="form-control"
                                     id="specificSizeInputName"
-                                    placeholder="Enter Name"
+                                    placeholder="Enter Government Price"
                                     name="govt"
+                                    required
                                   />
                                 </div>
                               </div>
@@ -64,8 +66,9 @@
                                     type="text"
                                     class="form-control"
                                     id="specificSizeInputName"
-                                    placeholder="Enter Name"
+                                    placeholder="Enter PVT Price"
                                     name="pvt"
+                                    required
                                   />
                                 </div>
                               </div>
@@ -78,12 +81,13 @@
                                     type="text"
                                     class="form-control"
                                     id="specificSizeInputName"
-                                    placeholder="Enter Name"
+                                    placeholder="Enter 3rd Party Price"
                                     name="thirdParty"
+                                    required
                                   />
                                 </div>
                               </div>
-                              <input type="hidden" name="category" value="<%= category %>">
+                              <input type="hidden" name="category" value="<%= category %>" required>
                               <div class="col-md-2">
                                 <div class="col-sm-auto">
                                   <br />
@@ -244,6 +248,7 @@
                   placeholder="Add Test Name"
                   id="example-text-input"
                   name="name"
+                  required
                 />
               </div>
             </div>

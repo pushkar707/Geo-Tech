@@ -4,9 +4,10 @@ const {loginRequired} = require('../../utils/loginMiddleware')
 const Material = require('../../models/Material')
 const Test = require('../../models/Test')
 const wrapAsync = require('../../utils/wrapAsync')
+const { validateOldTest } = require('../../schemas/cse')
 
 router.route('/:id')
-.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.put(loginRequired('cse'),validateOldTest,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
     const test = await Test.findByIdAndUpdate(id,{name})
