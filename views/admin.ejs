@@ -250,7 +250,7 @@
                                                     <td><%= user.name %></td>
                                                     <td><%= user.email %></td>
                                                     <td>
-                                                        <a href="" class="btn btn-info waves-effect waves-light me-1" onclick="changeData('<%= user._id %>')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                        <a href="" class="btn btn-info waves-effect waves-light me-1" onclick="changeData('<%= user._id %>','<%= user.email %>')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                                             <i class=" bx bx-edit"></i>
                                                         </a>
                                                     </td>
@@ -443,12 +443,12 @@
                                         <div class="modal-body">
                                             <div class="mb-3">
                                                 <label for="example-text-input" class="form-label">Email</label>
-                                                <input name="email" class="form-control" type="text" placeholder="Add Email" id="example-text-input" required>
+                                                <input id="formEmail" name="email" class="form-control" type="text" placeholder="Add Email" id="example-text-input" required>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="example-text-input" class="form-label">Password</label>
-                                                <input name="password" class="form-control" type="text" placeholder="Add Password" id="example-text-input" required>
+                                                <input name="password" class="form-control" type="text" placeholder="Add Password" id="example-text-input">
                                             </div>
 
                                         </div>
@@ -465,3 +465,12 @@
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
+
+        <script>
+            const changeData = (userId,email) => {
+                const modalForm = document.getElementById('changeDataModal')
+                modalForm.setAttribute('action',`/user/${userId}?_method=PUT`)
+                const formEmail = document.getElementById('formEmail')
+                formEmail.setAttribute('value',email)
+            }
+        </script>

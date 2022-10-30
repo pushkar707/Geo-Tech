@@ -91,7 +91,7 @@ app.get('/admin',loginRequired('admin'),wrapAsync(async(req,res)=>{
 
 app.put('/user/:id',wrapAsync(async(req,res)=>{
     const {id} = req.params
-    const {email,password} = req.body
+    const {email} = req.body
     const unique = await User.findOne({email})
     if(unique){
         req.flash('error',"Email already in use")
@@ -99,7 +99,9 @@ app.put('/user/:id',wrapAsync(async(req,res)=>{
     }else{
         const user = await User.findById(id)
         user.email = email
-        user.password = password
+        if(req.body.password){
+            user.password = password
+        }
         await user.save()
         req.flash('success','Email Changed Successfully')
         res.redirect('/admin')
