@@ -19,6 +19,7 @@ const forgot = require('./routes/Login/forgot')
 const changePass = require('./routes/Login/changePass')
 //
 const {loginRequired} = require('./loginMiddleware')
+const wrapAsync = require('./wrapAsync')
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate')
@@ -82,12 +83,12 @@ app.use('/test',tests)
 
 // ADMIN ROUTES
 
-app.get('/admin',loginRequired('admin'),async(req,res)=>{
+app.get('/admin',loginRequired('admin'),wrapAsync(async(req,res)=>{
     const users = await User.find({})
     res.render('admin.ejs',{users})
-})
+}))
 
-app.put('/user/:id',async(req,res)=>{
+app.put('/user/:id',wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {email,password} = req.body
     const unique = await User.findOne({email})
@@ -102,6 +103,16 @@ app.put('/user/:id',async(req,res)=>{
         req.flash('success','Email Changed Successfully')
         res.redirect('/admin')
     }
+}))
+
+app.all('*',(req,res)=>{
+    res.send("Page not found")
+})
+
+app.use((err, req, res, next) => {
+    const { status = 500} = err;
+    if(!err.message){err.message ="Something went wrong"}
+    res.status(status).render('error',{err});
 })
 
 app.listen(process.env.PORT,()=>{

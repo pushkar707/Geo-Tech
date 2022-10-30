@@ -1,17 +1,18 @@
 const express = require('express')
 const router = express.Router({mergeParams:true})
 const User = require('../../models/User')
+const wrapAsync = require('../../wrapAsync')
 
 router.route('/:id')
-.get(async(req,res)=>{
+.get(wrapAsync(async(req,res)=>{
     const {id} = req.params
     const user = await User.findById(id)
     if(!user){
         return res.send("No such user exists")
     }
     res.render('change_pass.ejs',{user})
-})
-.post(async(req,res)=>{
+}))
+.post(wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {newPass,confirmPass} = req.body
     if(newPass!=confirmPass){
@@ -24,6 +25,6 @@ router.route('/:id')
         req.flash('success',"Password Changed")
         res.redirect('/changepass/'+id)
     }
-})
+}))
 
 module.exports = router

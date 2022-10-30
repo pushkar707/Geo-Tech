@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router({mergeParams:true})
 const User = require('../../models/User')
+const wrapAsync = require('../../wrapAsync')
 
 router.route('/:city?')
 .get((req,res)=>{
     res.render('login.ejs',{user:req.params.user,city:req.params.city})
 })
-.post(async(req,res)=>{
+.post(wrapAsync(async(req,res)=>{
     const {email,password} = req.body
     const {user} = req.params
     try{
@@ -42,6 +43,6 @@ router.route('/:city?')
         console.log(e);
         res.redirect("/login/"+user)
     }
-})
+}))
 
 module.exports = router

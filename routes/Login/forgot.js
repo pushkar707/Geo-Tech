@@ -2,12 +2,13 @@ const express = require('express')
 const router = express.Router({mergeParams:true})
 const User = require('../../models/User')
 const nodemailer = require('nodemailer');
+const wrapAsync = require('../../wrapAsync')
 
 router.route('/')
 .get((req,res)=>{
     res.render('forgot.ejs')
 })
-.post(async(req,res)=>{
+.post(wrapAsync(async(req,res)=>{
     const {email} = req.body
     const user = await User.findOne({email})
     if(!user){
@@ -43,5 +44,6 @@ router.route('/')
             }
         });  
     }
-})
+}))
+
 module.exports = router

@@ -3,46 +3,46 @@ const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../loginMiddleware')
 const Material = require('../../models/Material')
 const Test = require('../../models/Test')
+const wrapAsync = require('../../wrapAsync')
 
 router.route('/all')
-.get(loginRequired('cse'),async(req,res)=>{
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const materials = await Material.find({})
     res.render("all-tests.ejs",{materials})
-})
+}))
 
 router.route('/new')
-.post(loginRequired('cse'), async(req,res)=>{
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {name} = req.body
     const material = new Material({name})
     await material.save()
     req.flash("success","Material Added Successfully")
     res.redirect('/material/all')
-})
+}))
 
 router.route('/:id')
-.get(loginRequired('cse'), async(req,res)=>{
+.get(loginRequired('cse'), wrapAsync(async(req,res)=>{
     const {id} = req.params
     const material = await Material.findById(id).populate('physical').populate('chemical').populate('other')
     const categories = ["physical","chemical","other"]
     res.render('add-tests',{material,categories})
-})
-.put(loginRequired('cse'),async(req,res)=>{
+}))
+.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
     await Material.findByIdAndUpdate(id,{name})
     req.flash("success","Material Name Changed")
     res.redirect('/material/all')
-})
-.delete(loginRequired('cse'),async(req,res)=>{
+}))
+.delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const deleteMaterial = await Material.findByIdAndDelete(id)
     req.flash('success',`${deleteMaterial.name} deleted successfully`)
     res.redirect('/material/all')
-})
+}))
 
 router.route('/add/:type/:id')
-.put(loginRequired('cse'),async(req,res)=>{
-    console.log("hello");
+.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id,type} = req.params
     const test = new Test(req.body)
     test.material = id
@@ -57,6 +57,6 @@ router.route('/add/:type/:id')
     }
     req.flash("success",'Test added')
     await res.redirect('/material/'+id)
-})
+}))
 
 module.exports = router
