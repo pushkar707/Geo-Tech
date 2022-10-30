@@ -18,12 +18,13 @@ const logins = require('./routes/Login/login')
 const forgot = require('./routes/Login/forgot')
 const changePass = require('./routes/Login/changePass')
 //
-const {loginRequired} = require('./loginMiddleware')
-const wrapAsync = require('./wrapAsync')
+const {loginRequired} = require('./utils/loginMiddleware')
+const wrapAsync = require('./utils/wrapAsync')
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate')
 const bodyParser = require('body-parser')
+const AppError = require('./utils/AppError')
 
 mongoose.connect(process.env.MONGODB_URI,{
     useUnifiedTopology: true,
@@ -106,13 +107,13 @@ app.put('/user/:id',wrapAsync(async(req,res)=>{
 }))
 
 app.all('*',(req,res)=>{
-    res.send("Page not found")
+   throw new AppError('Page Not found',404)
 })
 
 app.use((err, req, res, next) => {
     const { status = 500} = err;
     if(!err.message){err.message ="Something went wrong"}
-    res.status(status).render('error',{err});
+    res.status(status).send(err.message);
 })
 
 app.listen(process.env.PORT,()=>{

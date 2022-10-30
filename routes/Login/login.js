@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams:true})
 const User = require('../../models/User')
-const wrapAsync = require('../../wrapAsync')
+const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/:city?')
 .get((req,res)=>{
