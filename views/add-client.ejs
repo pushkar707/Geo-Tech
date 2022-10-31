@@ -30,147 +30,150 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">CLIENT CODE :  <code>020</code></h4>
+                                        <h4 class="card-title">CLIENT CODE :  <code>0<%= lastCode+1 %> </code></h4>
                                     </div>
                                     <div class="card-body p-4">
         
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Select Retail Type</label>
-                                                        <select class="form-select">
-                                                            <option>select</option>
-                                                            <option>Government</option>
-                                                            <option>Private</option>
-                                                            <option>3rd Party</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Alias</label>
-                                                        <input class="form-control" type="text" placeholder="Alias" id="example-text-input">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="example-email-input" class="form-label">Email</label>
-                                                        <input class="form-control" type="email" placeholder="Company Email" id="example-email-input">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="example-tel-input" class="form-label">Telephone</label>
-                                                        <input class="form-control" type="tel" placeholder="1-(555)-555-5555" id="example-tel-input">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="example-password-input" class="form-label">Password</label>
-                                                        <input class="form-control" type="text" placeholder="Enter Password" id="example-password-input">
-                                                    </div>
-                                                    
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div>
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Name</label>
-                                                        <input class="form-control" type="text" placeholder="Company Name" id="example-text-input">
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Address</label>
-                                                        <input class="form-control" type="text" placeholder="Company Address" id="example-text-input">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">City</label>
-                                                        <input class="form-control" type="text" placeholder="Company Address" id="example-text-input">
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label for="example-number-input" class="form-label">Discount (in %)</label>
-                                                        <input class="form-control" type="number" placeholder="42" id="example-number-input">
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-5">
-                                                            <div class="form-check form-switch form-switch-lg mb-3" dir="ltr"><br>
-                                                                <input type="checkbox" class="form-check-input" id="customSwitchsizelg" checked>
-                                                                <label class="form-check-label" for="customSwitchsizelg">Apply Service Tax</label>
-                                                            </div>
+                                                    <form action="/client/new" method="POST" onsubmit="handleSubmit()">
+                                                        <input type="hidden" name="clientCode" value="<%= lastCode+1 %>" id="">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Select Retail Type</label>
+                                                            <select class="form-select" name="retailType">
+                                                                <option>select</option>
+                                                                <option value="govt">Government</option>
+                                                                <option value="pvt">Private</option>
+                                                                <option value="thirdParty">3rd Party</option>
+                                                            </select>
                                                         </div>
-                                                        <div class="col-md-7 mt-2">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Select Tax Type</label>
-                                                                <select class="form-select">
-                                                                    <option>select</option>
-                                                                    <option>GST</option>
-                                                                    <option>IGST</option>
-                                                                </select>
-                                                            </div>
+                                                        <div class="mb-3">
+                                                            <label for="example-text-input" class="form-label">Alias</label>
+                                                            <input name="alias" class="form-control" type="text" placeholder="Alias" id="example-text-input">
                                                         </div>
-                                                    </div>
+                                                        <div class="mb-3">
+                                                            <label for="example-email-input" class="form-label">Email</label>
+                                                            <input name="email" class="form-control" type="email" placeholder="Company Email" id="example-email-input">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="example-tel-input" class="form-label">Telephone</label>
+                                                            <input name="telephone" class="form-control" type="tel" placeholder="1-(555)-555-5555" id="example-tel-input">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="example-password-input" class="form-label">Password</label>
+                                                            <input name="password" class="form-control" type="text" placeholder="Enter Password" id="example-password-input">
+                                                        </div>
+                                                        
 
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <p>Contact Persons</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div>
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Person Name</label>
-                                                        <input class="form-control" type="text" placeholder="Person Name" id="example-text-input">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-
-                                                    <div class="mb-3">
-                                                        <label for="example-tel-input" class="form-label">Mobile Number</label>
-                                                        <input class="form-control" type="tel" placeholder="+910000000000" id="example-tel-input">
-                                                    </div>
-                                            </div>
-                                                <div class="col-lg-2">
-
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Accountant Name</label>
-                                                        <input class="form-control" type="text" placeholder="Person Name" id="example-text-input">
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2">
 
-                                                    <div class="mb-3">
-                                                        <label for="example-tel-input" class="form-label">Accountant Number</label>
-                                                        <input class="form-control" type="tel" placeholder="+910000000000" id="example-tel-input">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-2">
-
-
-                                                    <div class="mb-3">
-                                                        <label for="example-text-input" class="form-label">Manager Name</label>
-                                                        <input class="form-control" type="text" placeholder="Person Name" id="example-text-input">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-2">
-
-                                                    <div class="mb-3">
-                                                        <label for="example-tel-input" class="form-label">Manager Number</label>
-                                                        <input class="form-control" type="tel" placeholder="+910000000000" id="example-tel-input">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div>
                                                         <div class="mb-3">
-                                                            <label for="example-text-input" class="form-label">Remarks</label>
-                                                            <input class="form-control" type="text" placeholder="Remarks" id="example-text-input">
+                                                            <label for="example-text-input" class="form-label">Name</label>
+                                                            <input name="name" class="form-control" type="text" placeholder="Company Name" id="example-text-input">
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="mt-4" style="float: right;">
-                                                        <button type="submit" class="btn btn-primary w-md">Submit</button>
+
+                                                        <div class="mb-3">
+                                                            <label for="example-text-input" class="form-label">Address</label>
+                                                            <input name="address" class="form-control" type="text" placeholder="Company Address" id="example-text-input">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="example-text-input" class="form-label">City</label>
+                                                            <input name="city" class="form-control" type="text" placeholder="City" id="example-text-input">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label for="example-number-input" class="form-label">Discount (in %)</label>
+                                                            <input name="discount" class="form-control" type="number" placeholder="42" id="example-number-input">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <div class="form-check form-switch form-switch-lg mb-3" dir="ltr"><br>
+                                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg" checked>
+                                                                    <input type="hidden" name="serviceTax" id="serviceTaxInput">
+                                                                    <label class="form-check-label" for="customSwitchsizelg">Apply Service Tax</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-7 mt-2">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Select Tax Type</label>
+                                                                    <select name="taxType" class="form-select">
+                                                                        <option>select</option>
+                                                                        <option value="gst">GST</option>
+                                                                        <option value="igst">IGST</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
 
+                                                <div class="col-lg-12">
+                                                    <div>
+                                                        <p>Contact Persons</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div>
+                                                        <div class="mb-3">
+                                                            <label for="example-text-input" class="form-label">Person Name</label>
+                                                            <input name="contactPerson[name]" class="form-control" type="text" placeholder="Person Name" id="example-text-input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+
+                                                        <div class="mb-3">
+                                                            <label for="example-tel-input" class="form-label">Mobile Number</label>
+                                                            <input name="contactPerson[mobile]" class="form-control" type="tel" placeholder="+910000000000" id="example-tel-input">
+                                                        </div>
+                                                </div>
+                                                    <div class="col-lg-2">
+
+                                                        <div class="mb-3">
+                                                            <label for="example-text-input" class="form-label">Accountant Name</label>
+                                                            <input name="contactPerson[accountantName]" class="form-control" type="text" placeholder="Person Name" id="example-text-input">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+
+                                                        <div class="mb-3">
+                                                            <label for="example-tel-input" class="form-label">Accountant Number</label>
+                                                            <input name="contactPerson[accountantNumber]" class="form-control" type="tel" placeholder="+910000000000" id="example-tel-input">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+
+
+                                                        <div class="mb-3">
+                                                            <label for="example-text-input" class="form-label">Manager Name</label>
+                                                            <input name="contactPerson[managerName]" class="form-control" type="text" placeholder="Person Name" id="example-text-input">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+
+                                                        <div class="mb-3">
+                                                            <label for="example-tel-input" class="form-label">Manager Number</label>
+                                                            <input name="contactPerson[managerNumber]" class="form-control" type="tel" placeholder="+910000000000" id="example-tel-input">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div>
+                                                            <div class="mb-3">
+                                                                <label for="example-text-input" class="form-label">Remarks</label>
+                                                                <input name="remarks" class="form-control" type="text" placeholder="Remarks" id="example-text-input">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="mt-4" style="float: right;">
+                                                            <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                         </div>
                                     </div>
                                 </div>
@@ -187,4 +190,14 @@
                 <!-- End Page-content -->
 
                 
-                
+<script>
+    const taxCheckbox = document.getElementById('customSwitchsizelg')
+    const serviceTaxInput = document.getElementById('serviceTaxInput')
+    const handleSubmit = () => {
+        if(taxCheckbox.checked){
+            serviceTaxInput.setAttribute('value',true)
+        }else{
+            serviceTaxInput.setAttribute('value',false)
+        }
+    }
+</script>

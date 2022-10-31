@@ -14,6 +14,7 @@ const Test = require('./models/Test')
 //ROUTES
 const users = require('./routes/CSE/material')
 const tests = require('./routes/CSE/test')
+const clients = require('./routes/CSE/clients')
 const logins = require('./routes/Login/login')
 const forgot = require('./routes/Login/forgot')
 const changePass = require('./routes/Login/changePass')
@@ -64,14 +65,6 @@ app.get('/',(req,res)=>{
     res.redirect('/login/admin')
 })
 
-app.get('/client/all',(req,res)=>{
-    res.render('all-clients')
-})
-
-app.get('/client/new',(req,res)=>{
-    res.render('add-client')
-})
-
 //LOGIN
 app.use('/login/:user',logins)
 app.use('/forgot',forgot)
@@ -79,7 +72,7 @@ app.use('/changePass',changePass)
 // CSE
 app.use('/material',users)
 app.use('/test',tests)
-
+app.use('/client',clients)
 
 
 // ADMIN ROUTES

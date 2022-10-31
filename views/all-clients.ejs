@@ -37,67 +37,27 @@
         
         
                                             <tbody>
-                                            <tr>
-                                                <td>019</td>
-                                                <td>Stickman Services</td>
-                                                <td>Govt. </td>
-                                                <td>Vadodara</td>
-                                                <td>Alias</td>
-                                                <td>10%</td>
-                                                <td><a href="">GST</a></td>
-                                                <td>
-                                                    <a href="final-job-details.html" class="btn btn-info waves-effect waves-light me-1">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>019</td>
-                                                <td>Stickman Services</td>
-                                                <td>PVT </td>
-                                                <td>Vadodara</td>
-                                                <td>Alias</td>
-                                                <td>10%</td>
-                                                <td><a href="">IGST</a></td>
-                                                <td>
-                                                    <a href="final-job-details.html" class="btn btn-info waves-effect waves-light me-1">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>019</td>
-                                                <td>Stickman Services</td>
-                                                <td>3rd Party </td>
-                                                <td>Vadodara</td>
-                                                <td>Alias</td>
-                                                <td>10%</td>
-                                                <td><a href="">IGST</a></td>
-                                                <td>
-                                                    <a href="final-job-details.html" class="btn btn-info waves-effect waves-light me-1">
-                                                        <i class=" bx bx-edit"></i>
-                                                    </a>
-
-                                                    <a href="" class="btn btn-danger waves-effect waves-light me-1">
-                                                        <i class=" bx bxs-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                          
-
-                                            
-                                            </tbody>
+                                            <% clients.forEach(client => { %>
+                                                <tr>
+                                                    <td>0<%= client.clientCode %></td>
+                                                    <td><%= client.name %></td>
+                                                    <td><%= client.retailType %>.</td>
+                                                    <td><%= client.city %></td>
+                                                    <td><%= client.alias %></td>
+                                                    <td><%= client.discount %>%</td>
+                                                    <td><a href=""><%= client.taxType %></a></td>
+                                                    <td>
+                                                        <a href="final-job-details.html" class="btn btn-info waves-effect waves-light me-1">
+                                                            <i class=" bx bx-edit"></i>
+                                                        </a>
+    
+                                                        <a href="" class="btn btn-danger waves-effect waves-light me-1">
+                                                            <i class=" bx bxs-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>                                            
+                                        </tbody>
                                         </table>
                                     </div>
                                 </div>

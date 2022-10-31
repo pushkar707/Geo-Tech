@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const clientSchema = new mongoose.Schema({
+    clientCode:Number,
     name:String,
     email:String,
     telephone:String,
@@ -11,12 +13,12 @@ const clientSchema = new mongoose.Schema({
     discount:Number,
     retailType:{
         type:String,
-        enum:['Government,Private,3rd Party']
+        enum:['govt','pvt','thirdParty']
     },
     serviceTax:Boolean,
     taxType:{
         type:String,
-        enum:['GST,IGST']
+        enum:['gst','igst']
     },
     contactPerson:{
         name:String,
@@ -27,6 +29,12 @@ const clientSchema = new mongoose.Schema({
         managerNumber:String
     },
     remarks:String
+})
+
+clientSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
 })
 
 module.exports = mongoose.model('Client',clientSchema)
