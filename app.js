@@ -75,9 +75,9 @@ app.use('/client',clients)
 //admin
 app.use('/admin',admin)
 
-app.all('*',(req,res)=>{
-   throw new AppError('Page Not found',404)
-})
+// app.all('*',(req,res)=>{
+//    throw new AppError('Page Not found',404)
+// })
 
 app.use((err, req, res, next) => {
     const { status = 500} = err;

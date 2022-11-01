@@ -12,8 +12,10 @@ router.route('/:city?')
     const {user} = req.params
     try{
         const validUser = await User.findAndValidate(email,password,user)
+        const loginUser = await User.findOne({email})
         if(validUser){
-            req.session.user_id = user._id
+            req.session.userId = loginUser._id
+            req.session.userEmail = loginUser.email
             req.session.userPos = user
             if(user === "admin"){
                 res.redirect("/admin")

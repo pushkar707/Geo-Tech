@@ -3,6 +3,7 @@ const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
 const wrapAsync = require('../../utils/wrapAsync')
+const transporter = require('../../utils/nodeMailer')
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -26,15 +27,37 @@ router.route('/new')
     await client.save()
     req.flash('success',"Client added successfully")
     res.redirect('/client/all')
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.userEmail,
+        subject: "Created New Client",
+        html:`
+        Client with following details has been created:<br><br>
+        ${req.body}
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
-router.route('/client/:id')
+router.route('/:id')
 .delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     try{
-        await Client.findByIdAndDelete(id)
+        const client = await Client.findByIdAndDelete(id)
         req.flash('success',"Client Deleted Successfully")
         res.redirect('/client/all')
+
+        const mailOptions = {
+            from: process.env.MAIL_ADDRESS,
+            to: req.session.userEmail,
+            subject: "Deleted Client",
+            html:`
+            Client with following details has been deleted:<br><br>
+            ${client}
+            `
+        };
+        transporter.sendMail(mailOptions);
     }catch(e){
         req.flash('error',"Client Not Found")
         res.redirect('/client/all')

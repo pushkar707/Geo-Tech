@@ -5,6 +5,7 @@ const Material = require('../../models/Material')
 const Test = require('../../models/Test')
 const wrapAsync = require('../../utils/wrapAsync')
 const { validateMaterial,validateNewTest } = require('../../schemas/cse')
+const transporter = require('../../utils/nodeMailer')
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -19,6 +20,17 @@ router.route('/new')
     await material.save()
     req.flash("success","Material Added Successfully")
     res.redirect('/material/all')
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.userEmail,
+        subject: "Created New Material",
+        html:`
+        Follwing Material has been created:<br><br>
+        Name: ${name}
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 router.route('/:id')
@@ -36,23 +48,48 @@ router.route('/:id')
 .put(loginRequired('cse'),validateMaterial,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
-    const material = await Material.findByIdAndUpdate(id,{name})
+    const material = await Material.findById(id)
+    const oldName = material.name
+    material.name = name
+    await material.save()
     if(!material){
         req.flash("error","No Such material found")
-        res.redirect('/material/all')
+        return res.redirect('/material/all')
     }
     req.flash("success","Material Name Changed")
     res.redirect('/material/all')
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.userEmail,
+        subject: "Edited Material Name",
+        html:`
+        Old Material Name: ${oldName}<br><br>
+        New Material Name: ${name}<br><br>
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 .delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const deleteMaterial = await Material.findByIdAndDelete(id)
     if(!deleteMaterial){
         req.flash("error","No Such material found")
-        res.redirect('/material/all')
+        return res.redirect('/material/all')
     }
     req.flash('success',`${deleteMaterial.name} deleted successfully`)
     res.redirect('/material/all')
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.userEmail,
+        subject: "Deleted Material Successfully",
+        html:`
+        Follwing Material has been created:<br><br>
+        Name: ${deleteMaterial.name}
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 router.route('/add/:type/:id')
@@ -61,8 +98,8 @@ router.route('/add/:type/:id')
     const test = new Test(req.body)
     test.material = id
     await test.save()
+    let newMaterial
     try{
-        let newMaterial
         if(type == "physical"){
             newMaterial = await Material.findByIdAndUpdate(id,{$push:{physical:test._id}})
         }else if(type == "chemical"){
@@ -76,6 +113,20 @@ router.route('/add/:type/:id')
         req.flash("error","No Such material found")
         res.redirect('/material/all')
     }
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.userEmail,
+        subject: "Deleted Material Successfully",
+        html:`
+        Follwing Test has been added to material ${newMaterial.name}:<br><br>
+        Name: ${test.name}<br><br>
+        Govt. Price: ${test.govt}<br><br>
+        Private Price: ${test.pvt}<br><br>
+        Third Party Price: ${test.thirdParty}<br><br>   
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 module.exports = router
