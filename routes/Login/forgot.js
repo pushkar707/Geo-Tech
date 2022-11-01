@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams:true})
 const User = require('../../models/User')
-const nodemailer = require('nodemailer');
+const transporter = require('../../utils/nodeMailer')
 const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/')
@@ -16,16 +16,6 @@ router.route('/')
         res.redirect('/forgot')
     }else{
         const {_id} = user
-
-        nodemailer.createTransport({ sendmail: true })
-
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: process.env.MAIL_ADDRESS,
-              pass: process.env.MAIL_PASS
-            }
-        });
         
         const mailOptions = {
             from: process.env.MAIL_ADDRESS,
