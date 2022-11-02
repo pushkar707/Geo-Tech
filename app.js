@@ -78,6 +78,8 @@ app.use('/manager',managerRoutes)
 //admin
 app.use('/admin',adminRoutes)
 
+app.get('/test',(req,res)=>{res.render('test')})
+
 // app.all('*',(req,res)=>{
 //    throw new AppError('Page Not found',404)
 // })

@@ -37,7 +37,7 @@
         
         
                                             <tbody>
-                                            <% clients.forEach(client => { %>
+                                            <% clients.forEach((client,index) => { %>
                                                 <tr>
                                                     <td>0<%= client.clientCode %></td>
                                                     <td><%= client.name %></td>
@@ -47,11 +47,11 @@
                                                     <td><%= client.discount %>%</td>
                                                     <td><a href=""><%= client.taxType %></a></td>
                                                     <td>
-                                                        <a href="final-job-details.html" class="btn btn-info waves-effect waves-light me-1">
+                                                        <a href="/client/<%= client._id %>" class="btn btn-info waves-effect waves-light me-1">
                                                             <i class=" bx bx-edit"></i>
                                                         </a>
-                                                        <form style="display: inline;" action="/client/<%= client._id %>?_method=DELETE" method="POST">
-                                                            <button class="btn btn-danger waves-effect waves-light me-1">
+                                                        <form style="display: inline;" action="/client/<%= client._id %>?_method=DELETE" method="POST" id="delete-form-<%= index %>">
+                                                            <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= client.name %>')">
                                                                 <i class=" bx bxs-trash"></i>
                                                             </button>
                                                         </form>
@@ -68,3 +68,13 @@
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
+
+                <script>
+                    const handleDelete = (index,test) => {
+                        const deleteForm = document.getElementById(`delete-form-${index}`)
+                        let text = `Are you sure you want to delete ${test}`;
+                        if (confirm(text) == true) {
+                            deleteForm.submit()
+                        }
+                    }
+                </script>

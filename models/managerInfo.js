@@ -2,7 +2,7 @@ const {Schema,model} = require('mongoose')
 
 const cseInfoSchema = new Schema({
     city:String,
-    tests:[{
+    orders:[{
         type:Schema.Types.ObjectId,
         ref:'Test'
     }],

@@ -25,6 +25,7 @@ router.route('/:city?')
                 res.redirect('/material/all')
             }
             else if(user === "manager"){
+                req.session.city = loginUser.city
                 res.send("done")
             }
             else if(user === "courier"){

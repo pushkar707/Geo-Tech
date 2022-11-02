@@ -2,7 +2,10 @@ const express = require('express')
 const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
+const Test = require('../../models/Test')
+const Order = require('../../models/Order')
 const CseInfo = require('../../models/CseInfo')
+const ManagerInfo = require('../../models/ManagerInfo')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 
@@ -45,6 +48,16 @@ router.route('/new')
 }))
 
 router.route('/:id')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    try{
+        const client = await Client.findById(id)
+        res.send(client)
+    }catch(e){
+        req.flash('error',"Client Not Found")
+        res.redirect('/client/all')
+    }
+}))
 .delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     try{
@@ -66,6 +79,31 @@ router.route('/:id')
         req.flash('error',"Client Not Found")
         res.redirect('/client/all')
     }
+}))
+
+router.route('/:clientId/order/:testId')
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    console.log("hello");
+    const {clientId,testId} = req.params
+    const {city} = req.session
+    const client = await Client.findById(clientId)
+    if(!client){
+        req.flash('error',"Client Not Found")
+        return res.redirect('/client/all')
+    }
+    const test = await Test.findById(testId)
+    if(!test){
+        req.flash("error","No Such Test Found")
+        return res.redirect('client'+clientId)
+    }
+    const order = new Order({city,test:testId,client:clientId})
+    await order.save()
+    client.orders = [...client.orders,order._id]
+    await client.save()
+    await ManagerInfo.findOneAndUpdate({city},{$push:{orders:order._id}})
+    req.flash("success","Order Added Successfully")
+    // res.redirect('/client'+clientId)
+    res.send(order)
 }))
 
 module.exports = router

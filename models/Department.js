@@ -8,7 +8,11 @@ const departmentSchema = new Schema({
     manager:{
         type:Schema.Types.ObjectId,
         ref:'ManagerInfo'
-    }
+    },
+    orders:[{
+        type:Schema.Types.ObjectId,
+        ref:"Order"
+    }]
 })
 
 departmentSchema.pre('save', async function (next) {
