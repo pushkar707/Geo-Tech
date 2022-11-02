@@ -11,7 +11,7 @@ const departmentSchema = new Schema({
     }
 })
 
-clientSchema.pre('save', async function (next) {
+departmentSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 12);
     next();

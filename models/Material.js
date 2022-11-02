@@ -1,6 +1,6 @@
 const {Schema,model} = require('mongoose')
 
-const materialSchema = new mongoose.Schema({
+const materialSchema = new Schema({
     name:String,
     physical:[{
         type: Schema.Types.ObjectId,

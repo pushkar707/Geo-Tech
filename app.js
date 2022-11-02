@@ -12,13 +12,14 @@ const User = require('./models/User')
 const Material = require('./models/Material')
 const Test = require('./models/Test')
 //ROUTES
-const users = require('./routes/CSE/material')
-const tests = require('./routes/CSE/test')
-const clients = require('./routes/CSE/clients')
-const logins = require('./routes/Login/login')
-const forgot = require('./routes/Login/forgot')
-const changePass = require('./routes/Login/changePass')
-const admin = require('./routes/Admin')
+const userRoutes = require('./routes/CSE/material')
+const testRoutes = require('./routes/CSE/test')
+const clientRoutes = require('./routes/CSE/client')
+const managerRoutes = require('./routes/Manager/manager.js')
+const loginRoutes = require('./routes/Login/login')
+const forgotRoutes = require('./routes/Login/forgot')
+const changePassRoutes = require('./routes/Login/changePass')
+const adminRoutes = require('./routes/Admin')
 //
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
@@ -66,15 +67,16 @@ app.get('/',(req,res)=>{
 })
 
 //LOGIN
-app.use('/login/:user',logins)
-app.use('/forgot',forgot)
-app.use('/changePass',changePass)
+app.use('/login/:user',loginRoutes)
+app.use('/forgot',forgotRoutes)
+app.use('/changePass',changePassRoutes)
 // CSE
-app.use('/material',users)
-app.use('/test',tests)
-app.use('/client',clients)
+app.use('/material',userRoutes)
+app.use('/test',testRoutes)
+app.use('/client',clientRoutes)
+app.use('/manager',managerRoutes)
 //admin
-app.use('/admin',admin)
+app.use('/admin',adminRoutes)
 
 // app.all('*',(req,res)=>{
 //    throw new AppError('Page Not found',404)
