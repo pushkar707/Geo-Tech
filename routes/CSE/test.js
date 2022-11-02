@@ -6,9 +6,10 @@ const Test = require('../../models/Test')
 const wrapAsync = require('../../utils/wrapAsync')
 const { validateOldTest } = require('../../schemas/cse')
 const transporter = require('../../utils/nodeMailer')
+const {checkCseVad} = require('../../utils/cse')
 
 router.route('/:id')
-.put(loginRequired('cse'),validateOldTest,wrapAsync(async(req,res)=>{
+.put(loginRequired('cse'),checkCseVad,validateOldTest,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
     const test = await Test.findById(id)
@@ -36,7 +37,7 @@ router.route('/:id')
     };
     transporter.sendMail(mailOptions);
 }))
-.delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.delete(loginRequired('cse'),checkCseVad,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const test = await Test.findByIdAndDelete(id)
     if(!test){

@@ -15,6 +15,7 @@ const materialSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref:'Test'
     }],
+    cse:String
 })
 
 module.exports = mongoose.model('Material',materialSchema)

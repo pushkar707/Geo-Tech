@@ -3,9 +3,11 @@ const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Material = require('../../models/Material')
 const Test = require('../../models/Test')
+const CseInfo = require('../../models/CseInfo')
 const wrapAsync = require('../../utils/wrapAsync')
 const { validateMaterial,validateNewTest } = require('../../schemas/cse')
 const transporter = require('../../utils/nodeMailer')
+const { checkCseVad } = require('../../utils/cse')
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -16,8 +18,11 @@ router.route('/all')
 router.route('/new')
 .post(loginRequired('cse'),validateMaterial,wrapAsync(async(req,res)=>{
     const {name} = req.body
+    const {city} = req.session
     const material = new Material({name})
+    material.cse = city
     await material.save()
+    await CseInfo.findOneAndUpdate({city},{$push:{materials:material._id}})
     req.flash("success","Material Added Successfully")
     res.redirect('/material/all')
 
@@ -93,7 +98,7 @@ router.route('/:id')
 }))
 
 router.route('/add/:type/:id')
-.put(loginRequired('cse'),validateNewTest,wrapAsync(async(req,res)=>{
+.put(loginRequired('cse'),checkCseVad,validateNewTest,wrapAsync(async(req,res)=>{
     const {id,type} = req.params
     const test = new Test(req.body)
     test.material = id

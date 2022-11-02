@@ -21,83 +21,85 @@
                       </div>
                       <div class="card-body">
                         <div class="row">
-                          <div class="col-lg-12 mb-4">
-                            <form
-                              class="row gx-3 gy-2 align-items-center mb-4 mb-lg-0"
-                              action="/material/add/<%= category %>/<%= material._id %>?_method=PUT"
-                              method="POST"
-                            >
-                              <div class="col-sm-4">
-                                <div>
-                                  <label class="visually" for="specificSizeInputName"
-                                    >Test Name</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="specificSizeInputName"
-                                    placeholder="Enter Test Name"
-                                    name="name"
-                                    required
-                                  />
+                          <% if (currentUserCity == "VAD") { %>
+                            <div class="col-lg-12 mb-4">
+                              <form
+                                class="row gx-3 gy-2 align-items-center mb-4 mb-lg-0"
+                                action="/material/add/<%= category %>/<%= material._id %>?_method=PUT"
+                                method="POST"
+                              >
+                                <div class="col-sm-4">
+                                  <div>
+                                    <label class="visually" for="specificSizeInputName"
+                                      >Test Name</label
+                                    >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="specificSizeInputName"
+                                      placeholder="Enter Test Name"
+                                      name="name"
+                                      required
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="col-sm-2">
-                                <div>
-                                  <label class="visually" for="specificSizeInputName"
-                                    >Government Price</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="specificSizeInputName"
-                                    placeholder="Enter Government Price"
-                                    name="govt"
-                                    required
-                                  />
+                                <div class="col-sm-2">
+                                  <div>
+                                    <label class="visually" for="specificSizeInputName"
+                                      >Government Price</label
+                                    >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="specificSizeInputName"
+                                      placeholder="Enter Government Price"
+                                      name="govt"
+                                      required
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="col-sm-2">
-                                <div>
-                                  <label class="visually" for="specificSizeInputName"
-                                    >PVT Price</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="specificSizeInputName"
-                                    placeholder="Enter PVT Price"
-                                    name="pvt"
-                                    required
-                                  />
+                                <div class="col-sm-2">
+                                  <div>
+                                    <label class="visually" for="specificSizeInputName"
+                                      >PVT Price</label
+                                    >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="specificSizeInputName"
+                                      placeholder="Enter PVT Price"
+                                      name="pvt"
+                                      required
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="col-sm-2">
-                                <div>
-                                  <label class="visually" for="specificSizeInputName"
-                                    >3rd Party Price</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="specificSizeInputName"
-                                    placeholder="Enter 3rd Party Price"
-                                    name="thirdParty"
-                                    required
-                                  />
+                                <div class="col-sm-2">
+                                  <div>
+                                    <label class="visually" for="specificSizeInputName"
+                                      >3rd Party Price</label
+                                    >
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="specificSizeInputName"
+                                      placeholder="Enter 3rd Party Price"
+                                      name="thirdParty"
+                                      required
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <input type="hidden" name="category" value="<%= category %>" required>
-                              <div class="col-md-2">
-                                <div class="col-sm-auto">
-                                  <br />
-                                  <button type="submit" class="btn btn-primary">
-                                    Save
-                                  </button>
+                                <input type="hidden" name="category" value="<%= category %>" required>
+                                <div class="col-md-2">
+                                  <div class="col-sm-auto">
+                                    <br />
+                                    <button type="submit" class="btn btn-primary">
+                                      Save
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            </form>
-                          </div>
+                              </form>
+                            </div>
+                          <% } %>
       
                           <table
                             id=""
@@ -110,7 +112,9 @@
                                 <th>Government Price (in ₹)</th>
                                 <th>PVT Price (in ₹)</th>
                                 <th>3rd Party Price (in ₹)</th>
-                                <th>Action</th>
+                                <% if (currentUserCity == "VAD") { %>
+                                  <th>Action</th>
+                                <% } %> 
                               </tr>
                             </thead>
       
@@ -123,31 +127,7 @@
                                 <td>₹ <%= test.pvt %></td>
                                 <td>₹ <%= test.thirdParty %></td>
       
-                                <td>
-                                  <a
-                                    href=""
-                                    class="btn btn-info waves-effect waves-light me-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop"
-                                    onclick="handleClick('<%= test._id %>')"
-                                  >
-                                    <i class="bx bx-edit"></i>
-                                  </a> 
-                                  <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
-                                    <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
-                                        <i class=" bx bxs-trash"></i>
-                                    </button>
-                                  </form>
-                                </td>
-                              </tr>
-                              <% }) %>
-                              <% category == "chemical" && material['chemical'].forEach(test=> { %>
-                                <tr>
-                                  <td><%= test.name %></td>
-                                  <td>₹ <%= test.govt %></td>
-                                  <td>₹ <%= test.pvt %></td>
-                                  <td>₹ <%= test.thirdParty %></td>
-        
+                                <% if (currentUserCity == "VAD") { %>
                                   <td>
                                     <a
                                       href=""
@@ -157,14 +137,41 @@
                                       onclick="handleClick('<%= test._id %>')"
                                     >
                                       <i class="bx bx-edit"></i>
-                                    </a>
-        
+                                    </a> 
                                     <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
+                                      <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
+                                          <i class=" bx bxs-trash"></i>
+                                      </button>
+                                    </form>
+                                  </td>
+                                <% } %>
+                              </tr>
+                              <% }) %>
+                              <% category == "chemical" && material['chemical'].forEach(test=> { %>
+                                <tr>
+                                  <td><%= test.name %></td>
+                                  <td>₹ <%= test.govt %></td>
+                                  <td>₹ <%= test.pvt %></td>
+                                  <td>₹ <%= test.thirdParty %></td>
+        
+                                  <% if (currentUserCity == "VAD") { %>
+                                    <td>
+                                      <a
+                                        href=""
+                                        class="btn btn-info waves-effect waves-light me-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                        onclick="handleClick('<%= test._id %>')"
+                                      >
+                                        <i class="bx bx-edit"></i>
+                                      </a> 
+                                      <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
                                         <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
                                             <i class=" bx bxs-trash"></i>
                                         </button>
-                                    </form>
-                                  </td>
+                                      </form>
+                                    </td>
+                                  <% } %>
                                 </tr>
                                 <% }) %>
                                 <% category == "other" && material['other'].forEach(test=> { %>
@@ -174,23 +181,24 @@
                                       <td>₹ <%= test.pvt %></td>
                                       <td>₹ <%= test.thirdParty %></td>
             
-                                      <td>
-                                        <a
-                                          href=""
-                                          class="btn btn-info waves-effect waves-light me-1"
-                                          data-bs-toggle="modal"
-                                          data-bs-target="#staticBackdrop"
-                                          onclick="handleClick('<%= test._id %>')"
-                                        >
-                                          <i class="bx bx-edit"></i>
-                                        </a>
-            
-                                        <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
+                                      <% if (currentUserCity == "VAD") { %>
+                                        <td>
+                                          <a
+                                            href=""
+                                            class="btn btn-info waves-effect waves-light me-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop"
+                                            onclick="handleClick('<%= test._id %>')"
+                                          >
+                                            <i class="bx bx-edit"></i>
+                                          </a> 
+                                          <form action="/test/<%= test._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= ++index %>">
                                             <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= test.name %>')">
                                                 <i class=" bx bxs-trash"></i>
                                             </button>
-                                        </form>
-                                      </td>
+                                          </form>
+                                        </td>
+                                      <% } %>
                                     </tr>
                                 <% }) %>
                             </tbody>

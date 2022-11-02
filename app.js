@@ -54,7 +54,8 @@ app.use(bodyParser.json())
 app.use(flash());
 
 app.use((req,res,next)=>{
-    res.locals.currentUser = req.user
+    res.locals.currentUser = req.session.userId
+    res.locals.currentUserCity = req.session.city
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
     next()

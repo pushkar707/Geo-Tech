@@ -28,7 +28,8 @@ const clientSchema = new mongoose.Schema({
         managerName:String,
         managerNumber:String
     },
-    remarks:String
+    remarks:String,
+    cse:String
 })
 
 clientSchema.pre('save', async function (next) {

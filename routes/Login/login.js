@@ -21,6 +21,7 @@ router.route('/:city?')
                 res.redirect("/admin")
             }
             else if(user === "cse"){
+                req.session.city = loginUser.city
                 res.redirect('/material/all')
             }
             else if(user === "manager"){
