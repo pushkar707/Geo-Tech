@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const {Schema} = require('mongoose')
+const {Schema,model} = require('mongoose')
 
 const testSchema = new Schema({
     name:String,
@@ -13,4 +12,4 @@ const testSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Test',testSchema)
+module.exports = model('Test',testSchema)

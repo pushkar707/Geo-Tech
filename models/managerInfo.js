@@ -2,14 +2,14 @@ const {Schema,model} = require('mongoose')
 
 const cseInfoSchema = new Schema({
     city:String,
-    materials:[{
+    tests:[{
         type:Schema.Types.ObjectId,
-        ref:'Material'
+        ref:'Test'
     }],
-    clients:[{
+    depatments:[{
         type:Schema.Types.ObjectId,
-        ref:'Client'
+        ref:'Department'
     }]
 })
 
-module.exports = model('CseInfo',cseInfoSchema)
+module.exports = model('ManagerInfo',cseInfoSchema)
