@@ -48,19 +48,19 @@
                                                     <td><%= material.chemical.length %></td>
                                                     <td><%= material.other.length %></td>
                                                     <td>
-                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdropEdit" onclick="handleEdit('<%= material._id %>','<%= material.name %>')">
-                                                            <i class=" bx bx-edit"></i>
-                                                        </a>
-    
+                                                        <% if (currentUserCity=='VAD') { %>
+                                                            <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdropEdit" onclick="handleEdit('<%= material._id %>','<%= material.name %>')">
+                                                                <i class=" bx bx-edit"></i>
+                                                            </a>
+                                                            <form action="/material/<%= material._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= index %>">
+                                                                <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= material.name %>')">
+                                                                    <i class=" bx bxs-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        <% } %>    
                                                         <a href="/material/<%= material._id %>" class="btn btn-success waves-effect waves-light me-1">
                                                             <i class=" bx bxs-info-circle"></i>
                                                         </a>
-                                                        
-                                                        <form action="/material/<%= material._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= index %>">
-                                                            <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= material.name %>')">
-                                                                <i class=" bx bxs-trash"></i>
-                                                            </button>
-                                                        </form>
                                                     </td>
                                                 </tr>
                                             <% }) %>                                            

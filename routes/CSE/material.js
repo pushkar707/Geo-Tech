@@ -50,7 +50,7 @@ router.route('/:id')
     const categories = ["physical","chemical","other"]
     res.render('add-tests',{material,categories})
 }))
-.put(loginRequired('cse'),validateMaterial,wrapAsync(async(req,res)=>{
+.put(loginRequired('cse'),checkCseVad,validateMaterial,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {name} = req.body
     const material = await Material.findById(id)
@@ -69,14 +69,13 @@ router.route('/:id')
         to: req.session.mainEmail,
         subject: "Edited Material Name",
         html:`
-        By CSE ${req.session.city}: <br><br>
         Old Material Name: ${oldName}<br><br>
         New Material Name: ${name}<br><br>
         `
     };
     transporter.sendMail(mailOptions);
 }))
-.delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.delete(loginRequired('cse'),checkCseVad,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const deleteMaterial = await Material.findByIdAndDelete(id)
     if(!deleteMaterial){
@@ -91,7 +90,7 @@ router.route('/:id')
         to: req.session.mainEmail,
         subject: "Deleted Material Successfully",
         html:`
-        Follwing Material has been created by CSE ${req.session.city}:<br><br>
+        Follwing Material has been created:<br><br>
         Name: ${deleteMaterial.name}
         `
     };
@@ -125,7 +124,7 @@ router.route('/add/:type/:id')
         to: req.session.mainEmail,
         subject: "Deleted Material Successfully",
         html:`
-        Follwing Test has been added to material ${newMaterial.name} by CSE ${req.session.city}:<br><br>
+        Follwing Test has been added to material ${newMaterial.name}:<br><br>
         Name: ${test.name}<br><br>
         Govt. Price: ${test.govt}<br><br>
         Private Price: ${test.pvt}<br><br>
