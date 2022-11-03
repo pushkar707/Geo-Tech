@@ -6,7 +6,7 @@ const cseInfoSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Test'
     }],
-    depatments:[{
+    departments:[{
         type:Schema.Types.ObjectId,
         ref:'Department'
     }]
