@@ -5,6 +5,7 @@ const Order = require('../../models/Order')
 const Department = require('../../models/Department')
 const ManagerInfo = require('../../models/ManagerInfo')
 const wrapAsync = require('../../utils/wrapAsync')
+const transporter = require('../../utils/nodeMailer')
 
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
@@ -27,6 +28,18 @@ router.route('/add')
     await manager.save()
     req.flash('success',"Department Added Successfully")
     res.redirect('/department/all')
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.mainEmail,
+        subject: "Department Added Successfully",
+        html:`
+        Follwing Department has been added to manager ${req.session.city}:<br><br>
+        Name: ${department.name}<br><br>
+        Email: ${department.email}<br><br>
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 router.route('/:id')
@@ -49,6 +62,18 @@ router.route('/:id')
     }
     req.flash("success","Department added successfully")
     res.redirect('/department/'+id)
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.mainEmail,
+        subject: "Department Edited Successfully",
+        html:`
+        Follwing Department has been edited under manager ${req.session.city}:<br><br>
+        Name: ${department.name}<br><br>
+        Email: ${department.email}<br><br>
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 router.route('/:deptId/order/:orderId')
@@ -59,7 +84,7 @@ router.route('/:deptId/order/:orderId')
         req.flash('error',"No such department found")
         return res.redirect('/department/all')
     }
-    const order = await Order.findById(orderId)
+    const order = await Order.findById(orderId).populate('test').populate('client')
     if(!order){
         req.flash('error',"No such Order found")
         return res.redirect('/department/'+deptId)
@@ -70,6 +95,18 @@ router.route('/:deptId/order/:orderId')
     await department.save()
     req.flash('success',"Test added successfully")
     res.redirect('/department/'+deptId)
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.mainEmail,
+        subject: "Order Added Successfully",
+        html:`
+        Follwing Order has been added to department ${department.name} under manager ${req.session.city}:<br><br>
+        Test Name: ${order.test.name}<br><br>
+        Client Name: ${order.client.name}<br><br>
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 module.exports = router
