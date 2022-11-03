@@ -15,16 +15,20 @@ router.route('/:city?')
         const loginUser = await User.findOne({email})
         if(validUser){
             req.session.userId = loginUser._id
-            req.session.userEmail = loginUser.email
+            // req.session.userEmail = loginUser.email
             req.session.userPos = user
             if(user === "admin"){
                 res.redirect("/admin")
             }
             else if(user === "cse"){
+                const mainUser = await User.findOne({city:"VAD",position:user})
+                req.session.mainEmail = mainUser.email
                 req.session.city = loginUser.city
                 res.redirect('/material/all')
             }
             else if(user === "manager"){
+                const mainUser = await User.findOne({city:"VAD",position:user})
+                req.session.mainEmail = mainUser.email
                 req.session.city = loginUser.city
                 res.redirect('/department/all')
             }

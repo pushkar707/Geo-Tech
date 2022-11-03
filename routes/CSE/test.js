@@ -25,7 +25,7 @@ router.route('/:id')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Test Name Changed",
         html:`
         Old Material Name: ${oldName}<br><br>
@@ -54,7 +54,7 @@ router.route('/:id')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Deleted Test Successfully",
         html:`
         Follwing Test has been created:<br><br>

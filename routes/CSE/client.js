@@ -37,10 +37,10 @@ router.route('/new')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Created New Client",
         html:`
-        Client with following details has been created:<br><br>
+        Client with following details has been created by CSE ${req.session.city}:<br><br>
         ${req.body}
         `
     };
@@ -67,10 +67,10 @@ router.route('/:id')
 
         const mailOptions = {
             from: process.env.MAIL_ADDRESS,
-            to: req.session.userEmail,
+            to: req.session.mainEmail,
             subject: "Deleted Client",
             html:`
-            Client with following details has been deleted:<br><br>
+            Client with following details has been deleted by CSE ${req.session.city}:<br><br>
             ${client}
             `
         };
@@ -83,7 +83,6 @@ router.route('/:id')
 
 router.route('/:clientId/order/:testId')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    console.log("hello");
     const {clientId,testId} = req.params
     const {city} = req.session
     const client = await Client.findById(clientId)
@@ -104,6 +103,16 @@ router.route('/:clientId/order/:testId')
     req.flash("success","Order Added Successfully")
     // res.redirect('/client'+clientId)
     res.send(order)
+
+    const mailOptions = {
+        from: process.env.MAIL_ADDRESS,
+        to: req.session.mainEmail,
+        subject: "Added Order to Client",
+        html:`
+        Test ${test.name} has been added to client ${client.name}
+        `
+    };
+    transporter.sendMail(mailOptions);
 }))
 
 module.exports = router

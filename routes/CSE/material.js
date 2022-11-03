@@ -28,10 +28,10 @@ router.route('/new')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Created New Material",
         html:`
-        Follwing Material has been created:<br><br>
+        Follwing Material has been created by CSE ${req.session.city}:<br><br>
         Name: ${name}
         `
     };
@@ -66,9 +66,10 @@ router.route('/:id')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Edited Material Name",
         html:`
+        By CSE ${req.session.city}: <br><br>
         Old Material Name: ${oldName}<br><br>
         New Material Name: ${name}<br><br>
         `
@@ -87,10 +88,10 @@ router.route('/:id')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Deleted Material Successfully",
         html:`
-        Follwing Material has been created:<br><br>
+        Follwing Material has been created by CSE ${req.session.city}:<br><br>
         Name: ${deleteMaterial.name}
         `
     };
@@ -121,10 +122,10 @@ router.route('/add/:type/:id')
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
-        to: req.session.userEmail,
+        to: req.session.mainEmail,
         subject: "Deleted Material Successfully",
         html:`
-        Follwing Test has been added to material ${newMaterial.name}:<br><br>
+        Follwing Test has been added to material ${newMaterial.name} by CSE ${req.session.city}:<br><br>
         Name: ${test.name}<br><br>
         Govt. Price: ${test.govt}<br><br>
         Private Price: ${test.pvt}<br><br>
