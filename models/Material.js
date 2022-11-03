@@ -13,8 +13,7 @@ const materialSchema = new Schema({
     other:[{
         type: Schema.Types.ObjectId,
         ref:'Test'
-    }],
-    cse:String
+    }]
 })
 
 module.exports = model('Material',materialSchema)

@@ -11,7 +11,9 @@ const transporter = require('../../utils/nodeMailer')
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    const clients = await Client.find({})
+    const {city} = req.session
+    const cse = await CseInfo.findOne({city}).populate('clients')
+    const clients = cse.clients
     res.render('all-clients',{clients})
 }))
 
@@ -62,6 +64,7 @@ router.route('/:id')
     const {id} = req.params
     try{
         const client = await Client.findByIdAndDelete(id)
+        await CseInfo.findOneAndUpdate({city:client.cse},{$pull:{clients:client._id}})
         req.flash('success',"Client Deleted Successfully")
         res.redirect('/client/all')
 
@@ -88,6 +91,10 @@ router.route('/:clientId/order/:testId')
     const client = await Client.findById(clientId)
     if(!client){
         req.flash('error',"Client Not Found")
+        return res.redirect('/client/all')
+    }
+    if(client.cse!=city){
+        req.flash("error","You are not allowed to do that")
         return res.redirect('/client/all')
     }
     const test = await Test.findById(testId)

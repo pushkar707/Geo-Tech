@@ -16,13 +16,10 @@ router.route('/all')
 }))
 
 router.route('/new')
-.post(loginRequired('cse'),validateMaterial,wrapAsync(async(req,res)=>{
+.post(loginRequired('cse'),checkCseVad,validateMaterial,wrapAsync(async(req,res)=>{
     const {name} = req.body
-    const {city} = req.session
     const material = new Material({name})
-    material.cse = city
     await material.save()
-    await CseInfo.findOneAndUpdate({city},{$push:{materials:material._id}})
     req.flash("success","Material Added Successfully")
     res.redirect('/material/all')
 
@@ -31,7 +28,7 @@ router.route('/new')
         to: req.session.mainEmail,
         subject: "Created New Material",
         html:`
-        Follwing Material has been created by CSE ${req.session.city}:<br><br>
+        Follwing Material has been created:<br><br>
         Name: ${name}
         `
     };
@@ -39,7 +36,7 @@ router.route('/new')
 }))
 
 router.route('/:id')
-.get(loginRequired('cse'), wrapAsync(async(req,res)=>{
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const material = await Material.findById(id).populate('physical').populate('chemical').populate('other')
     if(!material){
@@ -77,6 +74,7 @@ router.route('/:id')
 }))
 .delete(loginRequired('cse'),checkCseVad,wrapAsync(async(req,res)=>{
     const {id} = req.params
+    const {city} = req.session
     const deleteMaterial = await Material.findByIdAndDelete(id)
     if(!deleteMaterial){
         req.flash("error","No Such material found")
