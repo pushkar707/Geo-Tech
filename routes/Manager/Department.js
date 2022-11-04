@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
-const Order = require('../../models/Order')
 const Department = require('../../models/Department')
 const ManagerInfo = require('../../models/ManagerInfo')
 const wrapAsync = require('../../utils/wrapAsync')
