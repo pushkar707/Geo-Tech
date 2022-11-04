@@ -14,7 +14,7 @@ router.route('/all')
     const {city} = req.session
     const cse = await CseInfo.findOne({city}).populate('clients')
     const clients = cse.clients
-    res.render('all-clients',{clients})
+    res.render('cse/all-clients',{clients})
 }))
 
 router.route('/new')
@@ -26,7 +26,7 @@ router.route('/new')
     else{
         lastCode = 0
     }
-    res.render('add-client',{lastCode})
+    res.render('cse/add-client',{lastCode})
 }))
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
@@ -54,7 +54,7 @@ router.route('/:id')
     const {id} = req.params
     try{
         const client = await Client.findById(id)
-        res.render('edit-client',{client})
+        res.render('cse/edit-client',{client})
     }catch(e){
         req.flash('error',"Client Not Found")
         res.redirect('/client/all')

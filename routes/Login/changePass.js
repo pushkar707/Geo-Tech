@@ -11,7 +11,7 @@ router.route('/:id')
     if(!user){
         throw new AppError("No such user exists",404)
     }
-    res.render('change_pass.ejs',{user})
+    res.render('login/change_pass.ejs',{user})
 }))
 .post(wrapAsync(async(req,res)=>{
     const {id} = req.params

@@ -6,7 +6,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/')
 .get((req,res)=>{
-    res.render('forgot.ejs')
+    res.render('login/forgot.ejs')
 })
 .post(wrapAsync(async(req,res)=>{
     const {email} = req.body

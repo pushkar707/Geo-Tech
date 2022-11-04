@@ -8,7 +8,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 router.route('/')
 .get(loginRequired('admin'),wrapAsync(async(req,res)=>{
     const users = await User.find({})
-    res.render('admin.ejs',{users})
+    res.render('admin/admin.ejs',{users})
 }))
 
 router.route('/user/:id')
