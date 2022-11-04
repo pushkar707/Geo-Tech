@@ -11,11 +11,7 @@ const {checkCseVad} = require('../../utils/cse')
 router.route('/:id')
 .put(loginRequired('cse'),checkCseVad,validateOldTest,wrapAsync(async(req,res)=>{
     const {id} = req.params
-    const {name} = req.body
-    const test = await Test.findById(id)
-    const oldName = test.name
-    test.name = name
-    await test.save()
+    const test = await Test.findByIdAndUpdate(id,req.body)
     if(!test){
         req.flash("error","No such Test")
         return res.redirect('/material/'+test.material)
@@ -26,13 +22,12 @@ router.route('/:id')
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
         to: req.session.mainEmail,
-        subject: "Test Name Changed",
+        subject: "Test Edited",
         html:`
-        Old Material Name: ${oldName}<br><br>
-        New Material Name: ${name}<br><br>
+        Test Name: ${test.name}<br><br>
         Govt. Price: ${test.govt}<br><br>
         Private Price: ${test.pvt}<br><br>
-        Third Party Price: ${test.thirdParty}<br><br>   
+        Third Party Price: ${test.thirdParty}<br><br>
         `
     };
     transporter.sendMail(mailOptions);

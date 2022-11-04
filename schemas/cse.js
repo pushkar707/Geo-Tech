@@ -36,7 +36,10 @@ module.exports.validateNewTest = (req,res,next) => {
 
 module.exports.validateOldTest = (req,res,next)=> {
     const materialSchema = Joi.object({
-        name:Joi.string().required()
+        name:Joi.string().required(),
+        govt:Joi.number().required(),
+        pvt:Joi.number().required(),
+        thirdParty:Joi.number().required()
     })
     const {error} = materialSchema.validate(req.body)
     if(error){

@@ -134,7 +134,7 @@
                                       class="btn btn-info waves-effect waves-light me-1"
                                       data-bs-toggle="modal"
                                       data-bs-target="#staticBackdrop"
-                                      onclick="handleClick('<%= test._id %>')"
+                                      onclick="handleClick('<%= test._id %>','<%= test.name %>','<%= test.govt %>','<%= test.pvt %>','<%= test.thirdParty %>')"
                                     >
                                       <i class="bx bx-edit"></i>
                                     </a> 
@@ -161,7 +161,7 @@
                                         class="btn btn-info waves-effect waves-light me-1"
                                         data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop"
-                                        onclick="handleClick('<%= test._id %>')"
+                                        onclick="handleClick('<%= test._id %>','<%= test.name %>','<%= test.govt %>','<%= test.pvt %>','<%= test.thirdParty %>')"
                                       >
                                         <i class="bx bx-edit"></i>
                                       </a> 
@@ -188,7 +188,7 @@
                                             class="btn btn-info waves-effect waves-light me-1"
                                             data-bs-toggle="modal"
                                             data-bs-target="#staticBackdrop"
-                                            onclick="handleClick('<%= test._id %>')"
+                                            onclick="handleClick('<%= test._id %>','<%= test.name %>','<%= test.govt %>','<%= test.pvt %>','<%= test.thirdParty %>')"
                                           >
                                             <i class="bx bx-edit"></i>
                                           </a> 
@@ -254,12 +254,51 @@
                   class="form-control"
                   type="text"
                   placeholder="Add Test Name"
-                  id="example-text-input"
+                  id="modal-test-name"
                   name="name"
                   required
                 />
               </div>
-            </div>
+              <div class="mb-3">
+                <label class="form-label" for="specificSizeInputName"
+                  >Government Price</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modal-test-govt"
+                  placeholder="Enter Government Price"
+                  name="govt"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="visually" for="specificSizeInputName"
+                  >PVT Price</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modal-test-pvt"
+                  placeholder="Enter PVT Price"
+                  name="pvt"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="specificSizeInputName"
+                  >3rd Party Price</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modal-test-thirdParty"
+                  placeholder="Enter 3rd Party Price"
+                  name="thirdParty"
+                  required
+                />
+              </div>
+            </div> 
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                 Close
@@ -284,8 +323,12 @@
             }
         }
 
-        const handleClick = (id) => {
+        const handleClick = (id,name,govt,pvt,thirdParty) => {
           const changeForm = document.getElementById('change-test')
           changeForm.setAttribute("action",`/test/${id}?_method=PUT`)
+          const obj = {name,govt,pvt,thirdParty}
+          for (i in obj){
+            document.getElementById('modal-test-'+i).setAttribute('value',obj[i])
+          }
         }
     </script>
