@@ -54,7 +54,22 @@ router.route('/:id')
     const {id} = req.params
     try{
         const client = await Client.findById(id)
-        res.send(client)
+        res.render('edit-client',{client})
+    }catch(e){
+        req.flash('error',"Client Not Found")
+        res.redirect('/client/all')
+    }
+}))
+.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    try{
+        if(!req.body.password){
+            const oldClient = await Client.findById(id)
+            req.body.password = oldClient.password
+        }
+        const client = await Client.findByIdAndUpdate(id,req.body)
+        req.flash('success',"Client Edited Successfully")
+        res.redirect('/client/all')
     }catch(e){
         req.flash('error',"Client Not Found")
         res.redirect('/client/all')
