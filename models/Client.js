@@ -29,11 +29,7 @@ const clientSchema = new mongoose.Schema({
         managerNumber:String
     },
     remarks:String,
-    cse:String,
-    orders:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Order'
-    }]
+    cse:String
 })
 
 clientSchema.pre('save', async function (next) {

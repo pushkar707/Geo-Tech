@@ -5,13 +5,14 @@ const departmentSchema = new Schema({
     name: String,
     email:String,
     password:String,
-    manager:{
+    city:String,
+    // manager:{
+    //     type:Schema.Types.ObjectId,
+    //     ref:'ManagerInfo'
+    // },
+    tests:[{
         type:Schema.Types.ObjectId,
-        ref:'ManagerInfo'
-    },
-    orders:[{
-        type:Schema.Types.ObjectId,
-        ref:"Order"
+        ref:"Test"
     }]
 })
 

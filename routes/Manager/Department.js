@@ -11,18 +11,15 @@ router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const manager = await ManagerInfo.findOne({city}).populate('departments')
-    res.send(manager.departments)
+    const {departments} = manager
+    res.render("manager/all-depts.ejs",{departments})
 }))
 
-router.route('/add')
-.get(loginRequired('manager'),(req,res)=>{
-    res.render('test')
-})
+router.route('/new')
 .post(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const manager = await ManagerInfo.findOne({city})
     const department = new Department(req.body)
-    department.manager = manager._id
     await department.save()
     manager.departments = [...manager.departments,department._id]
     await manager.save()
@@ -43,25 +40,21 @@ router.route('/add')
 }))
 
 router.route('/:id')
-.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const {id} = req.params
-    const department = await Department.findById(id)
-    if(!department){
-        req.flash('error',"No such department found")
-        return res.redirect('/department/all')
-    }
-    res.send(department)
-}))
 .put(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    // ROUTE TO EDIT DEPARTMENT // PENDING DEPENDING ON FRONTEND
     const {id} = req.params
-    const department = await Department.findById(id)
-    if(!department){
-        req.flash('error',"No such department found")
+    let department
+    try{
+        if(!req.body.password){
+            const oldDepartment = await Department.findById(id)
+            req.body.password = oldDepartment.password
+        }
+        department = await Department.findByIdAndUpdate(id,req.body)
+        req.flash("success","Department added successfully")
+        res.redirect('/department/all')
+    }catch(e){
+        req.flash('error',"No such department")
         return res.redirect('/department/all')
     }
-    req.flash("success","Department added successfully")
-    res.redirect('/department/'+id)
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
@@ -75,38 +68,19 @@ router.route('/:id')
     };
     transporter.sendMail(mailOptions);
 }))
-
-router.route('/:deptId/order/:orderId')
-.post(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const {deptId,orderId} = req.params
-    const department = await Department.findById(deptId)
-    if(!department){
+.delete(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    let department;
+    try{
+        department = await Department.findByIdAndDelete(id)
+        await ManagerInfo.findOneAndUpdate({city:department.city},{$pull:{departments:department._id}})
+        req.flash('success',"Department deleted successfully")
+        res.redirect('/department/all')
+    }catch(e){
         req.flash('error',"No such department found")
         return res.redirect('/department/all')
     }
-    const order = await Order.findById(orderId).populate('test').populate('client')
-    if(!order){
-        req.flash('error',"No such Order found")
-        return res.redirect('/department/'+deptId)
-    }
-    order.department = deptId
-    await order.save()
-    department.orders = [...department.orders,orderId]
-    await department.save()
-    req.flash('success',"Test added successfully")
-    res.redirect('/department/'+deptId)
-
-    const mailOptions = {
-        from: process.env.MAIL_ADDRESS,
-        to: req.session.mainEmail,
-        subject: "Order Added Successfully",
-        html:`
-        Follwing Order has been added to department ${department.name} under manager ${req.session.city}:<br><br>
-        Test Name: ${order.test.name}<br><br>
-        Client Name: ${order.client.name}<br><br>
-        `
-    };
-    transporter.sendMail(mailOptions);
 }))
+
 
 module.exports = router
