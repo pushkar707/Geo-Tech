@@ -6,7 +6,19 @@ const testSchema = new Schema({
     pvt:Number,
     thirdParty:Number,
     category:String,
-    material:String
+    material:String,
+    deptVAD:{
+        type:Schema.Types.ObjectId,
+        ref:'Department'
+    },
+    'dept2':{
+        type:Schema.Types.ObjectId,
+        ref:"Department"
+    },
+    "dept3":{
+        type:Schema.Types.ObjectId,
+        ref:'Department'
+    }
 })
 
 module.exports = model('Test',testSchema)
