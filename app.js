@@ -16,6 +16,7 @@ const userRoutes = require('./routes/CSE/material')
 const testRoutes = require('./routes/CSE/test')
 const clientRoutes = require('./routes/CSE/client')
 const departmentRoutes = require('./routes/Manager/department')
+const managerTestRoutes = require('./routes/Manager/test')
 const loginRoutes = require('./routes/Login/login')
 const forgotRoutes = require('./routes/Login/forgot')
 const changePassRoutes = require('./routes/Login/changePass')
@@ -77,6 +78,7 @@ app.use('/client',clientRoutes)
 app.use('/department',departmentRoutes)
 //admin
 app.use('/admin',adminRoutes)
+app.use('/test',managerTestRoutes)
 
 app.get('/test',(req,res)=>{res.render('test')})
 

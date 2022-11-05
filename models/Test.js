@@ -6,10 +6,7 @@ const testSchema = new Schema({
     pvt:Number,
     thirdParty:Number,
     category:String,
-    material: {
-        type: Schema.Types.ObjectId,
-        ref:"Material"
-    }
+    material:String
 })
 
 module.exports = model('Test',testSchema)

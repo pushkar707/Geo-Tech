@@ -99,7 +99,8 @@ router.route('/add/:type/:id')
 .put(loginRequired('cse'),checkCseVad,validateNewTest,wrapAsync(async(req,res)=>{
     const {id,type} = req.params
     const test = new Test(req.body)
-    test.material = id
+    const material = await Material.findById(id)
+    test.material = material.name
     await test.save()
     let newMaterial
     try{
