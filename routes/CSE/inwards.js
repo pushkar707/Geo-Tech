@@ -1,0 +1,5 @@
+const express = require('express')
+const router = express.Router({mergeParams:true})
+const {loginRequired} = require('../../utils/loginMiddleware')
+const Client = require('../../models/Client')
+const Material = require('../../models/Material')

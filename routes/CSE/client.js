@@ -2,10 +2,7 @@ const express = require('express')
 const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
-const Test = require('../../models/Test')
-const Order = require('../../models/Order')
 const CseInfo = require('../../models/CseInfo')
-const ManagerInfo = require('../../models/ManagerInfo')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 
@@ -99,42 +96,5 @@ router.route('/:id')
     }
 }))
 
-router.route('/:clientId/order/:testId')
-.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    const {clientId,testId} = req.params
-    const {city} = req.session
-    const client = await Client.findById(clientId)
-    if(!client){
-        req.flash('error',"Client Not Found")
-        return res.redirect('/client/all')
-    }
-    if(client.cse!=city){
-        req.flash("error","You are not allowed to do that")
-        return res.redirect('/client/all')
-    }
-    const test = await Test.findById(testId)
-    if(!test){
-        req.flash("error","No Such Test Found")
-        return res.redirect('client'+clientId)
-    }
-    const order = new Order({city,test:testId,client:clientId})
-    await order.save()
-    client.orders = [...client.orders,order._id]
-    await client.save()
-    await ManagerInfo.findOneAndUpdate({city},{$push:{orders:order._id}})
-    req.flash("success","Order Added Successfully")
-    // res.redirect('/client'+clientId)
-    res.send(order)
-
-    const mailOptions = {
-        from: process.env.MAIL_ADDRESS,
-        to: req.session.mainEmail,
-        subject: "Added Order to Client",
-        html:`
-        Test ${test.name} has been added to client ${client.name}
-        `
-    };
-    transporter.sendMail(mailOptions);
-}))
 
 module.exports = router
