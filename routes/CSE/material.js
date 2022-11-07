@@ -12,7 +12,7 @@ const { checkCseVad } = require('../../utils/cse')
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const materials = await Material.find({})
-    res.render("cse/all-tests.ejs",{materials})
+    res.render("cse/test/all-tests.ejs",{materials})
 }))
 
 router.route('/new')
@@ -45,7 +45,7 @@ router.route('/:id')
     }
     req.session.material_id = id
     const categories = ["physical","chemical","other"]
-    res.render('cse/add-tests',{material,categories})
+    res.render('cse/test/add-tests',{material,categories})
 }))
 .put(loginRequired('cse'),checkCseVad,validateMaterial,wrapAsync(async(req,res)=>{
     const {id} = req.params
