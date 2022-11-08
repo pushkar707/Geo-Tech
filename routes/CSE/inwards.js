@@ -14,7 +14,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    if(req.cookie.inward){
+    if(req.cookies.inward){
         return res.redirect('/inward/new/tests')
     }
     const {city} = req.session
