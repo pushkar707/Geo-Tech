@@ -166,6 +166,7 @@
                                 </div>
                               </div>
                             </div>
+                          </form>
                             <div class="row">
                               <div class="col-xl-12">
                                 <div class="card">
@@ -199,7 +200,7 @@
                                         <tbody>
                                           <% inward.tests.forEach((test,index) => { %>
                                             <tr>
-                                              <th scope="row"><%= index %></th>
+                                              <th scope="row"><%= index+1 %></th>
                                               <td><%= test.sampleNo %></td>
                                               <td><%= test.material %></td>
                                               <td><%= test.testName %></td>
@@ -208,19 +209,19 @@
                                               <td>
                                                 <a
                                                   href=""
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#staticBackdrop"
                                                   class="btn btn-primary"
+                                                  onclick="handleEdit('<%=test.reportNo%>','<%=test.price%>')"
                                                   ><i class="bx bx-edit"></i>
                                                   EDIT
                                                 </a>
                                                 &nbsp; | &nbsp;
-                                                <a
-                                                  href=""
-                                                  class="btn btn-danger"
-                                                  ><i
-                                                    class="mdi mdi-delete"
-                                                  ></i>
-                                                  Delete
-                                                </a>
+                                                <form action="/inward/new/<%= test.reportNo %>?_method=DELETE" method="POST" style="display: inline;">
+                                                  <button class="btn btn-danger">
+                                                    <i class="mdi mdi-delete"></i>Delete
+                                                  </button>
+                                                </form>
                                               </td>
                                             </tr>
                                           <% }) %>
@@ -234,29 +235,71 @@
                               </div>
                               <!-- end col -->
                             </div>
-                            <button
-                                href="javascript: void(0);"
-                                class="btn btn-primary"
-                                >Next <i class="bx bx-chevron-right ms-1"></i>
-                            </button>
-                          </form>
-                            <!-- <a
-                                href="javascript: void(0);"
-                                class="btn btn-primary"
-                                onclick="nextTab()"
-                                ><i class="bx bx-chevron-left me-1"></i>
-                                Previous
-                            </a> -->
+                            <form action="/inward/new/<%= inward._id %>" method="POST">
+                              <button
+                                  class="btn btn-primary"
+                                  >Next <i class="bx bx-chevron-right ms-1"></i>
+                              </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>    
+</div>
+
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">
+          Edit Price
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="" method="POST" id="change-test">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label"
+              >Price</label
+            >
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Add Test Name"
+              id="modal-test-price"
+              name="price"
+              required
+            />
+          </div>
+        </div> 
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 <script>
-    console.log("hello");
     const setTestOption = (material) => {
       document.getElementById('test-choice').removeAttribute('disabled')
         const testOptions = document.querySelectorAll('.test-option')
@@ -268,5 +311,11 @@
             option.classList.remove('d-none')
           }
         })
+    }
+
+    const handleEdit = (reportNo,price) => {
+      const changeForm = document.getElementById('change-test')
+      changeForm.setAttribute("action",`/inward/new/${reportNo}?_method=PUT`)
+      document.getElementById('modal-test-price').setAttribute('value',price)
     }
 </script>

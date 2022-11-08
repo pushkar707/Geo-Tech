@@ -80,7 +80,7 @@ router.route('/new/tests')
         for (let i = 0; i < req.body.quantity; i++) {
             sampleOfTheDay++; reportNo++;
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = {material:req.body.material,test,testName:test.name,price,sampleNo,reportNo}
+            const newTest = {material:req.body.material,test:test._id,testName:test.name,price,sampleNo,reportNo}
             inward = {...inward,tests:[...inward.tests,newTest]}
         }
     });
@@ -90,8 +90,32 @@ router.route('/new/tests')
     return res.redirect('/inward/new/tests')
 }))
 
-// router.route('/new/save')
-// .get(loginRequired('cse'),wrapAsync(async(req,res)))
+router.route('/new/:reportNo')
+.delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    let inward = req.cookies.inward
+    const newTests = inward.tests.filter(test=>{
+        return test.reportNo != req.params.reportNo
+    })
+    inward = {...inward,tests:newTests}
+    res.cookie('inward',inward)
+    return res.redirect('/inward/new/tests')
+}))
+.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {price} = req.body
+    let inward = req.cookies.inward
+    const newTests = inward.tests.filter(test=>{
+        if(test.reportNo == req.params.reportNo){
+            test.price = price
+        }
+        return test
+    })
+    inward = {...inward,tests:newTests}
+    res.cookie('inward',inward)
+    return res.redirect('/inward/new/tests')
+}))
+
+router.route('/new/:id')
+.post()
 
 router.route('/test')
 .get((req,res)=>{
