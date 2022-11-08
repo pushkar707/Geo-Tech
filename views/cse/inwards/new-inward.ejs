@@ -1,3 +1,120 @@
 <% layout('/includes/cse') -%> 
 <% block('title').append('<h5>New Inward</h5>') %>
 
+<div class="main-content">
+    <div class="page-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-justified my-4">
+                        <li class="nav-item">
+                          <a
+                            href="#seller-details"
+                            class="nav-link active"
+                            data-toggle="tab"
+                          >
+                            <div
+                              class="step-icon"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Seller Details"
+                            >
+                              <i class="bx bx-list-ul"></i>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            href="#company-document"
+                            class="nav-link"
+                            data-toggle="tab"
+                          >
+                            <div
+                              class="step-icon"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Company Document"
+                            >
+                              <i class="bx bx-book-bookmark"></i>
+                            </div>
+                          </a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a
+                            href="#bank-detail"
+                            class="nav-link"
+                            data-toggle="tab"
+                          >
+                            <div
+                              class="step-icon"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Bank Details"
+                            >
+                              <i class="bx bxs-bank"></i>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+
+                    <div class="tab-pane" id="seller-details">
+                        <div class="text-center mb-4">
+                          <h5>Select Client</h5>
+                          <p class="card-title-desc">
+                            Fill all information below
+                          </p>
+                        </div>
+                        <form method="POST" action="/inward/new">
+                          <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                              <div class="mb-3">
+                                <label
+                                  for="choices-single-default"
+                                  class="form-label font-size-13 text-muted"
+                                  >Select Client Name</label
+                                >
+                                <select
+                                  class="form-control"
+                                  data-trigger
+                                  name="client"
+                                  id="choices-single-default"
+                                  placeholder="This is a search placeholder"
+                                >
+                                  <option value="">Select Client</option>
+                                  <% clients.forEach(client => { %>
+                                    <option value="<%= client._id %>"><%= client.name %></option>
+                                  <% }) %>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label
+                                  for="basicpill-lastname-input"
+                                  class="form-label"
+                                  >Name of Work</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="basicpill-lastname-input"
+                                  placeholder="Name of Work"
+                                  name="inward"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            class="btn btn-primary"
+                            >Next <i class="bx bx-chevron-right ms-1"></i>
+                          </button>
+                        </form>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    

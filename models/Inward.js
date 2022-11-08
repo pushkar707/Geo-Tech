@@ -23,4 +23,4 @@ const inwardSchema = new Schema({
     }
 })
 
-module.exports = model('Order',orderSchema)
+module.exports = model('Inward',inwardSchema)

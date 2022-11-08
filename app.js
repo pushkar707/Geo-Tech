@@ -7,6 +7,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const cookieParser = require('cookie-parser')
 // MODELS
 const User = require('./models/User')
 const Material = require('./models/Material')
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: process.env.SECRET,resave:false,saveUninitialized:true }))
+app.use(cookieParser())
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({extended:true}))
