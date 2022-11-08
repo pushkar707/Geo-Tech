@@ -14,7 +14,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    if(req.cookie.inward){
+    if(req.cookies.inward){
         return res.redirect('/inward/new/tests')
     }
     const {city} = req.session
@@ -42,9 +42,10 @@ router.route('/new')
     res.redirect('/inward/new/tests')
 }))
 
-router.route('/inward/new/tests')
+router.route('/new/tests')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    
+    const materials = await Material.find({}).populate('physical').populate('chemical').populate('other')
+    res.render('cse/inwards/add-tests',{inward:req.cookies.inward,materials})
 }))
 
 module.exports = router
