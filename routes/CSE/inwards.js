@@ -57,12 +57,13 @@ router.route('/new/tests')
     const today = new Date()
     const daysDiff = Math.ceil(Math.abs(today-start)/(1000*60*60*24))
     
-    if(await Inward.count() > 0){
+    if(await Inward.count() > 0 && !req.cookies.sampleOfTheDay){
         lastRecord = await Inward.find({}).populate('tests').skip(await Inward.count() - 1)
         lastDate = lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[0]
         if(lastDate==daysDiff){
             sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
             reportNo = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].reportNo)
+            // res.cookie()
         }
     }
     let allTests = req.body.tests
@@ -117,8 +118,11 @@ router.route('/new/:reportNo')
 router.route('/new/:id')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const inward = new Inward(req.cookies.inward)
-    await inward.save()
-    res.send(inward)
+    // res.clearCookie('inward','')
+    res.redirect('/new/:id')
+}))
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+
 }))
 
 router.route('/test')
