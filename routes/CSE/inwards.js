@@ -38,7 +38,7 @@ router.route('/new')
         }
     }
     const jobId = `${city}/${currClient.clientCode}/${daysDiff}/${jobOfTheDay}`
-    const newInward = new Inward({name:inward,city,client,jobId})
+    const newInward = new Inward({name:inward,city,client:currClient.name,jobId})
     res.cookie('inward',{...newInward['_doc'],tests:[]});
     res.cookie('retailType',currClient.retailType)
     res.redirect('/inward/new/tests')
@@ -69,23 +69,25 @@ router.route('/new/tests')
     if(!Array.isArray(allTests)){
         allTests = [allTests]
     }
-    allTests.forEach(async(test,index) => {
-        const currTest = await Test.findById(test)
-        const price = currTest[req.cookies.retailType]
+    let newAllTests = []
+    console.log("all tests: ",allTests);
+    for( test in allTests){
+        newAllTests.push(await Test.findById(allTests[test]))
+    }
+    console.log(newAllTests);
+    newAllTests.forEach(test => {
+        const price = test[req.cookies.retailType]
         for (let i = 0; i < req.body.quantity; i++) {
             sampleOfTheDay++; reportNo++;
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = {material:req.body.material,test,testName:currTest.name,price,sampleNo,reportNo}
+            const newTest = {material:req.body.material,test,testName:test.name,price,sampleNo,reportNo}
             inward = {...inward,tests:[...inward.tests,newTest]}
         }
-        if(index==allTests.length-1){
-            console.log(inward);
-            res.cookie('inward',inward)
-            res.cookie('sampleOfTheDay',sampleOfTheDay)
-            res.cookie('reportNo',reportNo)
-            return res.redirect('/inward/new/tests')
-        }
     });
+    res.cookie('inward',inward)
+    res.cookie('sampleOfTheDay',sampleOfTheDay)
+    res.cookie('reportNo',reportNo)
+    return res.redirect('/inward/new/tests')
 }))
 
 // router.route('/new/save')
