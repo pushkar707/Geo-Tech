@@ -16,8 +16,9 @@ router.route('/:id')
         req.flash("error","No such Test")
         return res.redirect('/material/'+test.material)
     }
+    const material = await Material.findOne({name:test.material})
     req.flash('success',"Test edited Successfully")
-    res.redirect('/material/'+test.material)
+    res.redirect('/material/'+material._id)
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,
