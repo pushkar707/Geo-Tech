@@ -58,11 +58,11 @@ router.route('/new/tests')
     const daysDiff = Math.ceil(Math.abs(today-start)/(1000*60*60*24))
     
     if(await Inward.count() > 0){
-        lastRecord = await Inward.find({}).skip(await Inward.count() - 1)
-        lastDate = lastRecord[0].tests[-1].sampleNo.split('/')[0]
+        lastRecord = await Inward.find({}).populate('tests').skip(await Inward.count() - 1)
+        lastDate = lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[0]
         if(lastDate==daysDiff){
-            sampleOfTheDay = Number(lastRecord[0].tests[-1].sampleNo.split('/')[1])
-            reportNo = Number(lastRecord[0].tests[-1].reportNo)
+            sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+            reportNo = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].reportNo)
         }
     }
     let allTests = req.body.tests
@@ -91,7 +91,7 @@ router.route('/new/tests')
 }))
 
 router.route('/new/:reportNo')
-.delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.delete(loginRequired('cse'),(req,res)=>{
     let inward = req.cookies.inward
     const newTests = inward.tests.filter(test=>{
         return test.reportNo != req.params.reportNo
@@ -99,8 +99,8 @@ router.route('/new/:reportNo')
     inward = {...inward,tests:newTests}
     res.cookie('inward',inward)
     return res.redirect('/inward/new/tests')
-}))
-.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+})
+.put(loginRequired('cse'),(req,res)=>{
     const {price} = req.body
     let inward = req.cookies.inward
     const newTests = inward.tests.filter(test=>{
@@ -112,10 +112,14 @@ router.route('/new/:reportNo')
     inward = {...inward,tests:newTests}
     res.cookie('inward',inward)
     return res.redirect('/inward/new/tests')
-}))
+})
 
 router.route('/new/:id')
-.post()
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const inward = new Inward(req.cookies.inward)
+    await inward.save()
+    res.send(inward)
+}))
 
 router.route('/test')
 .get((req,res)=>{

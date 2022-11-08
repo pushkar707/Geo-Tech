@@ -8,7 +8,7 @@ const inwardSchema = new Schema({
     reportDate:Date,
     letterDate:Date,
     tests:[{
-        sampleNo:Number,
+        sampleNo:String,
         reportNo:Number,
         material:String,
         price:Number,
