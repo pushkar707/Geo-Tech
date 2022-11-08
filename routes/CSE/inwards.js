@@ -118,11 +118,15 @@ router.route('/new/:reportNo')
 router.route('/new/:id')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const inward = new Inward(req.cookies.inward)
-    // res.clearCookie('inward','')
-    res.redirect('/new/:id')
+    await inward.save()
+    res.clearCookie('inward')
+    res.clearCookie('sampleOfTheDay')
+    res.clearCookie('reportNo')
+    res.clearCookie('retailType')
+    res.redirect('/inward/new/'+req.params.id)
 }))
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-
+    res.send('inward page')
 }))
 
 router.route('/test')
