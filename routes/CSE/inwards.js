@@ -4,6 +4,7 @@ const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
 const Material = require('../../models/Material')
 const Inward = require('../../models/Inward')
+const Test = require('../../models/Test')
 const wrapAsync = require('../../utils/wrapAsync')
 
 // new inward GET and POST routes /new, new/:id, new/:id/save
@@ -38,7 +39,8 @@ router.route('/new')
     }
     const jobId = `${city}/${currClient.clientCode}/${daysDiff}/${jobOfTheDay}`
     const newInward = new Inward({name:inward,city,client,jobId})
-    res.cookie('inward',newInward);
+    res.cookie('inward',{...newInward['_doc'],tests:[]});
+    res.cookie('retailType',currClient.retailType)
     res.redirect('/inward/new/tests')
 }))
 
@@ -47,5 +49,51 @@ router.route('/new/tests')
     const materials = await Material.find({}).populate('physical').populate('chemical').populate('other')
     res.render('cse/inwards/add-tests',{inward:req.cookies.inward,materials})
 }))
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    let inward = req.cookies.inward
+    let sampleOfTheDay = req.cookies.sampleOfTheDay || 0;
+    let reportNo = req.cookies.reportNo || 0
+    const start = new Date('04/01/2022')
+    const today = new Date()
+    const daysDiff = Math.ceil(Math.abs(today-start)/(1000*60*60*24))
+    
+    if(await Inward.count() > 0){
+        lastRecord = await Inward.find({}).skip(await Inward.count() - 1)
+        lastDate = lastRecord[0].tests[-1].sampleNo.split('/')[0]
+        if(lastDate==daysDiff){
+            sampleOfTheDay = Number(lastRecord[0].tests[-1].sampleNo.split('/')[1])
+            reportNo = Number(lastRecord[0].tests[-1].reportNo)
+        }
+    }
+    let allTests = req.body.tests
+    if(!Array.isArray(allTests)){
+        allTests = [allTests]
+    }
+    allTests.forEach(async(test,index) => {
+        const currTest = await Test.findById(test)
+        const price = currTest[req.cookies.retailType]
+        for (let i = 0; i < req.body.quantity; i++) {
+            sampleOfTheDay++; reportNo++;
+            const sampleNo = `${daysDiff}/${sampleOfTheDay}`
+            const newTest = {material:req.body.material,test,testName:currTest.name,price,sampleNo,reportNo}
+            inward = {...inward,tests:[...inward.tests,newTest]}
+        }
+        if(index==allTests.length-1){
+            console.log(inward);
+            res.cookie('inward',inward)
+            res.cookie('sampleOfTheDay',sampleOfTheDay)
+            res.cookie('reportNo',reportNo)
+            return res.redirect('/inward/new/tests')
+        }
+    });
+}))
+
+// router.route('/new/save')
+// .get(loginRequired('cse'),wrapAsync(async(req,res)))
+
+router.route('/test')
+.get((req,res)=>{
+    res.send(req.cookies)
+})
 
 module.exports = router

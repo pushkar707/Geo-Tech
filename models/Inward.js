@@ -11,6 +11,8 @@ const inwardSchema = new Schema({
         sampleNo:Number,
         reportNo:Number,
         material:String,
+        price:Number,
+        testName:String,
         test:{
             type:Schema.Types.ObjectId,
             ref:'Test'

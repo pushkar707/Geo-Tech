@@ -70,7 +70,7 @@
                               Fill all information below
                             </p>
                           </div>
-                          <form>
+                          <form action="/inward/new/tests" method="POST">
                             <div class="row">
                               <div class="col-lg-4 col-md-4">
                                 <div class="mb-3">
@@ -82,13 +82,14 @@
                                   <select
                                     class="form-control"
                                     data-trigger
-                                    name="choices-single-default"
+                                    name="material"
                                     id="material-choice"
                                     placeholder="This is a search placeholder"
+                                    onchange="setTestOption(this.value)"
                                   >
                                     <option value="">Select</option>
                                     <% materials.forEach(material => { %>
-                                     <option value="<%= material._id %>" onclick="//setTestOption('<%= material.name %>')"><%= material.name %></option>
+                                     <option value="<%= material.name %>"><%=material.name %></option>
                                     <% }) %>
                                   </select>
                                 </div>
@@ -104,25 +105,26 @@
                                   <select
                                     class="form-control"
                                     data-trigger
-                                    name="choices-single-groups"
+                                    name="tests"
                                     id="test-choice"
+                                    disabled multiple
                                   >
                                     <option value="">Select Test</option>
                                     <% materials.forEach(material => { %>
                                       
-                                    <optgroup label="Physical">
+                                    <optgroup label="Physical" material="<%= material.name %>" class="test-option">
                                         <% material.physical.forEach(test => { %>
-                                         <option value="" material="<%= material.name %>" class="test-option"><%= test.name %></option>
+                                         <option value="<%= test._id %>"><%= test.name %></option>
                                         <% }) %>
                                     </optgroup>
-                                    <optgroup label="Chemical">
+                                    <optgroup label="Chemical" material="<%= material.name %>" class="test-option">
                                         <% material.chemical.forEach(test => { %>
-                                            <option value="" material="<%= material.name %>" class="test-option"><%= test.name %></option>
+                                            <option value="<%= test._id %>"><%= test.name %></option>
                                         <% }) %>
                                     </optgroup>
-                                    <optgroup label="Other">
+                                    <optgroup label="Other" material="<%= material.name %>" class="test-option">
                                         <% material.other.forEach(test => { %>
-                                            <option value="" material="<%= material.name %>" class="test-option"><%= test.name %></option>
+                                            <option value="<%= test._id %>"><%= test.name %></option>
                                         <% }) %>
                                     </optgroup>
                                     <% }) %>
@@ -141,6 +143,7 @@
                                     class="form-control"
                                     id="basicpill-cstno-input"
                                     placeholder="Enter qty"
+                                    name="quantity"
                                   />
                                 </div>
                               </div>
@@ -154,13 +157,12 @@
                                     >.</label
                                   ><br />
 
-                                  <a
-                                    href=""
+                                  <button
                                     class="btn btn-primary"
                                     style="width: 100%"
                                     >Add
                                     <i class="bx bx-add-to-queue ms-1"></i
-                                  ></a>
+                                  ></button>
                                 </div>
                               </div>
                             </div>
@@ -190,63 +192,39 @@
                                             <th>Sample No.</th>
                                             <th>Material</th>
                                             <th>Test</th>
+                                            <th>Price</th>
                                             <th>Report No.</th>
                                             <th>Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          <tr>
-                                            <th scope="row">1</th>
-                                            <td>0890002</td>
-                                            <td>Cement</td>
-                                            <td>
-                                              Tensile test of Structure Steel
-                                            </td>
-                                            <td>1702</td>
-                                            <td>
-                                              <a
-                                                href=""
-                                                class="btn btn-primary"
-                                                ><i class="bx bx-edit"></i>
-                                                EDIT
-                                              </a>
-                                              &nbsp; | &nbsp;
-                                              <a
-                                                href=""
-                                                class="btn btn-danger"
-                                                ><i
-                                                  class="mdi mdi-delete"
-                                                ></i>
-                                                Delete
-                                              </a>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">1</th>
-                                            <td>0890002</td>
-                                            <td>Cement</td>
-                                            <td>
-                                              Tensile test of Structure Steel
-                                            </td>
-                                            <td>1702</td>
-                                            <td>
-                                              <a
-                                                href=""
-                                                class="btn btn-primary"
-                                                ><i class="bx bx-edit"></i>
-                                                EDIT
-                                              </a>
-                                              &nbsp; | &nbsp;
-                                              <a
-                                                href=""
-                                                class="btn btn-danger"
-                                                ><i
-                                                  class="mdi mdi-delete"
-                                                ></i>
-                                                Delete
-                                              </a>
-                                            </td>
-                                          </tr>
+                                          <% inward.tests.forEach((test,index) => { %>
+                                            <tr>
+                                              <th scope="row"><%= index %></th>
+                                              <td><%= test.sampleNo %></td>
+                                              <td><%= test.material %></td>
+                                              <td><%= test.testName %></td>
+                                              <td><%= test.price %></td>
+                                              <td><%= test.reportNo %></td>
+                                              <td>
+                                                <a
+                                                  href=""
+                                                  class="btn btn-primary"
+                                                  ><i class="bx bx-edit"></i>
+                                                  EDIT
+                                                </a>
+                                                &nbsp; | &nbsp;
+                                                <a
+                                                  href=""
+                                                  class="btn btn-danger"
+                                                  ><i
+                                                    class="mdi mdi-delete"
+                                                  ></i>
+                                                  Delete
+                                                </a>
+                                              </td>
+                                            </tr>
+                                          <% }) %>
                                         </tbody>
                                       </table>
                                     </div>
@@ -281,6 +259,15 @@
 <script>
     console.log("hello");
     const setTestOption = (material) => {
-        console.log(material);
+      document.getElementById('test-choice').removeAttribute('disabled')
+        const testOptions = document.querySelectorAll('.test-option')
+        testOptions.forEach(option => {
+          const currMaterial = option.getAttribute('material')
+          if(currMaterial!=material){
+            option.classList.add('d-none')
+          }else{
+            option.classList.remove('d-none')
+          }
+        })
     }
 </script>
