@@ -168,6 +168,15 @@ function inWords (num) {
     return str;
 }
 
+router.route('/:inwardId/:invoiceId/date')
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {letterDate} = req.body
+    const {inwardId,invoiceId} = req.params
+    await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
+    await Inward.findByIdAndUpdate(inwardId,{letterDate,pending:false})
+    res.redirect('/inward/invoice/'+invoiceId)
+}))
+
 router.route('/invoice/:id')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
@@ -182,13 +191,18 @@ router.route('/performa/:id')
     res.render('cse/inwards/performa',{invoice,inWords})
 }))
 
-router.route('/:inwardId/:invoiceId/date')
-.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    const {letterDate} = req.body
-    const {inwardId,invoiceId} = req.params
-    await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
-    await Inward.findByIdAndUpdate(inwardId,{letterDate})
-    res.redirect('/inward/new/'+invoiceId)
+router.route('/pending')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({pending:true,city})
+    res.render('cse/inwards/pending',{inwards})
+}))
+
+router.route('/all')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({city})
+    res.render('cse/inwards/all',{inwards})
 }))
 
 router.route('/:id')
@@ -196,12 +210,6 @@ router.route('/:id')
     const {id} = req.params
     const inward = await Inward.findById(id)
     res.render('cse/inwards/inward',{inward})
-}))
-
-router.route('/pending')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    const inwards = await Inward.find({pending:true})
-    res.render('cse/inwards/pending',{inwards})
 }))
 
 router.route('/test')
