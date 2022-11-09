@@ -9,12 +9,6 @@ const Test = require('../../models/Test')
 const Other = require('../../models/Other')
 const wrapAsync = require('../../utils/wrapAsync')
 
-// new inward GET and POST routes /new, new/:id, new/:id/save
-// POST,PUT,DELETE routes to add,remove and delete tests from inward /:inwardId/:sampleNo
-// pending inwards GET
-// performa GET
-// Show page for inward /:id GET
-
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     if(req.cookies.inward){
@@ -165,6 +159,13 @@ router.route('/invoice/:id')
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
     res.render('cse/inwards/confirm-inward',{invoice})
+}))
+
+router.route('/performa/:id')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const invoice = await Invoice.findById(id).populate('client')
+    res.render('cse/inwards/performa',{invoice})
 }))
 
 router.route('/:inwardId/:invoiceId/date')

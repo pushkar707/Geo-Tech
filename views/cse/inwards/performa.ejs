@@ -1,0 +1,220 @@
+<% layout('/includes/cse') -%> 
+<% block('title').append('<h5>Performa Invoice</h5>') %>
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <div id="basic-pills-wizard" class="twitter-bs-wizard">
+                                
+                                <!-- wizard-nav -->
+
+                                <div class=" twitter-bs-wizard-tab-content">
+                                    
+                                    <div class="tab-pane" id="bank-detail">
+                                        <div>
+                                          
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="invoice-title">
+                                                                <div class="d-flex align-items-start">
+                                                                    <div class="flex-grow-1">
+                                                                        <div class="mb-4">
+                                                                            <img src="assets/images/logo2-2.png" alt="" height="24"><span class="logo-txt">PERFORMA INVOICE</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="flex-shrink-0">
+                                                                        <div class="mb-4">
+                                                                            <h4 class="float-end font-size-16">JOB : <%= invoice.jobId %>  </h4>
+                                                                            
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                
+                    
+                                                                <p class="mb-1"><%= invoice.client.name %></p>
+                                                                <p class="mb-1"><%= invoice.client.address %> </p>
+                                                                <p class="mb-1"><i class="mdi mdi-email align-middle me-1"></i>GST : <%= invoice.client.gstNo %> </p>
+                                                                <p><i class="mdi mdi-phone align-middle me-1"></i> <%= invoice.client.city %> </p>
+                                                            </div>
+                                                            <hr class="my-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 p-4 rounded border">
+                                                                    <div>
+                                                                        <h5 class="font-size-15 mb-3">Contact Person:</h5>
+                                                                        <h5 class="font-size-14 mb-2">Name: <%= invoice.client.contactPerson.name %></h5>
+                                                                        <p class="mb-1">Contact : <%= invoice.client.contactPerson.mobile %>
+                                                                            </p>
+                                                                        <p class="mb-1">RichardSaul@rhyta.com</p>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6 p-4 rounded border">
+                                                                    <div>
+                                                                        <div>
+                                                                            <h5 class="font-size-15">Report Date:</h5>
+                                                                            <p><%= invoice.reportDate %> </p>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5 class="font-size-15">Letter Date:</h5>
+                                                                            <p><%= invoice.letterDate %> </p>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12"><br>
+                                                                    <div>
+                                                                        <h5 class="font-size-15 mb-3">Name of Work :<%= invoice.name %> </h5>
+                                                                        <p class="mb-1">This is the software project from vadodara branch
+                                                                            </p>
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <br>    
+
+                                                            
+                                                            
+                                                            <div class="p-4 border rounded">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-nowrap align-middle mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th style="width: 70px;">S. No.</th>
+                                                                                <th>Material</th>
+                                                                                <th>Test</th>
+                                                                                <th>Qty</th>
+                                                                                <th>Rate</th>
+                                                                                <th>Rate(Incl. ST)</th>
+                                                                                <th class="text-end" style="width: 120px;">Amount(Rs.)</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                           <% invoice.order.forEach((test,index) => { %>
+                                                                            <tr>
+                                                                                <th scope="row">0<%= index %></th>
+                                                                                <td>
+                                                                                    <h5 class="font-size-15 mb-1"><%= test.material %></h5>
+                                                                                </td>
+                                                                                <td><%= test.testName %></td>
+                                                                                <td><%= test.quantity %></td>
+                                                                                <td><%= test.rate %></td>
+                                                                                <td><%= test.serviceTaxRate %></td>
+                                                                                <td class="text-end"><%= test.serviceTaxRate*test.quantity %></td>
+                                                                            </tr>
+                                                                           <% }) %>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row p-4 border " style="margin: 0px;">
+                                                                <div class="col-sm-8">
+                                                                    <div>
+                                                                        <h5 class="font-size-15 mb-3">In Words:</h5>
+                                                                        <h5 class="font-size-15" >Fourty Thousand & twenty rupee only
+                                                                        </h5>
+                                                                     
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6" style="text-align: right;">
+                                                                            <h5 class="font-size-15" > Sub Total :</h5>
+                                                                            <h5 class="font-size-15" > Discount :</h5>
+                                                                            <h6 class="font-size-15"> 9% SGST :</h6>
+                                                                            <h6 class="font-size-15"> 9% CGST :</h6>
+                                                                            <h5 class="font-size-15"> Grand Total :</h5>
+                                                                            
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <h6><%= invoice.subTotal %></h6>
+                                                                            <h6>-<%= invoice.discount %></h6>
+                                                                            <h6><%= invoice.subTotal*(9/100) %></h6>
+                                                                            <h6><%= invoice.subTotal*(9/100) %></h6>
+                                                                            <h6><%= invoice.grandTotal %> </h6>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-print-none mt-3">
+                                                                <div class="float-end">
+                                                                    Save in A2 size <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+                                                                    <!-- <a href="#" class="btn btn-primary w-md waves-effect waves-light">Send</a> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                    <!-- tab pane -->
+                                </div>
+                                <!-- end tab content -->
+                            </div>
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    <!-- Modal -->
+    <div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirm Save Changes</h5>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal"
+                        onclick="nextTab()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © GEO DESIGN.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by <a href="#!" class="text-decoration-underline">Themesbrand</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
