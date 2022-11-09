@@ -5,8 +5,8 @@ const inwardSchema = new Schema({
     name:String,
     client:String,
     jobId:String,
-    reportDate:Date,
-    letterDate:Date,
+    reportDate:String,
+    letterDate:String,
     tests:[{
         sampleNo:String,
         reportNo:Number,

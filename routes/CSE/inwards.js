@@ -38,8 +38,9 @@ router.route('/new')
         }
     }
     const jobId = `${city}/${currClient.clientCode}/${daysDiff}/${jobOfTheDay}`
-    const newInward = new Inward({name:inward,city,client:currClient.name,jobId})
-    res.cookie('inward',{...newInward['_doc'],tests:[]});
+    const reportDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    const newInward = new Inward({name:inward,city,client:currClient.name,jobId,tests:[],reportDate})
+    res.cookie('inward',{...newInward['_doc']});
     res.cookie('retailType',currClient.retailType)
     res.redirect('/inward/new/tests')
 }))
@@ -125,8 +126,18 @@ router.route('/new/:id')
     res.clearCookie('retailType')
     res.redirect('/inward/new/'+req.params.id)
 }))
+
+router.route('/new/:id')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    res.send('inward page')
+    const {id} = req.params
+    const inward = await Inward.findById(id)
+    res.render('',{inward}) 
+}))
+
+router.route('/pending')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const inwards = await Inward.find({pending:true})
+    res.render('cse/inwards/pending',{inwards})
 }))
 
 router.route('/test')

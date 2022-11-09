@@ -1,0 +1,66 @@
+<% layout('/includes/cse') -%> 
+<% block('title').append('<h5>Pending Inwards</h5>') %>
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+           
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                                <thead>
+                                <tr>
+                                    <th>Job No. </th>
+                                    <th>Client</th>
+                                    <th>Total Test </th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+                                <% inwards.forEach(inward => { %>
+                                    <tr>
+                                        <td><%= inward.jobId %></td>
+                                        <td><%= inward.client %></td>
+                                        <td><%= inward.tests.length %></td>
+                                        <td><%= inward.reportDate %></td>
+                                        <td>Pending</td>
+                                        <td>
+                                            <a href=""><i class="dripicons-information"></i></a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- end cardaa -->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div> <!-- container-fluid -->
+    </div>
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © GEO DESIGN.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by <a href="#!" class="text-decoration-underline">KAMI LABS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
