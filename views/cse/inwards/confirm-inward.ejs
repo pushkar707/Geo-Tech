@@ -250,18 +250,16 @@
                                     </div>
                                     </div>
                                 </div>
-
-                                <!-- <div class="d-print-none mt-3">
-                                                                        <div class="float-end">
-                                                                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
-                                                                            <a href="#" class="btn btn-primary w-md waves-effect waves-light">Send</a>
-                                                                        </div>
-                                                                    </div> -->
                                 </div>
                             </div>
                             </div>
                         </div>
-                            <a href="" class="btn btn-primary">
+                            <% if (!invoice.letterDate) { %>
+                                <a href="" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">
+                            <% }else{ %>
+                                <a href="/inward/<%= invoice.inward %>" class="btn btn-primary">
+                            <% } %> 
                                 Get Inward
                             </a>
 
@@ -274,4 +272,54 @@
             </div>
         </div>
     </div>
+</div>
+
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">
+          Edit Price
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/inward/<%= invoice.inward %>/<%= invoice._id %>/date" method="POST" id="change-test">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label"
+              >Choose Letter Date</label
+            >
+            <input
+              class="form-control"
+              type="date"
+              placeholder="Choose Letter Date"
+              id="modal-test-price"
+              name="letterDate"
+              required
+            />
+          </div>
+        </div> 
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

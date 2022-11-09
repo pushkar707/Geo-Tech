@@ -157,14 +157,30 @@ router.route('/new/save')
     await invoice.save()
     inward.invoice = invoice._id
     await inward.save()
-    res.redirect('/inward/new/'+invoice._id)
+    res.redirect('/inward/invoice/'+invoice._id)
 }))
 
-router.route('/new/:id')
+router.route('/invoice/:id')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
     res.render('cse/inwards/confirm-inward',{invoice})
+}))
+
+router.route('/:inwardId/:invoiceId/date')
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {letterDate} = req.body
+    const {inwardId,invoiceId} = req.params
+    await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
+    await Inward.findByIdAndUpdate(inwardId,{letterDate})
+    res.redirect('/inward/new/'+invoiceId)
+}))
+
+router.route('/:id')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const inward = await Inward.findById(id)
+    res.render('cse/inwards/inward',{inward})
 }))
 
 router.route('/pending')
