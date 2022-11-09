@@ -5,6 +5,7 @@ const invoiceSchema = {
     jobId:String,
     reportDate:String,
     letterDate:String,
+    name:String,
     client:{
         type:Schema.Types.ObjectId,
         ref:"Client"

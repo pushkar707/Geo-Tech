@@ -4,6 +4,10 @@ const inwardSchema = new Schema({
     city:String,
     name:String,
     client:String,
+    clientId:{
+        type:Schema.Types.ObjectId,
+        ref:'Client'
+    },
     jobId:String,
     reportDate:String,
     letterDate:String,

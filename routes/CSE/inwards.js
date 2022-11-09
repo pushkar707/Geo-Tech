@@ -41,7 +41,7 @@ router.route('/new')
     }
     const jobId = `${city}/${currClient.clientCode}/${daysDiff}/${jobOfTheDay}`
     const reportDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
-    const newInward = new Inward({name:inward,city,client:currClient.name,jobId,tests:[],reportDate})
+    const newInward = new Inward({name:inward,city,client:currClient.name,clientId:client,jobId,tests:[],reportDate})
     res.cookie('inward',{...newInward['_doc']});
     res.cookie('retailType',currClient.retailType)
     res.redirect('/inward/new/tests')
@@ -74,11 +74,9 @@ router.route('/new/tests')
         allTests = [allTests]
     }
     let newAllTests = []
-    console.log("all tests: ",allTests);
     for( test in allTests){
         newAllTests.push(await Test.findById(allTests[test]))
     }
-    console.log(newAllTests);
     newAllTests.forEach(test => {
         const price = test[req.cookies.retailType]
         for (let i = 0; i < req.body.quantity; i++) {
@@ -118,24 +116,17 @@ router.route('/new/:reportNo')
     return res.redirect('/inward/new/tests')
 })
 
-router.route('/new/:id')
+router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
     const inward = new Inward(req.cookies.inward)
     await inward.save()
     res.clearCookie('inward')
     res.clearCookie('sampleOfTheDay')
     res.clearCookie('reportNo')
     res.clearCookie('retailType')
-    res.redirect('/inward/new/'+req.params.id)
-}))
-
-router.route('/new/:id')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
-    const {id} = req.params
-    const {city} = req.session
-    const inward = await Inward.findById(id)
     const {jobId,reportDate,letterDate} = inward
-    const client = await Client.findOne({name:inward.client})
+    const client = await Client.findById(inward.clientId)
     const other = await Other.findOne({})
     const {serviceTax} = other
     const order = []
@@ -162,11 +153,18 @@ router.route('/new/:id')
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
     const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:client._id,inward:inward._id,subTotal,discount,grandTotal})
     invoice.inward = inward._id
+    invoice.name = inward.name
     await invoice.save()
     inward.invoice = invoice._id
     await inward.save()
-    console.log(invoice);
-    res.render('cse/inwards/confirm-inward',{inward,client,order,subTotal,grandTotal,discount}) 
+    res.redirect('/inward/new/'+invoice._id)
+}))
+
+router.route('/new/:id')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const invoice = await Invoice.findById(id).populate('client')
+    res.render('cse/inwards/confirm-inward',{invoice})
 }))
 
 router.route('/pending')

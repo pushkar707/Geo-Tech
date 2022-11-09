@@ -87,27 +87,27 @@
                                     <div class="flex-shrink-0">
                                         <div class="mb-4">
                                         <h4 class="float-end font-size-16">
-                                            JOB : <%= inward.jobId %> 
+                                            JOB : <%= invoice.jobId %> 
                                         </h4>
                                         </div>
                                     </div>
                                     </div>
 
-                                    <p class="mb-1"><%= client.name %> </p>
+                                    <p class="mb-1"><%= invoice.client.name %> </p>
                                     <p class="mb-1">
-                                    <%= client.address %> 
+                                    <%= invoice.client.address %> 
                                     </p>
                                     <p class="mb-1">
                                     <i
                                         class="mdi mdi-email align-middle me-1"
                                     ></i
-                                    >GST : <%= client.gstNo %> 
+                                    >GST : <%= invoice.client.gstNo %> 
                                     </p>
                                     <p>
                                     <i
                                         class="mdi mdi-phone align-middle me-1"
                                     ></i>
-                                    <%= client.city %> 
+                                    <%= invoice.client.city %> 
                                     </p>
                                 </div>
                                 <hr class="my-4" />
@@ -118,10 +118,10 @@
                                         Contact Person:
                                         </h5>
                                         <h5 class="font-size-14 mb-2">
-                                        Name: <%= client.contactPerson.name %> 
+                                        Name: <%= invoice.client.contactPerson.name %> 
                                         </h5>
                                         <p class="mb-1">
-                                        Contact : <%= client.contactPerson.mobile %> 
+                                        Contact : <%= invoice.client.contactPerson.mobile %> 
                                         </p>
                                         <p class="mb-1">
                                         RichardSaul@rhyta.com
@@ -134,13 +134,13 @@
                                         <h5 class="font-size-15">
                                             Report Date:
                                         </h5>
-                                        <p><%= inward.reportDate %> </p>
+                                        <p><%= invoice.reportDate %> </p>
                                         </div>
                                         <div>
                                         <h5 class="font-size-15">
                                             Letter Date:
                                         </h5>
-                                        <p><%= inward.letterDate %></p>
+                                        <p><%= invoice.letterDate %></p>
                                         </div>
                                     </div>
                                     </div>
@@ -149,7 +149,7 @@
                                     <div class="col-sm-12">
                                     <div>
                                         <h5 class="font-size-15 mb-3">
-                                        Name of Work : <%= inward.name %> 
+                                        Name of Work : <%= invoice.name %> 
                                         </h5>
                                         <p class="mb-1">
                                         This is the software project from
@@ -188,7 +188,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <% order.forEach((test,index) => { %>
+                                        <% invoice.order.forEach((test,index) => { %>
                                             <tr>
                                                 <th scope="row">0<%= index %></th>
                                                 <td>
@@ -241,11 +241,11 @@
                                         </h5>
                                         </div>
                                         <div class="col-sm-6">
-                                        <h6><%= subTotal %></h6>
-                                        <h6>-<%= discount %></h6>
-                                        <h6><%= subTotal*(9/100) %></h6>
-                                        <h6><%= subTotal*(9/100) %></h6>
-                                        <h6><%= grandTotal %> </h6>
+                                        <h6><%= invoice.subTotal %></h6>
+                                        <h6>-<%= invoice.discount %></h6>
+                                        <h6><%= invoice.subTotal*(9/100) %></h6>
+                                        <h6><%= invoice.subTotal*(9/100) %></h6>
+                                        <h6><%= invoice.grandTotal %> </h6>
                                         </div>
                                     </div>
                                     </div>
@@ -261,32 +261,13 @@
                             </div>
                             </div>
                         </div>
-                        <ul
-                            class="pager wizard twitter-bs-wizard-pager-link"
-                        >
-                            <li class="previous">
-                            <a
-                                href="javascript: void(0);"
-                                class="btn btn-primary"
-                                onclick="nextTab()"
-                                ><i class="bx bx-chevron-left me-1"></i>
-                                Previous</a
-                            >
-                            </li>
-                            <li class="float-end">
-                            <!--                                                                 
-                                                            <a href="inward.html" class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target=".confirmModal">Get Inward</a>  -->
-
-                            <a href="inward.html" class="btn btn-primary"
-                                >Get Inward</a
-                            >
+                            <a href="" class="btn btn-primary">
+                                Get Inward
+                            </a>
 
                             <a href="performa.html" class="btn btn-primary"
                                 >Get Performa Invoice
                             </a>
-                            </li>
-                        </ul>
                         </div>
                     </div>
                 </div>
