@@ -1,0 +1,296 @@
+<% layout('/includes/cse') -%> 
+<% block('title').append('<h5>New Inward</h5>') %>
+
+<div class="main-content">
+    <div class="page-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-justified my-4">
+                        <li class="nav-item">
+                          <a
+                            href="#seller-details"
+                            class="nav-link"
+                            data-toggle="tab"
+                          >
+                            <div
+                              class="step-icon"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Seller Details"
+                            >
+                              <i class="bx bx-list-ul"></i>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            href="#company-document"
+                            class="nav-link"
+                            data-toggle="tab"
+                          >
+                            <div
+                              class="step-icon"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Company Document"
+                            >
+                              <i class="bx bx-book-bookmark"></i>
+                            </div>
+                          </a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a
+                            href="#bank-detail"
+                            class="nav-link active"
+                            data-toggle="tab"
+                          >
+                            <div
+                              class="step-icon"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Bank Details"
+                            >
+                              <i class="bx bxs-bank"></i>
+                            </div>
+                          </a>
+                        </li>
+                    </ul>
+                    <div class="tab-pane" id="bank-detail">
+                        <div>
+                        <div class="text-center mb-4">
+                            <h5>Bank Details</h5>
+                            <p class="card-title-desc">
+                            Fill all information below
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                <div class="invoice-title">
+                                    <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <div class="mb-4">
+                                        <img
+                                            src="assets/images/logo2-2.png"
+                                            alt=""
+                                            height="24"
+                                        /><span class="logo-txt"
+                                            >GEO DESIGN</span
+                                        >
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <div class="mb-4">
+                                        <h4 class="float-end font-size-16">
+                                            JOB : <%= inward.jobId %> 
+                                        </h4>
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                    <p class="mb-1"><%= client.name %> </p>
+                                    <p class="mb-1">
+                                    <%= client.address %> 
+                                    </p>
+                                    <p class="mb-1">
+                                    <i
+                                        class="mdi mdi-email align-middle me-1"
+                                    ></i
+                                    >GST : <%= client.gstNo %> 
+                                    </p>
+                                    <p>
+                                    <i
+                                        class="mdi mdi-phone align-middle me-1"
+                                    ></i>
+                                    <%= client.city %> 
+                                    </p>
+                                </div>
+                                <hr class="my-4" />
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                    <div>
+                                        <h5 class="font-size-15 mb-3">
+                                        Contact Person:
+                                        </h5>
+                                        <h5 class="font-size-14 mb-2">
+                                        Name: <%= client.contactPerson.name %> 
+                                        </h5>
+                                        <p class="mb-1">
+                                        Contact : <%= client.contactPerson.mobile %> 
+                                        </p>
+                                        <p class="mb-1">
+                                        RichardSaul@rhyta.com
+                                        </p>
+                                    </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                    <div>
+                                        <div>
+                                        <h5 class="font-size-15">
+                                            Report Date:
+                                        </h5>
+                                        <p><%= inward.reportDate %> </p>
+                                        </div>
+                                        <div>
+                                        <h5 class="font-size-15">
+                                            Letter Date:
+                                        </h5>
+                                        <p><%= inward.letterDate %></p>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                    <div>
+                                        <h5 class="font-size-15 mb-3">
+                                        Name of Work : <%= inward.name %> 
+                                        </h5>
+                                        <p class="mb-1">
+                                        This is the software project from
+                                        vadodara branch
+                                        </p>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="py-2 mt-3">
+                                    <h5 class="font-size-15">
+                                    Order summary
+                                    </h5>
+                                </div>
+                                <div class="p-4 border rounded">
+                                    <div class="table-responsive">
+                                    <table
+                                        class="table table-nowrap align-middle mb-0"
+                                    >
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 70px">
+                                            S. No.
+                                            </th>
+                                            <th>Material</th>
+                                            <th>Test</th>
+                                            <th>Qty</th>
+                                            <th>Rate</th>
+                                            <th>Rate(Incl. ST)</th>
+                                            <th
+                                            class="text-end"
+                                            style="width: 120px"
+                                            >
+                                            Amount(Rs.)
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% order.forEach((test,index) => { %>
+                                            <tr>
+                                                <th scope="row">0<%= index %></th>
+                                                <td>
+                                                <h5 class="font-size-15 mb-1">
+                                                    <%= test.material %> 
+                                                </h5>
+                                                </td>
+                                                <td>
+                                                <%= test.test %>
+                                                </td>
+                                                <td><%= test.quantity %></td>
+                                                <td><%= test.rate %></td>
+                                                <td><%= test.serviceTaxRate %></td>
+                                                <td class="text-end"><%= test.serviceTaxRate*test.quantity %></td>
+                                            </tr> 
+                                        <% }) %>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                    <div>
+                                        <h5 class="font-size-15 mb-3">
+                                        In Words:
+                                        </h5>
+                                        <p class="mb-1">
+                                        Fourty Thousand & twenty rupee only
+                                        </p>
+                                    </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                        <h5 class="font-size-15">
+                                            Sub Total :
+                                        </h5>
+                                        <h5 class="font-size-15">
+                                            Discount :
+                                        </h5>
+                                        <h6 class="font-size-15">
+                                            9% SGST :
+                                        </h6>
+                                        <h6 class="font-size-15">
+                                            9% CGST :
+                                        </h6>
+                                        <h5 class="font-size-15">
+                                            Grand Total :
+                                        </h5>
+                                        </div>
+                                        <div class="col-sm-6">
+                                        <h6><%= subTotal %></h6>
+                                        <h6>-<%= discount %></h6>
+                                        <h6><%= subTotal*(9/100) %></h6>
+                                        <h6><%= subTotal*(9/100) %></h6>
+                                        <h6><%= grandTotal %> </h6>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="d-print-none mt-3">
+                                                                        <div class="float-end">
+                                                                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+                                                                            <a href="#" class="btn btn-primary w-md waves-effect waves-light">Send</a>
+                                                                        </div>
+                                                                    </div> -->
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <ul
+                            class="pager wizard twitter-bs-wizard-pager-link"
+                        >
+                            <li class="previous">
+                            <a
+                                href="javascript: void(0);"
+                                class="btn btn-primary"
+                                onclick="nextTab()"
+                                ><i class="bx bx-chevron-left me-1"></i>
+                                Previous</a
+                            >
+                            </li>
+                            <li class="float-end">
+                            <!--                                                                 
+                                                            <a href="inward.html" class="btn btn-primary" data-bs-toggle="modal"
+                                                                data-bs-target=".confirmModal">Get Inward</a>  -->
+
+                            <a href="inward.html" class="btn btn-primary"
+                                >Get Inward</a
+                            >
+
+                            <a href="performa.html" class="btn btn-primary"
+                                >Get Performa Invoice
+                            </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

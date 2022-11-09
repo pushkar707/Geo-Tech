@@ -3,11 +3,15 @@ const {Schema,model} = require('mongoose')
 const invoiceSchema = {
     city:String,
     jobId:String,
-    reportDate:Date,
-    letterDate:Date,
+    reportDate:String,
+    letterDate:String,
     client:{
         type:Schema.Types.ObjectId,
         ref:"Client"
+    },
+    inward:{
+        type:Schema.Types.ObjectId,
+        ref:'Inward'
     },
     order:[{
         material:String,
@@ -20,3 +24,5 @@ const invoiceSchema = {
     discount:Number,
     grandTotal:Number
 }
+
+module.exports = model('Invoice',invoiceSchema)

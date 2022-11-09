@@ -4,7 +4,9 @@ const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
 const Material = require('../../models/Material')
 const Inward = require('../../models/Inward')
+const Invoice = require('../../models/Invoice')
 const Test = require('../../models/Test')
+const Other = require('../../models/Other')
 const wrapAsync = require('../../utils/wrapAsync')
 
 // new inward GET and POST routes /new, new/:id, new/:id/save
@@ -130,8 +132,41 @@ router.route('/new/:id')
 router.route('/new/:id')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
+    const {city} = req.session
     const inward = await Inward.findById(id)
-    res.render('',{inward}) 
+    const {jobId,reportDate,letterDate} = inward
+    const client = await Client.findOne({name:inward.client})
+    const other = await Other.findOne({})
+    const {serviceTax} = other
+    const order = []
+    let subTotal = 0
+    inward.tests.forEach(testi=>{
+        const {material,testName,price,test} = testi
+        const currTest = order.find(testj => String(testj.testId) == String(testi.test))
+        const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
+        subTotal+=serviceTaxRate
+        if(!currTest){
+            const newTest = {material,rate:price,serviceTaxRate,test:testName,testId:test,quantity:1}
+            order.push(newTest)
+        }
+        else{
+            order.filter(testi => {
+                if(testi == currTest){
+                    return testi.quantity+=1
+                }
+                return testi
+            })
+        }
+    })
+    const discount = Math.floor(subTotal*(client.discount/100))
+    const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
+    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:client._id,inward:inward._id,subTotal,discount,grandTotal})
+    invoice.inward = inward._id
+    await invoice.save()
+    inward.invoice = invoice._id
+    await inward.save()
+    console.log(invoice);
+    res.render('cse/inwards/confirm-inward',{inward,client,order,subTotal,grandTotal,discount}) 
 }))
 
 router.route('/pending')
