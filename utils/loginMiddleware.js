@@ -2,7 +2,7 @@ module.exports.loginRequired = (user) => {
     return (req,res,next) => {
         let index = 0
         if(Array.isArray(user)){
-            user.every(u => {
+            user.forEach(u => {
                 if(req.session.userPos != u){
                     index+=1
                 }
