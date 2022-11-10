@@ -3,6 +3,7 @@ const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Department = require('../../models/Department')
 const ManagerInfo = require('../../models/ManagerInfo')
+const Inward = require('../../models/Inward')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 
@@ -39,6 +40,21 @@ router.route('/new')
 }))
 
 router.route('/:id')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const {city} = req.session
+    const department = await Department.findById(id)
+    const inwards = await Inward.find({city,tests:{$elemMatch:{test:{$in:department.tests}}}})
+    const tests = []
+    for(let inward of inwards){
+        inward.tests.filter((test)=>{
+            if(department.tests.includes(test.test)){
+                tests.push(test)
+            }
+        })
+    }
+    res.render('manager/inwards',{tests})
+}))
 .put(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     let department
