@@ -1,5 +1,5 @@
-<% layout('/includes/cse') -%> 
-<% block('title').append('<h5>Pending Inwards</h5>') %>
+<% layout(`/includes/${currentUserPos}`) -%> 
+<% block('title').append('<h5>All Inwards</h5>') %>
 
 <div class="main-content">
 
@@ -34,7 +34,7 @@
                                         <td><%= inward.letterDate %></td>
                                         <td><%= inward.pending ? 'pending' : 'Under Test' %> </td>
                                         <td>
-                                            <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                            <a href="/inward/<%= inward._id %>"><i class="dripicons-information"></i></a>
                                         </td>
                                     </tr>
                                 <% }) %>

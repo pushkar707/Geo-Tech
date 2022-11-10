@@ -97,5 +97,12 @@ router.route('/:id')
     }
 }))
 
+router.route('/inward/all')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({city})
+    res.render('manager/all-inwards',{inwards})
+}))
+
 
 module.exports = router

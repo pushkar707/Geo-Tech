@@ -192,21 +192,21 @@ router.route('/performa/:id')
 }))
 
 router.route('/pending')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const inwards = await Inward.find({pending:true,city})
     res.render('cse/inwards/pending',{inwards})
 }))
 
 router.route('/all')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const inwards = await Inward.find({city})
     res.render('cse/inwards/all',{inwards})
 }))
 
 router.route('/:id')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id)
     res.render('cse/inwards/inward',{inward})

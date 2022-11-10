@@ -1,4 +1,4 @@
-<% layout(`/includes/${currentUserPos}`) -%> 
+<% layout('/includes/manager') -%> 
 <% block('title').append('<h5>Pending Inwards</h5>') %>
 
 <div class="main-content">
@@ -14,14 +14,15 @@
                         <div class="card-body">
                             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                                 <thead>
-                                <tr>
-                                    <th>Job No. </th>
-                                    <th>Client</th>
-                                    <th>Total Test </th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
+                                    <tr>
+                                        <th>Job No. </th>
+                                        <th>Client</th>
+                                        <th>Total Test </th>
+                                        <th>Date</th>
+                                        <th>End</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <% inwards.forEach(inward => { %>
@@ -30,9 +31,10 @@
                                         <td><%= inward.client %></td>
                                         <td><%= inward.tests.length %></td>
                                         <td><%= inward.reportDate %></td>
-                                        <td>Pending</td>
+                                        <td><%= inward.letterDate %></td>
+                                        <td><%= inward.pending ? 'pending' : 'Under Test' %> </td>
                                         <td>
-                                            <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                            <a href="#"><i class="dripicons-information"></i></a>
                                         </td>
                                     </tr>
                                 <% }) %>
