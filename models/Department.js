@@ -10,20 +10,8 @@ const departmentSchema = new Schema({
     password:String,
     city:String,
     inwards:[{
-        sampleNo:String,
-        reportNo:Number,
-        material:String,
-        price:Number,
-        testName:String,
-        test:{
-            type:Schema.Types.ObjectId,
-            ref:'Test'
-        },
-        inward:{
-            type:Schema.Types.ObjectId,
-            ref:'Inward'
-        },
-        status:String
+        type:Schema.Types.ObjectId,
+        ref:'InwardTest'
     }],
     tests:[{
         type:Schema.Types.ObjectId,

@@ -6,6 +6,10 @@ const inwardTestSchema = new Schema({
     material:String,
     price:Number,
     testName:String,
+    dept:{
+        type:Schema.Types.ObjectId,
+        ref:'Department'
+    },
     test:{
         type:Schema.Types.ObjectId,
         ref:'Test'
@@ -16,3 +20,5 @@ const inwardTestSchema = new Schema({
     },
     status:String
 })
+
+module.exports = model('InwardTest',inwardTestSchema)

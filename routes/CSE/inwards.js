@@ -6,8 +6,10 @@ const Material = require('../../models/Material')
 const Inward = require('../../models/Inward')
 const Invoice = require('../../models/Invoice')
 const Test = require('../../models/Test')
+const InwardTest = require('../../models/InwardTest')
 const Other = require('../../models/Other')
 const wrapAsync = require('../../utils/wrapAsync')
+const Department = require('../../models/Department')
 
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -76,7 +78,7 @@ router.route('/new/tests')
         for (let i = 0; i < req.body.quantity; i++) {
             sampleOfTheDay++; reportNo++;
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = {material:req.body.material,test:test._id,testName:test.name,price,sampleNo,reportNo}
+            const newTest = {material:req.body.material,test:test._id,testName:test.name,price,sampleNo,reportNo,dept:test['dept'+req.session.city]}
             inward = {...inward,tests:[...inward.tests,newTest]}
         }
     });
@@ -113,21 +115,27 @@ router.route('/new/:reportNo')
 router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
-    const inward = new Inward(req.cookies.inward)
-    await inward.save()
+    const {material,name,client,clientId,jobId,reportDate,pending,tests} = req.cookies.inward
+    const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending})
+    for (let test of tests){
+        const newTest = new InwardTest({...test,inward:inward._id,status:'pending'})
+        await newTest.save()
+        inward.tests.push(newTest._id)
+        const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})
+    }
     res.clearCookie('inward')
     res.clearCookie('sampleOfTheDay')
     res.clearCookie('reportNo')
     res.clearCookie('retailType')
-    const {jobId,reportDate,letterDate} = inward
-    const client = await Client.findById(inward.clientId)
+    const {letterDate} = inward
+    const newClient = await Client.findById(clientId)
     const other = await Other.findOne({})
     const {serviceTax} = other
     const order = []
     let subTotal = 0
-    inward.tests.forEach(testi=>{
+    tests.forEach(testi=>{
         const {material,testName,price,test} = testi
-        const currTest = order.find(testj => String(testj.testId) == String(testi.test))
+        const currTest = order.find(testj => String(testj.testId) == String(test))
         const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
         subTotal+=serviceTaxRate
         if(!currTest){
@@ -143,9 +151,9 @@ router.route('/new/save')
             })
         }
     })
-    const discount = Math.floor(subTotal*(client.discount/100))
+    const discount = Math.floor(subTotal*(newClient.discount/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
-    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:client._id,inward:inward._id,subTotal,discount,grandTotal})
+    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,inward:inward._id,subTotal,discount,grandTotal})
     invoice.inward = inward._id
     invoice.name = inward.name
     await invoice.save()
@@ -208,7 +216,7 @@ router.route('/all')
 router.route('/:id')
 .get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
-    const inward = await Inward.findById(id)
+    const inward = await Inward.findById(id).populate('tests')
     res.render('cse/inwards/inward',{inward})
 }))
 
