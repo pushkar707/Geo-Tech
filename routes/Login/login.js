@@ -12,10 +12,8 @@ router.route('/:city?')
     const {user} = req.params
     try{
         const validUser = await User.findAndValidate(email,password,user)
-        const loginUser = await User.findOne({email})
         if(validUser){
-            req.session.userId = loginUser._id
-            // req.session.userEmail = loginUser.email
+            req.session.userId = validUser._id
             req.session.userPos = user
             if(user === "admin"){
                 res.redirect("/admin")
@@ -23,14 +21,18 @@ router.route('/:city?')
             else if(user === "cse"){
                 const mainUser = await User.findOne({city:"VAD",position:user})
                 req.session.mainEmail = mainUser.email
-                req.session.city = loginUser.city
+                req.session.city = validUser.city
                 res.redirect('/material/all')
             }
             else if(user === "manager"){
                 const mainUser = await User.findOne({city:"VAD",position:user})
                 req.session.mainEmail = mainUser.email
-                req.session.city = loginUser.city
+                req.session.city = validUser.city
                 res.redirect('/department/all')
+            }
+            else if(user == "department"){
+                req.session.city = validUser.city
+                res.redirect('/department/'+validUser.deptId)
             }
             else if(user === "courier"){
                 res.send("done")

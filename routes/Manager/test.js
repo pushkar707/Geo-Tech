@@ -1,3 +1,5 @@
+// ASSIGNING TESTS TO DEPARTMENTS
+
 const express = require('express')
 const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')

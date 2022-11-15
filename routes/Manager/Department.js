@@ -3,6 +3,7 @@ const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Department = require('../../models/Department')
 const ManagerInfo = require('../../models/ManagerInfo')
+const User = require('../../models/User')
 const Inward = require('../../models/Inward')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
@@ -23,6 +24,10 @@ router.route('/new')
     await department.save()
     manager.departments = [...manager.departments,department._id]
     await manager.save()
+    const user = new User(req.body)
+    user.position = 'department'
+    user.deptId = department._id
+    user.save()
     req.flash('success',"Department Added Successfully")
     res.redirect('/department/all')
 
@@ -40,7 +45,7 @@ router.route('/new')
 }))
 
 router.route('/:id')
-.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['manager','department']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {city} = req.session
     const department = await Department.findById(id)

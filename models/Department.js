@@ -3,13 +3,28 @@ const bcrypt = require('bcrypt')
 
 const departmentSchema = new Schema({
     name: String,
-    email:String,
+    email:{
+        type:String,
+        unique:true
+    },
     password:String,
     city:String,
-    // manager:{
-    //     type:Schema.Types.ObjectId,
-    //     ref:'ManagerInfo'
-    // },
+    inwards:[{
+        sampleNo:String,
+        reportNo:Number,
+        material:String,
+        price:Number,
+        testName:String,
+        test:{
+            type:Schema.Types.ObjectId,
+            ref:'Test'
+        },
+        inward:{
+            type:Schema.Types.ObjectId,
+            ref:'Inward'
+        },
+        status:String
+    }],
     tests:[{
         type:Schema.Types.ObjectId,
         ref:"Test"

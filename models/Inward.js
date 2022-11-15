@@ -20,7 +20,8 @@ const inwardSchema = new Schema({
         test:{
             type:Schema.Types.ObjectId,
             ref:'Test'
-        }
+        },
+        status:String
     }],
     invoice:{
         type:Schema.Types.ObjectId,

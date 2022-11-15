@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
     password:String,
     name:String,
     position:String,
-    city:String
+    city:String,
+    deptId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Department'
+    }
 })
 
 userSchema.statics.findAndValidate = async function (email, password, position) {
