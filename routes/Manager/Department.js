@@ -48,17 +48,9 @@ router.route('/:id')
 .get(loginRequired(['manager','department']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {city} = req.session
-    const department = await Department.findById(id)
-    const inwards = await Inward.find({city,tests:{$elemMatch:{test:{$in:department.tests}}}})
-    const tests = []
-    for(let inward of inwards){
-        inward.tests.filter((test)=>{
-            if(department.tests.includes(test.test)){
-                tests.push(test)
-            }
-        })
-    }
-    res.render('manager/inwards',{tests})
+    const department = await Department.findById(id).populate('inwards')
+    const tests = department.inwards
+    res.render('manager/tests',{tests})
 }))
 .put(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {id} = req.params
@@ -102,12 +94,34 @@ router.route('/:id')
     }
 }))
 
+function inWords (num) {
+    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+    var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+    if ((num = num.toString()).length > 9) return 'overflow';
+    n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+    if (!n) return; var str = '';
+    str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+    str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+    str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+    str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+    str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+    return str;
+}
+
+router.route('/inward/:id')
+.get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const inward = await Inward.findById(id).populate('invoice').populate('clientId').populate('tests')
+    res.render('manager/inward.ejs',{inward,inWords})
+}))
+
+router.route()
+
 router.route('/inward/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const inwards = await Inward.find({city})
     res.render('manager/all-inwards',{inwards})
 }))
-
 
 module.exports = router

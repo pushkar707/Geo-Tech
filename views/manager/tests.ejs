@@ -1,5 +1,5 @@
-<% layout('/includes/manager') -%>
-<% block('title').append('<h5>All Inwards</h5>') %>
+<% layout(`/includes/${currentUserPos}`) -%> 
+<% block('title').append('<h5>All Tests</h5>') %>
 
 <div class="main-content">
     <div class="page-content">
@@ -17,6 +17,8 @@
                                         <th>Material</th>
                                         <th>Test</th>
                                         <th>Report No.</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -27,6 +29,12 @@
                                             <td><%= test.material %></td>
                                             <td><%= test.testName %></td>
                                             <td><%= test.reportNo %></td>
+                                            <td><%= test.status %></td>
+                                            <td>
+                                                <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
+                                                    <i class=" bx bxs-info-circle"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     <% }) %>
                                 </tbody>
