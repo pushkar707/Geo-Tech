@@ -29,7 +29,11 @@
                                             <td><%= test.material %></td>
                                             <td><%= test.testName %></td>
                                             <td><%= test.reportNo %></td>
-                                            <td><%= test.status %></td>
+                                            <td>
+                                                <form action="/department/test/<%= test._id %>/status/processing" method="POST">
+                                                    <button><%= test.status %></button>
+                                                </form>
+                                            </td>
                                             <td>
                                                 <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>

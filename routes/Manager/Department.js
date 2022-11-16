@@ -5,6 +5,7 @@ const Department = require('../../models/Department')
 const ManagerInfo = require('../../models/ManagerInfo')
 const User = require('../../models/User')
 const Inward = require('../../models/Inward')
+const InwardTest = require('../../models/InwardTest')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 
@@ -115,7 +116,13 @@ router.route('/inward/:id')
     res.render('manager/inward.ejs',{inward,inWords})
 }))
 
-router.route()
+router.route('/test/:id/status/processing')
+.post(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findByIdAndUpdate(id,{status:'processing'})
+    req.flash('success',"Status changed to processing")
+    res.redirect('back')
+}))
 
 router.route('/inward/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
