@@ -18,7 +18,9 @@
                                         <th>Test</th>
                                         <th>Report No.</th>
                                         <th>Status</th>
-                                        <th>Action</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -29,16 +31,20 @@
                                             <td><%= test.material %></td>
                                             <td><%= test.testName %></td>
                                             <td><%= test.reportNo %></td>
-                                            <td>
-                                                <form action="/department/test/<%= test._id %>/status/processing" method="POST">
-                                                    <button><%= test.status %></button>
-                                                </form>
-                                            </td>
+                                            <td><%= test.status %></td>
+                                            <td><%= test.reportDate %></td>
+                                            <td><%= test.letterDate %></td>
                                             <td>
                                                 <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
                                                 </a>
                                             </td>
+                                            <!-- <td>
+                                                <form action="/department/test/<%= test._id %>/status/processing" method="POST">
+                                                    <button><%= test.status %></button>
+                                                </form>
+                                            </td>
+                                             -->
                                         </tr>
                                     <% }) %>
                                 </tbody>

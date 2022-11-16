@@ -6,6 +6,8 @@ const inwardTestSchema = new Schema({
     material:String,
     price:Number,
     testName:String,
+    reportDate:String,
+    letterDate:String,
     dept:{
         type:Schema.Types.ObjectId,
         ref:'Department'

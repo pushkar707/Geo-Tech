@@ -45,7 +45,7 @@ router.route('/new')
     transporter.sendMail(mailOptions);
 }))
 
-router.route('/:id')
+router.route('/:id/all')
 .get(loginRequired(['manager','department']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const {city} = req.session
@@ -95,6 +95,13 @@ router.route('/:id')
     }
 }))
 
+router.route('/inward/all')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({city})
+    res.render('manager/all-inwards',{inwards})
+}))
+
 function inWords (num) {
     var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
     var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
@@ -109,6 +116,8 @@ function inWords (num) {
     return str;
 }
 
+// FOR DEPARTMENT ACCESS ONLY, NOT MANAGER
+
 router.route('/inward/:id')
 .get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
@@ -122,13 +131,6 @@ router.route('/test/:id/status/processing')
     const test = await InwardTest.findByIdAndUpdate(id,{status:'processing'})
     req.flash('success',"Status changed to processing")
     res.redirect('back')
-}))
-
-router.route('/inward/all')
-.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const {city} = req.session
-    const inwards = await Inward.find({city})
-    res.render('manager/all-inwards',{inwards})
 }))
 
 module.exports = router

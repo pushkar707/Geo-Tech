@@ -62,6 +62,7 @@ app.use((req,res,next)=>{
     res.locals.currentUser = req.session.userId
     res.locals.currentUserCity = req.session.city
     res.locals.currentUserPos = req.session.userPos
+    res.locals.currentDeptId = req.session.deptId
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
     next()

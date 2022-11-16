@@ -116,9 +116,9 @@ router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const {material,name,client,clientId,jobId,reportDate,pending,tests} = req.cookies.inward
-    const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending})
+    const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending,city})
     for (let test of tests){
-        const newTest = new InwardTest({...test,inward:inward._id,status:'pending'})
+        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate})
         await newTest.save()
         inward.tests.push(newTest._id)
         const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})
@@ -180,6 +180,7 @@ router.route('/:inwardId/:invoiceId/date')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {letterDate} = req.body
     const {inwardId,invoiceId} = req.params
+    await InwardTest.updateMany({inward:inwardId},{letterDate})
     await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
     await Inward.findByIdAndUpdate(inwardId,{letterDate,pending:false})
     res.redirect('/inward/invoice/'+invoiceId)

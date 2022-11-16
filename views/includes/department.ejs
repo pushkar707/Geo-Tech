@@ -190,7 +190,7 @@
                 alt="Header Avatar"
               />
               <span class="d-none d-xl-inline-block ms-1 fw-medium"
-                >CSE - <%= currentUserCity %> </span
+                >Department - <%= currentUserCity %> </span
               >
               <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
             </button>
@@ -223,70 +223,35 @@
             <li class="menu-title" data-key="t-menu">Menu</li>
 
             <li>
-              <a href="index.html">
+              <a href="/department/<%= currentDeptId %>/all">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Dashboard</span>
+                <span data-key="t-dashboard">All</span>
               </a>
             </li>
             <li>
-              <a href="/inward/all">
-                <i class="bx bx-book"></i>
-                <span data-key="t-dashboard">All Inwards</span>
+              <a href="/department/<%= currentDeptId %>/all">
+                <i data-feather="home"></i>
+                <span data-key="t-dashboard">Pending</span>
               </a>
             </li>
             <li>
-              <a href="/inward/pending">
-                <i class="bx bx-book"></i>
-                <span data-key="t-dashboard">Pending Inwards</span>
+              <a href="/department/<%= currentDeptId %>/processing">
+                <i data-feather="home"></i>
+                <span data-key="t-dashboard">Processing</span>
               </a>
             </li>
             <li>
-              <a href="/inward/new">
-                <i class="bx bx-add-to-queue"></i>
-                <span data-key="t-dashboard">New Inwards</span>
+              <a href="/department/<%= currentDeptId %>/remarked">
+                <i data-feather="home"></i>
+                <span data-key="t-dashboard">Remarked</span>
               </a>
             </li>
-
             <li>
-              <a href="index.html">
-                <i class="bx bx-test-tube"></i>
-                <span data-key="t-dashboard">Under Test</span>
+              <a href="/department/<%= currentDeptId %>/approved">
+                <i data-feather="home"></i>
+                <span data-key="t-dashboard">Approved</span>
               </a>
-            </li>
-
-            <li>
-              <a href="index.html">
-                <i class="bx bx-check-double"></i>
-                <span data-key="t-dashboard">Final Verification</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="/client/all">
-                <i class="bx bxs-user-pin"></i>
-                <span data-key="t-dashboard">All Clients</span>
-              </a>
-            </li>
-
-            <li class="active1">
-              <a href="/material/all" class="has-arrow active1">
-                <i data-feather="grid" class="active1"></i>
-                <span data-key="t-apps">All Tests</span>
-              </a>
-              <ul class="sub-menu" aria-expanded="true">
-                <li class="active1">
-                  <a href="apps-calendar.html" class="active1">
-                    <span data-key="t-calendar">Add/Edit Test</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="apps-chat.html">
-                    <span data-key="t-chat">Pricing</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
+            </li>           
           </ul>
 
           <!-- <div class="card sidebar-alert border-0 text-center mx-4 mb-0 mt-5">
