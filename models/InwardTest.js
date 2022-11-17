@@ -8,6 +8,7 @@ const inwardTestSchema = new Schema({
     testName:String,
     reportDate:String,
     letterDate:String,
+    jobId:String,
     dept:{
         type:Schema.Types.ObjectId,
         ref:'Department'

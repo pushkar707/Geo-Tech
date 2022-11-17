@@ -118,7 +118,7 @@ router.route('/new/save')
     const {material,name,client,clientId,jobId,reportDate,pending,tests} = req.cookies.inward
     const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending,city})
     for (let test of tests){
-        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate})
+        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
         await newTest.save()
         inward.tests.push(newTest._id)
         const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})

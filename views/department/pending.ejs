@@ -13,11 +13,11 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Job No</th>
                                         <th>Sample No.</th>
                                         <th>Material</th>
                                         <th>Test</th>
                                         <th>Report No.</th>
-                                        <th>Status</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Details</th>
@@ -28,11 +28,11 @@
                                     <% tests.forEach((test,index) => { %>
                                         <tr>
                                             <th scope="row"><%= index+1 %></th>
+                                            <td><%= test.jobId %></td>
                                             <td><%= test.sampleNo %></td>
                                             <td><%= test.material %></td>
                                             <td><%= test.testName %></td>
                                             <td><%= test.reportNo %></td>
-                                            <td><%= test.status %></td>
                                             <td><%= test.reportDate %></td>
                                             <td><%= test.letterDate %></td>
                                             <td>
