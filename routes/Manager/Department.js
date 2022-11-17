@@ -48,7 +48,6 @@ router.route('/new')
 router.route('/:id/all')
 .get(loginRequired(['manager','department']),wrapAsync(async(req,res)=>{
     const {id} = req.params
-    const {city} = req.session
     const department = await Department.findById(id).populate('inwards')
     const tests = department.inwards
     res.render('manager/tests',{tests})
@@ -117,6 +116,14 @@ function inWords (num) {
 }
 
 // FOR DEPARTMENT ACCESS ONLY, NOT MANAGER
+
+router.route('/:id/pending')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const department = await Department.findById(id).populate('inwards')
+    const tests = department.inwards
+    res.render('department/pending',{tests})
+}))
 
 router.route('/inward/:id')
 .get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
