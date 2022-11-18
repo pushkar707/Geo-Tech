@@ -117,12 +117,44 @@ function inWords (num) {
 
 // FOR DEPARTMENT ACCESS ONLY, NOT MANAGER
 
-router.route('/:id/pending')
+router.route('/pending')
 .get(loginRequired('department'),wrapAsync(async(req,res)=>{
-    const {id} = req.params
-    const department = await Department.findById(id).populate('inwards')
-    const tests = department.inwards
+    const {deptId} = req.session
+    const department = await Department.findById(deptId).populate('inwards')
+    const tests = department.inwards.filter((test)=>{
+        return test.status == 'pending'
+    })
     res.render('department/pending',{tests})
+}))
+
+router.route('/processing')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {deptId} = req.session
+    const department = await Department.findById(deptId).populate('inwards')
+    const tests = department.inwards.filter((test)=>{
+        return test.status == 'processing'
+    })
+    res.render('department/processing',{tests})
+}))
+
+router.route('/remarked')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {deptId} = req.session
+    const department = await Department.findById(deptId).populate('inwards')
+    const tests = department.inwards.filter((test)=>{
+        return test.status == 'remarked'
+    })
+    res.render('department/remarked',{tests})
+}))
+
+router.route('/approved')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {deptId} = req.session
+    const department = await Department.findById(deptId).populate('inwards')
+    const tests = department.inwards.filter((test)=>{
+        return test.status == 'approved'
+    })
+    res.render('department/approved',{tests})
 }))
 
 router.route('/inward/:id')
@@ -135,9 +167,18 @@ router.route('/inward/:id')
 router.route('/test/:id/status/processing')
 .post(loginRequired('department'),wrapAsync(async(req,res)=>{
     const {id} = req.params
-    const test = await InwardTest.findByIdAndUpdate(id,{status:'processing'})
+    const today = new Date()
+    const processDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    const test = await InwardTest.findByIdAndUpdate(id,{status:'processing',processDate})
     req.flash('success',"Status changed to processing")
     res.redirect('back')
+}))
+
+router.route('/test/:id/upload')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findById(id)
+    res.render('department/upload-file',{test})
 }))
 
 module.exports = router

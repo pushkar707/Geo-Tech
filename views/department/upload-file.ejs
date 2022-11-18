@@ -1,0 +1,37 @@
+<% layout(`/includes/${currentUserPos}`) -%> 
+<% block('title').append('<h5>Add File</h5>') %>
+
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="row">
+            <div class="col-12"><br>
+                <div class="card">
+                    <div class="card-body">
+                        <h1>Test Details</h1>
+                        <ul>
+                            <li>Test: <%= test.testName %></li>
+                            <li>Report No: <%= test.reportNo %></li>
+                            <li>Sample No: <%= test.sampleNo %></li>
+                            <li>Material: <%= test.material %></li>
+                            <li>Price: <%= test.price %></li>
+                            <li>Report Date: <%= test.reportDate %></li>
+                            <li>Letter Date: <%= test.letterDate %></li>
+                            <li>Process Date: <%= test.processDate %></li>
+                            <li>Job Id: <%= test.jobId %></li>
+                        </ul>
+
+                        <form action="" method="POST">
+                            <div class="mb-3">
+                                <input type="file" name="file" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-info">Upload File</button>                            
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

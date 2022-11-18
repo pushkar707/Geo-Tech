@@ -1,5 +1,5 @@
 <% layout(`/includes/${currentUserPos}`) -%> 
-<% block('title').append('<h5>Processing Tests</h5>') %>
+<% block('title').append('<h5>Pending Tests</h5>') %>
 
 <div class="main-content">
     <div class="page-content">
@@ -18,10 +18,11 @@
                                         <th>Material</th>
                                         <th>Test</th>
                                         <th>Report No.</th>
-                                        <th>Processing Start</th>
+                                        <th>Start Date</th>
                                         <th>End Date</th>
+                                        <th>Remarked Text</th>
                                         <th>Details</th>
-                                        <th>Upload</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,17 +34,18 @@
                                             <td><%= test.material %></td>
                                             <td><%= test.testName %></td>
                                             <td><%= test.reportNo %></td>
-                                            <td><%= test.processDate %></td>
+                                            <td><%= test.reportDate %></td>
                                             <td><%= test.letterDate %></td>
+                                            <td><%= test.remarkedText %></td>
                                             <td>
                                                 <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="/department/test/<%= test._id %>/upload" class="btn btn-warning waves-effect waves-light me-1">
-                                                    <i class=" bx bxs-save"></i>
-                                                </a>
+                                                <form action="/department/test/<%= test._id %>/status/processing" method="POST">
+                                                    <button><%= test.status %></button>
+                                                </form>
                                             </td>
                                         </tr>
                                     <% }) %>

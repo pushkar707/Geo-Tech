@@ -9,6 +9,8 @@ const inwardTestSchema = new Schema({
     reportDate:String,
     letterDate:String,
     jobId:String,
+    processDate:String,
+    remarkedText:String,
     dept:{
         type:Schema.Types.ObjectId,
         ref:'Department'
