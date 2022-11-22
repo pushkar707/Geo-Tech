@@ -157,6 +157,14 @@ router.route('/approved')
     res.render('department/approved',{tests})
 }))
 
+router.route('/tests')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {deptId} = req.session
+    const department = await Department.findById(deptId).populate('tests')
+    const {tests} = department
+    res.render('department/tests',{tests})
+}))
+
 router.route('/inward/:id')
 .get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
