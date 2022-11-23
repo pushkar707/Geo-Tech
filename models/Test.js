@@ -7,6 +7,10 @@ const testSchema = new Schema({
     thirdParty:Number,
     category:String,
     material:String,
+    materialId:{
+        type:Schema.Types.ObjectId,
+        ref:'Material'
+    },
     deptVAD:{
         type:Schema.Types.ObjectId,
         ref:'Department'

@@ -36,18 +36,17 @@ router.route('/:id')
 .delete(loginRequired('cse'),checkCseVad,wrapAsync(async(req,res)=>{
     const {id} = req.params
     const test = await Test.findByIdAndDelete(id)
-    await Material.findOneAndUpdate({name:test.material},{$pull:{[test.category]:test._id}})
+    const material = await Material.findOneAndUpdate({name:test.material},{$pull:{[test.category]:test._id}})
     if(!test){
         req.flash("error","No such Test")
-        return res.redirect('/material/'+test.material)
+        return res.redirect('/material/'+material._id)
     }
-    const material = await Material.findByIdAndUpdate(test.material,{$pull:{physical:id}})
     if(!material){
         req.flash("error","No such Test")
-        return res.redirect('/material/'+test.material)
+        return res.redirect('/material/'+material._id)
     }
     req.flash("success","Test deleted successfully")
-    res.redirect('/material/'+test.material) 
+    res.redirect('/material/'+material._id)
 
     const mailOptions = {
         from: process.env.MAIL_ADDRESS,

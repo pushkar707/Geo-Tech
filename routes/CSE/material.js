@@ -80,6 +80,8 @@ router.route('/:id')
         req.flash("error","No Such material found")
         return res.redirect('/material/all')
     }
+
+    await Test.deleteMany({materialId:id})
     req.flash('success',`${deleteMaterial.name} deleted successfully`)
     res.redirect('/material/all')
 
@@ -101,6 +103,7 @@ router.route('/add/:type/:id')
     const test = new Test(req.body)
     const material = await Material.findById(id)
     test.material = material.name
+    test.materialId = id
     await test.save()
     let newMaterial
     try{
