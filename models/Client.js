@@ -11,6 +11,7 @@ const clientSchema = new mongoose.Schema({
     address:String,
     city:String,
     discount:Number,
+    gstNo:String,
     retailType:{
         type:String,
         enum:['govt','pvt','thirdParty']
