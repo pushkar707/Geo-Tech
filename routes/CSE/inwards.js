@@ -22,7 +22,7 @@ router.route('/new')
 }))
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
-    const {client,inward} = req.body
+    const {client,inward,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.body
     const currClient = await Client.findById(client)
     const start = new Date('04/01/2022')
     const today = new Date()
@@ -37,7 +37,7 @@ router.route('/new')
     }
     const jobId = `${city}/${currClient.clientCode}/${daysDiff}/${jobOfTheDay}`
     const reportDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
-    const newInward = new Inward({name:inward,city,client:currClient.name,clientId:client,jobId,tests:[],reportDate})
+    const newInward = new Inward({name:inward,city,client:currClient.name,clientId:client,jobId,tests:[],reportDate,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
     res.cookie('inward',{...newInward['_doc']});
     res.cookie('retailType',currClient.retailType)
     res.redirect('/inward/new/tests')

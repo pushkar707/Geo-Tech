@@ -8,6 +8,15 @@ const inwardSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Client'
     },
+    clientTemp:String,
+    refNo:String,
+    consultantName:String,
+    type:{
+        type:String,
+        enum:['normal','witness']
+    },
+    witnessName:String,
+    witnessDate:String,
     jobId:String,
     reportDate:String,
     letterDate:String,

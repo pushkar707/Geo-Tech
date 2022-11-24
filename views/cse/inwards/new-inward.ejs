@@ -1,6 +1,8 @@
 <% layout('/includes/cse') -%> 
 <% block('title').append('<h5>New Inward</h5>') %>
 
+<link href="/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
+
 <div class="main-content">
     <div class="page-content">
       <div class="container-fluid">
@@ -71,25 +73,30 @@
                           <div class="row">
                             <div class="col-lg-6 col-md-6">
                               <div class="mb-3">
-                                <label
-                                  for="choices-single-default"
-                                  class="form-label font-size-13 text-muted"
-                                  >Select Client Name</label
-                                >
-                                <select
-                                  class="form-control"
-                                  data-trigger
-                                  name="client"
-                                  id="choices-single-default"
-                                  placeholder="This is a search placeholder"
-                                >
-                                  <option value="">Select Client</option>
-                                  <% clients.forEach(client => { %>
-                                    <option value="<%= client._id %>"><%= client.name %></option>
-                                  <% }) %>
-                                </select>
+                                <label for="choices-single-default" class="form-label font-size-13 text-muted">Select Contractor Name</label>
+                                  <select class="form-control" data-trigger id="choices-single-default"
+                                      placeholder="This is a search placeholder" name="client">
+                                      <option value="">Select Contractor</option>
+                                      <% clients.forEach(client => { %>
+                                        <option value="<%= client._id %>">(0<%= client.clientCode %>)<%= client.name %></option>
+                                      <% }) %>
+                                  </select>
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label">Client Name</label>
+                                <input type="text" class="form-control" name="clientTemp" placeholder="Enter Client Name">
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label">Ref No.</label>
+                                <input type="text" class="form-control" name="refNo" placeholder="Enter Ref No.">
+                              </div>
+                              <div class="mb-3 d-none" id="witnessName">
+                                <label for="" class="form-label" >Witness Name</label>
+                                <input type="text" class="form-control" name="witnessName" placeholder="Enter Client Name">
                               </div>
                             </div>
+
+
                             <div class="col-lg-6">
                               <div class="mb-3">
                                 <label
@@ -105,6 +112,22 @@
                                   name="inward"
                                 />
                               </div>
+                              
+                              <div class="mb-3">
+                                <label for="" class="form-label">Consultant Name</label>
+                                <input type="text" class="form-control" name="consultantName" placeholder="Enter Consultant Name">
+                              </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label">Select Type: </label>
+                                <select type="text" class="form-control" name="type" placeholder="Enter Client Name" id="selectType">
+                                  <option value="normal" selected>Normal</option>
+                                  <option value="witness">Witness</option>
+                                </select>
+                              </div>
+                              <div class="mb-3 d-none" id="witnessDate">
+                                <label for="" class="form-label">Witness Date</label>
+                                <input type="date" class="form-control" name="witnessDate" placeholder="Select witness Date">
+                              </div>
                             </div>
                           </div>
                           <button
@@ -117,4 +140,37 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
+
+<script>
+  const selectType = document.getElementById('selectType')
+  selectType.addEventListener('input',()=>{
+    const witnessDate = document.getElementById('witnessDate')
+    const witnessName = document.getElementById('witnessName')
+    if(selectType.value == "witness"){
+      witnessDate.classList.remove('d-none')
+      witnessName.classList.remove('d-none')
+    }else{
+      witnessDate.classList.add('d-none')
+      witnessName.classList.add('d-none')
+    }
+  })
+</script>
+
+<!-- JAVASCRIPT -->
+<script src="/assets/libs/jquery/jquery.min.js"></script>
+<script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/libs/metismenu/metisMenu.min.js"></script>
+<script src="/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="/assets/libs/node-waves/waves.min.js"></script>
+<script src="/assets/libs/feather-icons/feather.min.js"></script>
+<!-- pace js -->
+<script src="/assets/libs/pace-js/pace.min.js"></script>
+
+<script src="/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<!-- form wizard init -->
+<script src="/assets/js/pages/form-wizard.init.js"></script>
+
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/pages/form-advanced.init.js"></script>
