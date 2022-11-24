@@ -6,6 +6,15 @@ const invoiceSchema = {
     reportDate:String,
     letterDate:String,
     name:String,
+    clientTemp:String,
+    refNo:String,
+    consultantName:String,
+    type:{
+        type:String,
+        enum:['normal','witness']
+    },
+    witnessName:String,
+    witnessDate:String,
     client:{
         type:Schema.Types.ObjectId,
         ref:"Client"

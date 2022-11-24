@@ -27,7 +27,7 @@ router.route('/new')
     const start = new Date('04/01/2022')
     const today = new Date()
     const daysDiff = Math.ceil(Math.abs(today-start)/(1000*60*60*24))
-    let jobOfTheDay = 0
+    let jobOfTheDay = 1
     if(await Inward.count() > 0){
         lastRecord = await Inward.find({}).skip(await Inward.count() - 1)
         lastDate = lastRecord[0].jobId.split('/')[2]
@@ -72,7 +72,6 @@ router.route('/new/tests')
     for( test in allTests){
         newAllTests.push(await Test.findById(allTests[test]))
     }
-    console.log(newAllTests);
     for (let i = 0; i < req.body.quantity; i++) {
         sampleOfTheDay++; reportNo++;
         newAllTests.forEach(test => {
@@ -115,8 +114,8 @@ router.route('/new/:reportNo')
 router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
-    const {material,name,client,clientId,jobId,reportDate,pending,tests} = req.cookies.inward
-    const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending,city})
+    const {material,name,client,clientId,jobId,reportDate,pending,tests,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.cookies.inward
+    const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending,city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
     for (let test of tests){
         const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
         await newTest.save()
@@ -153,8 +152,9 @@ router.route('/new/save')
     })
     const discount = Math.floor(subTotal*(newClient.discount/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
-    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,inward:inward._id,subTotal,discount,grandTotal})
-    invoice.inward = inward._id
+    console.log(inward);
+    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal})
+    // invoice.inward = inward._id
     invoice.name = inward.name
     await invoice.save()
     inward.invoice = invoice._id
