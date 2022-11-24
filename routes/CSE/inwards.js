@@ -62,7 +62,6 @@ router.route('/new/tests')
         if(lastDate==daysDiff){
             sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
             reportNo = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].reportNo)
-            // res.cookie()
         }
     }
     let allTests = req.body.tests
@@ -73,15 +72,16 @@ router.route('/new/tests')
     for( test in allTests){
         newAllTests.push(await Test.findById(allTests[test]))
     }
-    newAllTests.forEach(test => {
-        const price = test[req.cookies.retailType]
-        for (let i = 0; i < req.body.quantity; i++) {
-            sampleOfTheDay++; reportNo++;
+    console.log(newAllTests);
+    for (let i = 0; i < req.body.quantity; i++) {
+        sampleOfTheDay++; reportNo++;
+        newAllTests.forEach(test => {
+            const price = test[req.cookies.retailType]
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
             const newTest = {material:req.body.material,test:test._id,testName:test.name,price,sampleNo,reportNo,dept:test['dept'+req.session.city]}
             inward = {...inward,tests:[...inward.tests,newTest]}
         }
-    });
+    )};
     res.cookie('inward',inward)
     res.cookie('sampleOfTheDay',sampleOfTheDay)
     res.cookie('reportNo',reportNo)
