@@ -196,7 +196,9 @@ router.route('/performa/:id')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
-    res.render('cse/inwards/performa',{invoice,inWords})
+    const other = await Other.findOne({})
+    const {serviceTax} = other
+    res.render('cse/inwards/performa',{invoice,inWords,serviceTax})
 }))
 
 router.route('/new/:invoiceId/:testId')

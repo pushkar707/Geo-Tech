@@ -293,11 +293,13 @@
                             <% if (!invoice.letterDate) { %>
                                 <a href="" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop">
+                                Get Inward
+                              </a>
                             <% }else{ %>
                                 <a href="/inward/<%= invoice.inward %>" class="btn btn-primary">
+                                  Edit Inward
+                                </a>
                             <% } %> 
-                                Get Inward
-                            </a>
 
                             <a href="/inward/performa/<%= invoice._id %>" class="btn btn-primary"
                                 >Get Performa Invoice

@@ -38,39 +38,81 @@
                                                                         
                                                                     </div>
                                                                 </div>
-                                                                
-                    
-                                                                <p class="mb-1"><%= invoice.client.name %></p>
-                                                                <p class="mb-1"><%= invoice.client.address %> </p>
-                                                                <p class="mb-1"><i class="mdi mdi-email align-middle me-1"></i>GST : <%= invoice.client.gstNo %> </p>
-                                                                <p><i class="mdi mdi-phone align-middle me-1"></i> <%= invoice.client.city %> </p>
-                                                            </div>
-                                                            <hr class="my-4">
-                                                            <div class="row">
-                                                                <div class="col-sm-6 p-4 rounded border">
-                                                                    <div>
-                                                                        <h5 class="font-size-15 mb-3">Contact Person:</h5>
-                                                                        <h5 class="font-size-14 mb-2">Name: <%= invoice.client.contactPerson.name %></h5>
-                                                                        <p class="mb-1">Contact : <%= invoice.client.contactPerson.mobile %>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <p class="mb-1">Contracter : <%= invoice.client.name %> 
+                                                                        </p>
+                                                                        <p class="mb-1">City : <%= invoice.client.city %> </p>
+                                                                        <p class="mb-1">Email : <%= invoice.client.email %> </p>
+                                                                        <p class="mb-1">Phone : <%= invoice.client.telephone %> </p>
+                                                                        <p class="mb-1">GST
+                                                                            : <%= invoice.client.gstNo %></p>
+                                                                        <p class="mb-1">Retail : <%= invoice.client.retailType %></p>
+                                                                    </div>
+                                  
+                                                                    <div class="col-md-6">
+                                                                        <p class="mb-1">Type : Normal / Witness
+                                                                        </p>
+                                                                        <p class="mb-1">Ref No. :
+                                                                          <%= invoice.refNo %>
+                                                                        </p>
+                                                                        <p class="mb-1">Client : <%= invoice.clientTemp %>
+                                                                        </p>
+                                                                        <p class="mb-1">Consultant : <%= invoice.consultantName %>
+                                                                        </p>
+                                                                        <p class="mb-1">Witness Name : <%= invoice.witnessName %>
+                                                                        </p>
+                                                                        <p class="mb-1">Witness Date : <%= invoice.witnessDate %>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                  <hr class="my-4" />
+                                                                  <div class="row mb-4">
+                                                                    <div class="col-sm-4">
+                                                                      <div>
+                                                                          <h5 class="font-size-15 mb-3">Contact
+                                                                              Person:</h5>
+                                                                          <h5 class="font-size-14 mb-2">Name:
+                                                                            <%= invoice.client.contactPerson.name %></h5>
+                                                                          <p class="mb-1">Contact : <%= invoice.client.contactPerson.mobile %>
+                                                                          </p>
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <div>
+                                                                            <h5 class="font-size-15 mb-3">Other
+                                                                                Person:</h5>
+                                                                            <h5 class="font-size-14 mb-2">Accountant
+                                                                                :
+                                                                                <%= invoice.client.contactPerson.accountantName %></h5>
+                                                                            <p class="mb-1">Contact : <%= invoice.client.contactPerson.accountantNumber %>
                                                                             </p>
-                                                                        <p class="mb-1">RichardSaul@rhyta.com</p>
-                                                                        
+                                  
+                                                                            <h5 class="font-size-14 mb-2">Manager
+                                                                                :
+                                                                                <%= invoice.client.contactPerson.managerName %></h5>
+                                                                            <p class="mb-1">Contact : <%= invoice.client.contactPerson.managerNumber %>
+                                                                            </p>
+                                  
+                                                                        </div>
+                                                                    </div>
+                                  
+                                                                    <div class="col-sm-4">
+                                                                        <div>
+                                                                            <div>
+                                                                                <h5 class="font-size-15">Report
+                                                                                    Date:</h5>
+                                                                                <p><%= invoice.reportDate %></p>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5 class="font-size-15">Letter
+                                                                                    Date:</h5>
+                                                                                <p><%= invoice.letterDate %></p>
+                                                                            </div>
+                                  
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-sm-6 p-4 rounded border">
-                                                                    <div>
-                                                                        <div>
-                                                                            <h5 class="font-size-15">Report Date:</h5>
-                                                                            <p><%= invoice.reportDate %> </p>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5 class="font-size-15">Letter Date:</h5>
-                                                                            <p><%= invoice.letterDate %> </p>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                             <div class="row">
                                                                 <div class="col-sm-12"><br>
                                                                     <div>
@@ -107,11 +149,12 @@
                                                                                 <td>
                                                                                     <h5 class="font-size-15 mb-1"><%= test.material %></h5>
                                                                                 </td>
-                                                                                <td><%= test.testName %></td>
+                                                                                <td><%= test.test %></td>
                                                                                 <td><%= test.quantity %></td>
                                                                                 <td><%= test.rate %></td>
-                                                                                <td><%= test.serviceTaxRate %></td>
-                                                                                <td class="text-end"><%= test.serviceTaxRate*test.quantity %></td>
+                                                                                <% const serviceTaxRate = Math.floor(test.rate+((serviceTax/100)*test.rate)) %>
+                                                                                <td><%= serviceTaxRate %></td>
+                                                                                <td class="text-end"><%= serviceTaxRate*test.quantity %></td>
                                                                             </tr>
                                                                            <% }) %>
                                                                         </tbody>
