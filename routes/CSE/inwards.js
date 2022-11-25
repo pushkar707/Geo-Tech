@@ -97,19 +97,19 @@ router.route('/new/:reportNo')
     res.cookie('inward',inward)
     return res.redirect('/inward/new/tests')
 })
-.put(loginRequired('cse'),(req,res)=>{
-    const {price} = req.body
-    let inward = req.cookies.inward
-    const newTests = inward.tests.filter(test=>{
-        if(test.reportNo == req.params.reportNo){
-            test.price = price
-        }
-        return test
-    })
-    inward = {...inward,tests:newTests}
-    res.cookie('inward',inward)
-    return res.redirect('/inward/new/tests')
-})
+// .put(loginRequired('cse'),(req,res)=>{
+//     const {price} = req.body
+//     let inward = req.cookies.inward
+//     const newTests = inward.tests.filter(test=>{
+//         if(test.reportNo == req.params.reportNo){
+//             test.price = price
+//         }
+//         return test
+//     })
+//     inward = {...inward,tests:newTests}
+//     res.cookie('inward',inward)
+//     return res.redirect('/inward/new/tests')
+// })
 
 router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -152,9 +152,8 @@ router.route('/new/save')
     })
     const discount = Math.floor(subTotal*(newClient.discount/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
-    console.log(inward);
     const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal})
-    // invoice.inward = inward._id
+    invoice.inward = inward._id
     invoice.name = inward.name
     await invoice.save()
     inward.invoice = invoice._id
@@ -198,6 +197,22 @@ router.route('/performa/:id')
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
     res.render('cse/inwards/performa',{invoice,inWords})
+}))
+
+router.route('/new/:invoiceId/:testId')
+.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {testId,invoiceId} = req.params
+    const invoice = await Invoice.findById(invoiceId)
+    invoice.order.filter(test=>{
+        if(test.id == testId){
+            return test.rate = req.body.price
+        }
+        return test
+    })
+    await invoice.save()
+    // const order = await Invoice.findOne({order:{$elemMatch:{_id:testId}}},{}})
+    // console.log(order);
+    res.redirect('/inward/invoice/'+invoiceId)
 }))
 
 router.route('/pending')

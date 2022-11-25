@@ -202,6 +202,7 @@
                                             <th>Qty</th>
                                             <th>Rate</th>
                                             <th>Rate(Incl. ST)</th>
+                                            <th>Edit Rate</th>
                                             <th
                                             class="text-end"
                                             style="width: 120px"
@@ -216,7 +217,7 @@
                                                 <th scope="row">0<%= index+1 %></th>
                                                 <td>
                                                 <h5 class="font-size-15 mb-1">
-                                                    <%= test.material %> 
+                                                    <%= test.material %>
                                                 </h5>
                                                 </td>
                                                 <td>
@@ -225,6 +226,17 @@
                                                 <td><%= test.quantity %></td>
                                                 <td><%= test.rate %></td>
                                                 <td><%= test.serviceTaxRate %></td>
+                                                <td>
+                                                  <a
+                                                  href=""
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#editPrice"
+                                                  class="btn btn-primary"
+                                                  onclick="handleEdit('<%= invoice._id %>','<%=test._id%>','<%=test.rate%>')"
+                                                  ><i class="bx bx-edit"></i>
+                                                  EDIT
+                                                </a>
+                                                </td>
                                                 <td class="text-end"><%= test.serviceTaxRate*test.quantity %></td>
                                             </tr> 
                                         <% }) %>
@@ -346,3 +358,61 @@
     </div>
   </div>
 </div>
+
+<div
+  class="modal fade"
+  id="editPrice"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">
+          Edit Price
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="" method="POST" id="edit-price">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label"
+              >Price</label
+            >
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Add Test Name"
+              id="modal-test-price"
+              name="price"
+              required
+            />
+          </div>
+        </div> 
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+const handleEdit = (invoice,id,price) => {
+    const changeForm = document.getElementById('edit-price')
+    changeForm.setAttribute("action",`/inward/new/${invoice}/${id}?_method=PUT`)
+    document.getElementById('modal-test-price').setAttribute('value',price)
+}
+</script>

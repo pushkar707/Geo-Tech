@@ -28,7 +28,7 @@ const invoiceSchema = {
         test:String,
         quantity:Number,
         rate:Number,
-        serviceTaxRate:Number,
+        // serviceTaxRate:Number,
     }],
     subTotal:Number,
     discount:Number,

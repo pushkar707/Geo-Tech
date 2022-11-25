@@ -207,7 +207,7 @@
                                               <td><%= test.price %></td>
                                               <td><%= test.reportNo %></td>
                                               <td>
-                                                <a
+                                                <!-- <a
                                                   href=""
                                                   data-bs-toggle="modal"
                                                   data-bs-target="#staticBackdrop"
@@ -216,7 +216,7 @@
                                                   ><i class="bx bx-edit"></i>
                                                   EDIT
                                                 </a>
-                                                &nbsp; | &nbsp;
+                                                &nbsp; | &nbsp; -->
                                                 <form action="/inward/new/<%= test.reportNo %>?_method=DELETE" method="POST" style="display: inline;">
                                                   <button class="btn btn-danger">
                                                     <i class="mdi mdi-delete"></i>Delete
@@ -249,7 +249,7 @@
     </div>
 </div>
 
-<div
+<!-- <div
   class="modal fade"
   id="staticBackdrop"
   data-bs-backdrop="static"
@@ -297,7 +297,7 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
 <script>
     const setTestOption = (material) => {
@@ -313,9 +313,9 @@
         })
     }
 
-    const handleEdit = (reportNo,price) => {
-      const changeForm = document.getElementById('change-test')
-      changeForm.setAttribute("action",`/inward/new/${reportNo}?_method=PUT`)
-      document.getElementById('modal-test-price').setAttribute('value',price)
-    }
+    // const handleEdit = (reportNo,price) => {
+    //   const changeForm = document.getElementById('change-test')
+    //   changeForm.setAttribute("action",`/inward/new/${reportNo}?_method=PUT`)
+    //   document.getElementById('modal-test-price').setAttribute('value',price)
+    // }
 </script>
