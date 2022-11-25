@@ -225,7 +225,8 @@
                                                 </td>
                                                 <td><%= test.quantity %></td>
                                                 <td><%= test.rate %></td>
-                                                <td><%= test.serviceTaxRate %></td>
+                                                <% const serviceTaxRate = Math.floor(test.rate+((serviceTax/100)*test.rate)) %>
+                                                <td><%= serviceTaxRate %></td>
                                                 <td>
                                                   <a
                                                   href=""
@@ -237,7 +238,7 @@
                                                   EDIT
                                                 </a>
                                                 </td>
-                                                <td class="text-end"><%= test.serviceTaxRate*test.quantity %></td>
+                                                <td class="text-end"><%= serviceTaxRate*test.quantity %></td>
                                             </tr> 
                                         <% }) %>
                                         </tbody>

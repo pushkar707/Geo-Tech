@@ -128,17 +128,15 @@ router.route('/new/save')
     res.clearCookie('retailType')
     const {letterDate} = inward
     const newClient = await Client.findById(clientId)
-    const other = await Other.findOne({})
-    const {serviceTax} = other
     const order = []
     let subTotal = 0
     tests.forEach(testi=>{
         const {material,testName,price,test} = testi
         const currTest = order.find(testj => String(testj.testId) == String(test))
-        const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
+        // const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
         subTotal+=serviceTaxRate
         if(!currTest){
-            const newTest = {material,rate:price,serviceTaxRate,test:testName,testId:test,quantity:1}
+            const newTest = {material,rate:price,test:testName,testId:test,quantity:1}
             order.push(newTest)
         }
         else{
@@ -189,7 +187,9 @@ router.route('/invoice/:id')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
-    res.render('cse/inwards/confirm-inward',{invoice,inWords})
+    const other = await Other.findOne({})
+    const {serviceTax} = other
+    res.render('cse/inwards/confirm-inward',{invoice,inWords,serviceTax})
 }))
 
 router.route('/performa/:id')
