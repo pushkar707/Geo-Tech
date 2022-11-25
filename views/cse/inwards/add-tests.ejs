@@ -70,7 +70,11 @@
                               Fill all information below
                             </p>
                           </div>
-                          <form action="/inward/new/tests" method="POST">
+                          <% if (!existing) { %>
+                            <form action="/inward/new/tests" method="POST">
+                          <% }else{ %>
+                            <form action="/inward/<%= inward._id %>/edit-test" method="POST">
+                          <% } %> 
                             <div class="row">
                               <div class="col-lg-4 col-md-4">
                                 <div class="mb-3">

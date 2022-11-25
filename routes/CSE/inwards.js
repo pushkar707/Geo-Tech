@@ -46,7 +46,7 @@ router.route('/new')
 router.route('/new/tests')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const materials = await Material.find({}).populate('physical').populate('chemical').populate('other')
-    res.render('cse/inwards/add-tests',{inward:req.cookies.inward,materials})
+    res.render('cse/inwards/add-tests',{inward:req.cookies.inward,materials,existing:false})
 }))
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     let inward = req.cookies.inward
@@ -114,8 +114,8 @@ router.route('/new/:reportNo')
 router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
-    const {material,name,client,clientId,jobId,reportDate,pending,tests,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.cookies.inward
-    const inward = new Inward({material,name,client,clientId,jobId,reportDate,pending,city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
+    const {name,client,clientId,jobId,reportDate,pending,tests,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.cookies.inward
+    const inward = new Inward({name,client,clientId,jobId,reportDate,pending,city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
     for (let test of tests){
         const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
         await newTest.save()
@@ -130,10 +130,13 @@ router.route('/new/save')
     const newClient = await Client.findById(clientId)
     const order = []
     let subTotal = 0
+    const other = await Other.findOne({})
+    const {serviceTax} = other
     tests.forEach(testi=>{
         const {material,testName,price,test} = testi
         const currTest = order.find(testj => String(testj.testId) == String(test))
-        // const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
+        
+        const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
         subTotal+=serviceTaxRate
         if(!currTest){
             const newTest = {material,rate:price,test:testName,testId:test,quantity:1}
@@ -215,6 +218,40 @@ router.route('/new/:invoiceId/:testId')
     // const order = await Invoice.findOne({order:{$elemMatch:{_id:testId}}},{}})
     // console.log(order);
     res.redirect('/inward/invoice/'+invoiceId)
+}))
+
+router.route('/:id/edit-test')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const materials = await Material.find({}).populate('physical').populate('chemical').populate('other')
+    const inward = await Inward.findById(id).populate('tests')
+    res.render('cse/inwards/add-tests',{inward,materials,existing:true})
+}))
+.put(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const inward = await Inward.findById(id).populate('tests')
+    sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+    reportNo = inward.tests[inward.tests.length-1].reportNo
+    let allTests = req.body.tests
+    if(!Array.isArray(allTests)){
+        allTests = [allTests]
+    }
+    let newAllTests = []
+    for( test in allTests){
+        newAllTests.push(await Test.findById(allTests[test]))
+    }
+    for (let i = 0; i < req.body.quantity; i++) {
+        sampleOfTheDay++; reportNo++;
+        newAllTests.forEach(test => {
+            const price = test[req.cookies.retailType]
+            // const sampleNo = `${daysDiff}/${sampleOfTheDay}`
+            const newTest = {material:req.body.material,test:test._id,testName:test.name,price,sampleNo,reportNo,dept:test['dept'+req.session.city]}
+            inward = {...inward,tests:[...inward.tests,newTest]}
+        }
+    )};
+    await inward.save()
+    res.redirect(`/inward/${inward._id}/edit-tests`)
+    // inward.tests.push({material:req.body.material,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
 }))
 
 router.route('/pending')
