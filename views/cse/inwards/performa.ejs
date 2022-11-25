@@ -184,8 +184,8 @@
                                                                         <div class="col-sm-6">
                                                                             <h6><%= invoice.subTotal %></h6>
                                                                             <h6>-<%= invoice.discount %></h6>
-                                                                            <h6><%= invoice.subTotal*(9/100) %></h6>
-                                                                            <h6><%= invoice.subTotal*(9/100) %></h6>
+                                                                            <h6><%= Math.floor((invoice.subTotal-invoice.discount)*(9/100)*100)/100 %></h6>
+                                                                            <h6><%= Math.floor((invoice.subTotal-invoice.discount)*(9/100)*100)/100 %></h6>
                                                                             <h6><%= invoice.grandTotal %> </h6>
                                                                         </div>
                                                                         
