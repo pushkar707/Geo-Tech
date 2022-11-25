@@ -10,6 +10,7 @@ const InwardTest = require('../../models/InwardTest')
 const Other = require('../../models/Other')
 const wrapAsync = require('../../utils/wrapAsync')
 const Department = require('../../models/Department')
+const invoice = require('../../models/invoice')
 
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -115,7 +116,7 @@ router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const {name,client,clientId,jobId,reportDate,pending,tests,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.cookies.inward
-    const inward = new Inward({name,client,clientId,jobId,reportDate,pending,city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
+    const inward = new Inward({clientType:req.cookies.retailType,name,client,clientId,jobId,reportDate,pending,city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
     for (let test of tests){
         const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
         await newTest.save()
@@ -230,7 +231,7 @@ router.route('/:id/edit-test')
 .put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
-    sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+    // sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
     reportNo = inward.tests[inward.tests.length-1].reportNo
     let allTests = req.body.tests
     if(!Array.isArray(allTests)){
@@ -240,17 +241,50 @@ router.route('/:id/edit-test')
     for( test in allTests){
         newAllTests.push(await Test.findById(allTests[test]))
     }
+    let testArr = []
     for (let i = 0; i < req.body.quantity; i++) {
-        sampleOfTheDay++; reportNo++;
-        newAllTests.forEach(test => {
-            const price = test[req.cookies.retailType]
+        reportNo++;
+        for (const test of newAllTests) {
+            const price = test[inward.clientType]
             // const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = {material:req.body.material,test:test._id,testName:test.name,price,sampleNo,reportNo,dept:test['dept'+req.session.city]}
-            inward = {...inward,tests:[...inward.tests,newTest]}
+            const newTest = new InwardTest({material:req.body.material,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
+            await newTest.save()
+            testArr.push(newTest)
+            inward.tests.push(newTest._id) 
         }
-    )};
+    };
     await inward.save()
-    res.redirect(`/inward/${inward._id}/edit-tests`)
+
+    // EDITING INVOICE
+    const other = await Other.findOne({})
+    const {serviceTax} = other 
+    let order = []
+    let subTotal = 0
+    testArr.forEach(testi=>{
+        const {material,testName,price,test} = testi
+        const currTest = order.find(testj => String(testj.testId) == String(test))
+        
+        const serviceTaxRate = Math.floor(price+((serviceTax/100)*price))
+        subTotal+=serviceTaxRate
+        if(!currTest){
+            const newTest = {material,rate:price,test:testName,testId:test,quantity:1}
+            order.push(newTest)
+        }
+        else{
+            order.filter(testi => {
+                if(String(testi.test) == String(currTest.testId)){
+                    return testi.quantity+=1
+                }
+                return testi
+            })
+        }
+    })
+    await Invoice.findByIdAndUpdate(inward.invoice,{$push:{order:order}})
+    // invoice.order = [...invoice.order,...order]
+    // res.send(invoice.order)
+    // console.log(invoice.order);
+    // await invoice.save()
+    res.redirect(`/inward/${inward._id}/edit-test`)
     // inward.tests.push({material:req.body.material,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
 }))
 

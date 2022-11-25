@@ -3,6 +3,10 @@ const {Schema,model} = require('mongoose')
 const inwardSchema = new Schema({
     city:String,
     name:String,
+    clientType:{
+        type:String,
+        enum:['govt','pvt','thirdParty']
+    },
     client:String,
     clientId:{
         type:Schema.Types.ObjectId,
