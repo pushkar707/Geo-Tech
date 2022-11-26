@@ -28,6 +28,10 @@ const invoiceSchema = {
         test:String,
         quantity:Number,
         rate:Number,
+        testId:{
+            type:Schema.Types.ObjectId,
+            ref:"Test"
+        }
         // serviceTaxRate:Number,
     }],
     subTotal:Number,

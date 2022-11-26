@@ -208,13 +208,23 @@ router.route('/performa/:id')
 router.route('/new/:invoiceId/:testId')
 .put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {testId,invoiceId} = req.params
-    const invoice = await Invoice.findById(invoiceId)
+    const invoice = await Invoice.findById(invoiceId).populate('client')
+    const dis = invoice.client.discount
+    console.log(dis);
+    let subTotal = 0
     invoice.order.filter(test=>{
         if(test.id == testId){
+            subTotal+=req.body.price*test.quantity
             return test.rate = req.body.price
         }
+        subTotal+=test.rate*test.quantity
         return test
     })
+    const discount = Math.floor(subTotal*(dis/100))
+    const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
+    invoice.subTotal = subTotal
+    invoice.discount = discount
+    invoice.grandTotal = grandTotal
     await invoice.save()
     // const order = await Invoice.findOne({order:{$elemMatch:{_id:testId}}},{}})
     // console.log(order);
@@ -241,7 +251,7 @@ router.route('/:id/edit-test')
     for( test in allTests){
         newAllTests.push(await Test.findById(allTests[test]))
     }
-    let testArr = []
+    let testArr = [...inward.tests]
     for (let i = 0; i < req.body.quantity; i++) {
         reportNo++;
         for (const test of newAllTests) {
@@ -271,21 +281,25 @@ router.route('/:id/edit-test')
             order.push(newTest)
         }
         else{
+            console.log("hello");
             order.filter(testi => {
-                if(String(testi.test) == String(currTest.testId)){
+                if(String(testi.testId) == String(currTest.testId)){
                     return testi.quantity+=1
                 }
                 return testi
             })
         }
     })
-    await Invoice.findByIdAndUpdate(inward.invoice,{$push:{order:order}})
-    // invoice.order = [...invoice.order,...order]
-    // res.send(invoice.order)
-    // console.log(invoice.order);
-    // await invoice.save()
+    const invoice = await Invoice.findById(inward.invoice).populate('client')
+    const dis = invoice.client.discount
+    const discount = Math.floor(subTotal*(dis/100))
+    const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
+    invoice.order = order
+    invoice.subTotal = subTotal
+    invoice.discount = discount
+    invoice.grandTotal = grandTotal
+    await invoice.save()
     res.redirect(`/inward/${inward._id}/edit-test`)
-    // inward.tests.push({material:req.body.material,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
 }))
 
 router.route('/pending')

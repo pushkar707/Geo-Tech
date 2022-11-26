@@ -239,7 +239,11 @@
                               </div>
                               <!-- end col -->
                             </div>
-                            <form action="/inward/new/save" method="POST">
+                            <% if (!existing) { %>
+                              <form action="/inward/new/save" method="POST">
+                            <% }else{ %>
+                              <form action="/inward/invoice/<%= inward.invoice %>">
+                            <% } %> 
                               <button
                                   class="btn btn-primary"
                                   >Next <i class="bx bx-chevron-right ms-1"></i>
