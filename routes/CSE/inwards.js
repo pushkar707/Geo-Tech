@@ -154,7 +154,7 @@ router.route('/new/save')
     })
     const discount = Math.floor(subTotal*(newClient.discount/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
-    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal})
+    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,discountPer:newClient.discount,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal})
     invoice.inward = inward._id
     invoice.name = inward.name
     await invoice.save()
@@ -208,8 +208,8 @@ router.route('/performa/:id')
 router.route('/new/:invoiceId/:testId')
 .put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {testId,invoiceId} = req.params
-    const invoice = await Invoice.findById(invoiceId).populate('client')
-    const dis = invoice.client.discount
+    const invoice = await Invoice.findById(invoiceId)
+    const dis = invoice.discountPer
     const other = await Other.findOne({})
     const {serviceTax} = other
     let subTotal = 0
@@ -241,7 +241,11 @@ router.route('/:id/edit-test')
 .put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
-    // sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+    lastRecord = await Inward.find({}).populate('tests').skip(await Inward.count() - 1)
+    let sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+    const start = new Date('04/01/2022')
+    const today = new Date()
+    const daysDiff = Math.ceil(Math.abs(today-start)/(1000*60*60*24))
     reportNo = inward.tests[inward.tests.length-1].reportNo
     let allTests = req.body.tests
     if(!Array.isArray(allTests)){
@@ -253,11 +257,11 @@ router.route('/:id/edit-test')
     }
     let testArr = [...inward.tests]
     for (let i = 0; i < req.body.quantity; i++) {
-        reportNo++;
+        sampleOfTheDay++,reportNo++;
         for (const test of newAllTests) {
             const price = test[inward.clientType]
-            // const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = new InwardTest({material:req.body.material,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
+            const sampleNo = `${daysDiff}/${sampleOfTheDay}`
+            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
             await newTest.save()
             testArr.push(newTest)
             inward.tests.push(newTest._id) 
@@ -290,8 +294,8 @@ router.route('/:id/edit-test')
             })
         }
     })
-    const invoice = await Invoice.findById(inward.invoice).populate('client')
-    const dis = invoice.client.discount
+    const invoice = await Invoice.findById(inward.invoice)
+    const dis = invoice.discountPer
     const discount = Math.floor(subTotal*(dis/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
     invoice.order = order

@@ -15,6 +15,7 @@ const invoiceSchema = {
     },
     witnessName:String,
     witnessDate:String,
+    discountPer:Number,
     client:{
         type:Schema.Types.ObjectId,
         ref:"Client"
