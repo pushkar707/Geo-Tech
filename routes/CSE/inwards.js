@@ -210,14 +210,16 @@ router.route('/new/:invoiceId/:testId')
     const {testId,invoiceId} = req.params
     const invoice = await Invoice.findById(invoiceId).populate('client')
     const dis = invoice.client.discount
-    console.log(dis);
+    const other = await Other.findOne({})
+    const {serviceTax} = other
     let subTotal = 0
     invoice.order.filter(test=>{
         if(test.id == testId){
-            subTotal+=req.body.price*test.quantity
+            const testDis = Number(req.body.price*(serviceTax/100))
+            subTotal+=(Number(req.body.price)+testDis)*test.quantity
             return test.rate = req.body.price
         }
-        subTotal+=test.rate*test.quantity
+        subTotal+=(test.rate+(test.rate*(serviceTax/100)))*test.quantity
         return test
     })
     const discount = Math.floor(subTotal*(dis/100))
@@ -226,8 +228,6 @@ router.route('/new/:invoiceId/:testId')
     invoice.discount = discount
     invoice.grandTotal = grandTotal
     await invoice.save()
-    // const order = await Invoice.findOne({order:{$elemMatch:{_id:testId}}},{}})
-    // console.log(order);
     res.redirect('/inward/invoice/'+invoiceId)
 }))
 
