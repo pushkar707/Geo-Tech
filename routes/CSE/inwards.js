@@ -261,7 +261,7 @@ router.route('/:id/edit-test')
         for (const test of newAllTests) {
             const price = test[inward.clientType]
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city]})
+            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id})
             await newTest.save()
             testArr.push(newTest)
             inward.tests.push(newTest._id) 
@@ -285,7 +285,6 @@ router.route('/:id/edit-test')
             order.push(newTest)
         }
         else{
-            console.log("hello");
             order.filter(testi => {
                 if(String(testi.testId) == String(currTest.testId)){
                     return testi.quantity+=1
@@ -299,6 +298,37 @@ router.route('/:id/edit-test')
     const discount = Math.floor(subTotal*(dis/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
     invoice.order = order
+    invoice.subTotal = subTotal
+    invoice.discount = discount
+    invoice.grandTotal = grandTotal
+    await invoice.save()
+    res.redirect(`/inward/${inward._id}/edit-test`)
+}))
+
+router.route('/:testId/edit-test')
+.delete(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {testId} = req.params
+    const test = await InwardTest.findByIdAndDelete(testId)
+    const inward = await Inward.findByIdAndUpdate(test.inward,{$pull:{tests:testId}})
+    //EDITING INVOICE
+    const invoice = await Invoice.findById(inward.invoice)
+    const other = await Other.findOne({})
+    const {serviceTax} = other
+    let subTotal = 0
+    let newOrder = []
+    invoice.order.forEach(testi=>{
+        if(!(String(testi.testId)==String(test.test))){
+            subTotal+=(testi.rate+(serviceTax/100)*testi.rate)*testi.quantity
+            newOrder.push(testi)
+        }else if(testi.quantity>1){
+            newOrder.push({...testi,quantity:testi.quantity-1})
+        }
+    })
+    console.log(newOrder);
+    const dis = invoice.discountPer
+    const discount = Math.floor(subTotal*(dis/100))
+    const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
+    invoice.order = newOrder
     invoice.subTotal = subTotal
     invoice.discount = discount
     invoice.grandTotal = grandTotal

@@ -221,7 +221,11 @@
                                                   EDIT
                                                 </a>
                                                 &nbsp; | &nbsp; -->
-                                                <form action="/inward/new/<%= test.reportNo %>?_method=DELETE" method="POST" style="display: inline;">
+                                                <% if (!existing) { %>
+                                                  <form action="/inward/new/<%= test.reportNo %>?_method=DELETE" method="POST" style="display: inline;">
+                                                <% }else{ %>
+                                                  <form action="/inward/<%= test._id %>/edit-test?_method=DELETE" method="POST" style="display: inline;">
+                                                <% } %> 
                                                   <button class="btn btn-danger">
                                                     <i class="mdi mdi-delete"></i>Delete
                                                   </button>
