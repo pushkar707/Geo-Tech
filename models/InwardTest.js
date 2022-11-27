@@ -23,7 +23,11 @@ const inwardTestSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Inward'
     },
-    status:String
+    status:String,
+    invoice:{
+        type:Schema.Types.ObjectId,
+        ref:'Invoice'
+    }
 })
 
 module.exports = model('InwardTest',inwardTestSchema)

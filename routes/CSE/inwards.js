@@ -117,8 +117,10 @@ router.route('/new/save')
     const {city} = req.session
     const {name,client,clientId,jobId,reportDate,pending,tests,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.cookies.inward
     const inward = new Inward({clientType:req.cookies.retailType,name,client,clientId,jobId,reportDate,status:'pending',city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
+    const newInvoice = new Invoice()
+    await newInvoice.save()
     for (let test of tests){
-        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
+        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId,invoice:newInvoice._id})
         await newTest.save()
         inward.tests.push(newTest._id)
         // const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})
@@ -154,10 +156,12 @@ router.route('/new/save')
     })
     const discount = Math.floor(subTotal*(newClient.discount/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))
-    const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,discountPer:newClient.discount,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal})
-    invoice.inward = inward._id
-    invoice.name = inward.name
-    await invoice.save()
+    const invoice = await Invoice.findByIdAndUpdate(newInvoice._id,{name:inward.name,city,jobId,reportDate,letterDate,order,client:newClient._id,discountPer:newClient.discount,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal,inward:inward._id})
+    // invoice = {name:inward.name,city,jobId,reportDate,letterDate,order,client:newClient._id,discountPer:newClient.discount,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal,inward:inward._id}
+    // const invoice = new Invoice({city,jobId,reportDate,letterDate,order,client:newClient._id,discountPer:newClient.discount,clientTemp,refNo,consultantName,type,witnessName,witnessDate,subTotal,discount,grandTotal})
+    // invoice.inward = inward._id
+    // invoice.name = inward.name
+    // await invoice.save()
     inward.invoice = invoice._id
     await inward.save()
     res.redirect('/inward/invoice/'+invoice._id)
@@ -191,7 +195,7 @@ router.route('/:inwardId/:invoiceId/date')
 }))
 
 router.route('/invoice/:id')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['cse','department','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
     const other = await Other.findOne({})
