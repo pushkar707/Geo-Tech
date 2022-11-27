@@ -116,7 +116,7 @@ router.route('/new/save')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const {name,client,clientId,jobId,reportDate,pending,tests,clientTemp,refNo,witnessName,type,witnessDate,consultantName} = req.cookies.inward
-    const inward = new Inward({clientType:req.cookies.retailType,name,client,clientId,jobId,reportDate,pending,city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
+    const inward = new Inward({clientType:req.cookies.retailType,name,client,clientId,jobId,reportDate,status:'pending',city,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
     for (let test of tests){
         const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
         await newTest.save()
@@ -183,7 +183,7 @@ router.route('/:inwardId/:invoiceId/date')
     const {inwardId,invoiceId} = req.params
     await InwardTest.updateMany({inward:inwardId},{letterDate})
     await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
-    await Inward.findByIdAndUpdate(inwardId,{letterDate,pending:false})
+    await Inward.findByIdAndUpdate(inwardId,{letterDate,status:'under-test'})
     res.redirect('/inward/invoice/'+invoiceId)
 }))
 
@@ -261,7 +261,7 @@ router.route('/:id/edit-test')
         for (const test of newAllTests) {
             const price = test[inward.clientType]
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id})
+            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id,jobId:inward.jobId,reportDate:inward.reportDate,status:'pending'})
             await newTest.save()
             testArr.push(newTest)
             inward.tests.push(newTest._id) 
@@ -339,7 +339,7 @@ router.route('/:testId/edit-test')
 router.route('/pending')
 .get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {city} = req.session
-    const inwards = await Inward.find({pending:true,city})
+    const inwards = await Inward.find({status:'pending',city})
     res.render('cse/inwards/pending',{inwards})
 }))
 
@@ -347,6 +347,13 @@ router.route('/all')
 .get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const inwards = await Inward.find({city})
+    res.render('cse/inwards/all',{inwards})
+}))
+
+router.route('/under-test')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({city,status:'under-test'})
     res.render('cse/inwards/all',{inwards})
 }))
 

@@ -32,10 +32,7 @@ const inwardSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Invoice'
     },
-    pending:{
-        type:Boolean,
-        default:true
-    }
+    status:String
 })
 
 module.exports = model('Inward',inwardSchema)
