@@ -121,7 +121,7 @@ router.route('/new/save')
         const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId})
         await newTest.save()
         inward.tests.push(newTest._id)
-        const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})
+        // const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})
     }
     res.clearCookie('inward')
     res.clearCookie('sampleOfTheDay')
@@ -183,7 +183,10 @@ router.route('/:inwardId/:invoiceId/date')
     const {inwardId,invoiceId} = req.params
     await InwardTest.updateMany({inward:inwardId},{letterDate})
     await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
-    await Inward.findByIdAndUpdate(inwardId,{letterDate,status:'under-test'})
+    const inward = await Inward.findByIdAndUpdate(inwardId,{letterDate,status:'under-test'}).populate('tests')
+    for (let test of inward.tests){
+        await Department.findByIdAndUpdate(test.dept,{$push:{inwards:test._id}})
+    }
     res.redirect('/inward/invoice/'+invoiceId)
 }))
 
@@ -261,10 +264,11 @@ router.route('/:id/edit-test')
         for (const test of newAllTests) {
             const price = test[inward.clientType]
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id,jobId:inward.jobId,reportDate:inward.reportDate,status:'pending'})
+            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id,jobId:inward.jobId,reportDate:inward.reportDate,letterDate:inward.letterDate,status:'pending'})
             await newTest.save()
             testArr.push(newTest)
-            inward.tests.push(newTest._id) 
+            inward.tests.push(newTest._id)
+            await Department.findByIdAndUpdate(newTest.dept,{$push:{inwards:newTest._id}})
         }
     };
     await inward.save()
@@ -310,6 +314,7 @@ router.route('/:testId/edit-test')
     const {testId} = req.params
     const test = await InwardTest.findByIdAndDelete(testId)
     const inward = await Inward.findByIdAndUpdate(test.inward,{$pull:{tests:testId}})
+    await Department.findByIdAndUpdate(test.dept,{$pull:{inwards:test._id}})
     //EDITING INVOICE
     const invoice = await Invoice.findById(inward.invoice)
     const other = await Other.findOne({})
