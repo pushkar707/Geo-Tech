@@ -1,37 +1,179 @@
-<% layout(`/includes/${currentUserPos}`) -%> 
-<% block('title').append('<h5>Add File</h5>') %>
 
+
+<% layout(`/includes/${currentUserPos}`) -%> 
+<% block('title').append('<h5>Material Inward</h5>') %>
 
 <div class="main-content">
-    <div class="page-content">
-        <div class="row">
-            <div class="col-12"><br>
-                <div class="card">
-                    <div class="card-body">
-                        <h1>Test Details</h1>
-                        <ul>
-                            <li>Test: <%= test.testName %></li>
-                            <li>Report No: <%= test.reportNo %></li>
-                            <li>Sample No: <%= test.sampleNo %></li>
-                            <li>Material: <%= test.material %></li>
-                            <li>Price: <%= test.price %></li>
-                            <li>Report Date: <%= test.reportDate %></li>
-                            <li>Letter Date: <%= test.letterDate %></li>
-                            <li>Process Date: <%= test.processDate %></li>
-                            <li>Job Id: <%= test.jobId %></li>
-                        </ul>
 
-                        <form action="" method="POST">
-                            <div class="mb-3">
-                                <input type="file" name="file" class="form-control">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <div id="basic-pills-wizard" class="twitter-bs-wizard">
+                                
+                                <!-- wizard-nav -->
+
+                                <div class=" twitter-bs-wizard-tab-content">
+                                    
+                                    <div class="tab-pane" id="bank-detail">
+                                        <div>
+                                          
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="invoice-title">
+                                                                <div class="d-flex align-items-start">
+                                                                    <div class="flex-grow-1">
+                                                                        <div class="mb-4">
+                                                                            <img src="assets/images/logo2-2.png" alt="" height="24"><span class="logo-txt"> ( MATERIAL INWARD )</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="flex-shrink-0">
+                                                                        <div class="mb-4">
+                                                                            <h4 class="float-end font-size-16">JOB : <%= tests[0].jobId %> </h4>
+                                                                            
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                
+                    
+                                                            </div>
+                                                            <hr class="my-4">
+                                                            
+                                                            <!-- <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div>
+                                                                        <h5 class="font-size-15 mb-3">Name of Work : <%=// inward.name %></h5>
+                                                                        <p class="mb-1">This is the software project from vadodara branch
+                                                                            </p>
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <br>     -->
+
+                                                            <div class="row">
+                                                                <div class="col-xl-12">
+                                                                    <div class="card">
+                                                                        
+                                                                        <div class="card-body">
+                                                                            <div class="table-responsive mb-4">
+                                                                                <table class="table table-bordered border-primary mb-0">
+                                        
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>#</th>
+                                                                                            <th>Sample No.</th>
+                                                                                            <th>Material</th>
+                                                                                            <th>Test</th>
+                                                                                            <th>Report No.</th>
+                                                                                            <th>Status</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <% tests.forEach((test,index) => { %>
+                                                                                            <tr>
+                                                                                                <th scope="row"><%= index+1 %></th>
+                                                                                                <td><%= test.sampleNo %></td>
+                                                                                                <td><%= test.material %></td>
+                                                                                                <td><%= test.testName %></td>
+                                                                                                <td><%= test.reportNo %></td>
+                                                                                                <td><%= test.status %></td>
+                                                                                            </tr>
+                                                                                        <% }) %>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <form action="" method="POST">
+                                                                                <div class="mb-3">
+                                                                                    <label for="file" class="form-label">Select Report File: </label>
+                                                                                    <input type="file" name="file" class="form-control" id="file" multiple>
+                                                                                </div>
+                                                                                <div class="mb-3">
+                                                                                    <button class="btn btn-info">Upload File</button>                            
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <!-- end card body -->
+                                                                    </div>
+                                                                    <!-- end card -->
+                                                                </div>
+                                                                <!-- end col -->
+                                                            </div>
+                                                         
+                                                           
+
+                                                            <div class="d-print-none mt-3">
+                                                                <div class="float-end">
+                                                                    Save in A2 size <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+                                                                    <!-- <a href="#" class="btn btn-primary w-md waves-effect waves-light">Send</a> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                    <!-- tab pane -->
+                                </div>
+                                <!-- end tab content -->
                             </div>
-                            <div class="mb-3">
-                                <button class="btn btn-info">Upload File</button>                            
-                            </div>
-                        </form>
+                        </div>
+                        <!-- end card body -->
                     </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    <!-- Modal -->
+    <div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirm Save Changes</h5>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal"
+                        onclick="nextTab()">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
+    <!-- end modal -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © GEO DESIGN.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by <a href="#!" class="text-decoration-underline">Themesbrand</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>

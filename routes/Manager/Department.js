@@ -186,7 +186,12 @@ router.route('/test/:id/upload')
 .get(loginRequired('department'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const test = await InwardTest.findById(id)
-    res.render('department/upload-file',{test})
+    const tests = await InwardTest.find({sampleNo:test.sampleNo})
+    // res.render('cse/inwards/inward',{tests})
+    res.render('department/upload-file',{tests})
+}))
+.post(loginRequired('department'),wrapAsync(async(req,res)=>{
+    // const {id} = 
 }))
 
 module.exports = router
