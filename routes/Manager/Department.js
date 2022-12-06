@@ -10,7 +10,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 const multer = require('multer')
 const upload = multer({dest:'uploads/'})
-const {uploadFile} = require('../../utils/s3')
+const {uploadFile,downloadFile} = require('../../utils/s3')
 
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
@@ -195,12 +195,17 @@ router.route('/test/:id/upload')
 }))
 .post(loginRequired('department'),upload.array('report'),wrapAsync(async(req,res)=>{
     const reports = req.files
+    let results = []
     for (let report of reports){
         const result = await uploadFile(report)
-        console.log(result);
-        console.log("----------");
+        results.push(result.Key)
+        // console.log(result);
+        // console.log("----------");
     }
-    res.send('done')
+    for (let result of results){
+        const readStream = getFileStream(result)
+    }
+    // res.send(results)
 }))
 
 module.exports = router

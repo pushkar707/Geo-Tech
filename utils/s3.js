@@ -11,6 +11,8 @@ const s3 = new S3({
     secretAccessKey:process.env.AWS_SECRET_KEY
 })
 
+// UPLAODS FILE TO S3
+
 module.exports.uploadFile = (file) => {
     const fileStream = fs.createReadStream(file.path)
     const randNum = Math.floor(Math.random()*100)
@@ -24,7 +26,13 @@ module.exports.uploadFile = (file) => {
     return s3.upload(uploadParams).promise()
 }
 
-// UPLAODS FILE TO S3
-
-
 // DOWNLAODS FILE FROM S3
+
+module.exports.downloadFile = fileKey => {
+    const downloadParams = {
+        Key:fileKey,
+        Bucket:process.env.AWS_BUCKET_NAME
+    }
+
+    return s3.getObject(downloadParams).createReadStream()
+}
