@@ -119,13 +119,13 @@
                                                                                                 <td>
                                                                                                     <span style="color: <%= test.status == 'completed' ? 'green' : 'red'%>"><%= test.status %> </span>
                                                                                                 </td>
+                                                                                                <% if (currentUserPos == 'manager' && currentUserCity == 'VAD') { %>
                                                                                                 <td>
-                                                                                                    <% if (currentUserPos == 'manager' && currentUserCity == 'VAD') { %>
                                                                                                     <a href="/department/test/<%= test._id %>/upload" class="btn btn-success waves-effect waves-light me-1">
                                                                                                         <i class=" bx bxs-info-circle"></i>
                                                                                                     </a>
-                                                                                                    <% } %>
                                                                                                 </td>
+                                                                                                <% } %>
                                                                                             </tr>
                                                                                         <% }) %>
                                                                                     </tbody>

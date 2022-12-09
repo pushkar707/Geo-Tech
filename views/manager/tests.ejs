@@ -37,9 +37,15 @@
                                             <td><%= test.reportDate %></td>
                                             <td><%= test.letterDate %></td>
                                             <td>
-                                                <a href="/inward/invoice/<%= test.invoice %>" class="btn btn-success waves-effect waves-light me-1">
-                                                    <i class=" bx bxs-info-circle"></i>
-                                                </a>
+                                                <% if (currentUserPos == "department") { %>
+                                                    <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
+                                                        <i class=" bx bxs-info-circle"></i>
+                                                    </a>
+                                                <% }else { %>
+                                                    <a href="/inward/invoice/<%= test.invoice %>" class="btn btn-success waves-effect waves-light me-1">
+                                                        <i class=" bx bxs-info-circle"></i>
+                                                    </a>
+                                                <% } %> 
                                             </td>
                                             <!-- <td>
                                                 <form action="/department/test/<%= test._id %>/status/processing" method="POST">
