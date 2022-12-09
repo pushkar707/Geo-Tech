@@ -221,64 +221,46 @@
           <!-- Left Menu Start -->
           <ul class="metismenu list-unstyled" id="side-menu">
             <li class="menu-title" data-key="t-menu">Menu</li>
-
-            <li>
-              <a href="index.html">
-                <i data-feather="home"></i>
-                <span data-key="t-dashboard">Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a href="/inward/all">
-                <i class="bx bx-book"></i>
-                <span data-key="t-dashboard">All Inwards</span>
-              </a>
-            </li>
+            <% if (currentUserCity == "VAD") { %>
+              <li>
+                <a href="/inward/all">
+                  <i class="bx bx-book"></i>
+                  <span data-key="t-dashboard">New Reports</span>
+                </a>
+              </li>
+            <% } %>
             <li>
               <a href="/inward/pending">
                 <i class="bx bx-book"></i>
-                <span data-key="t-dashboard">Pending Inwards</span>
+                <span data-key="t-dashboard">Approved Reports</span>
               </a>
             </li>
             <li>
               <a href="index.html">
                 <i class="bx bx-test-tube"></i>
-                <span data-key="t-dashboard">Under Test</span>
+                <span data-key="t-dashboard">Remarked Reports</span>
               </a>
             </li>
 
             <li>
               <a href="index.html">
                 <i class="bx bx-check-double"></i>
-                <span data-key="t-dashboard">Final Verification</span>
+                <span data-key="t-dashboard">All Reports</span>
               </a>
             </li>
 
             <li>
               <a href="/test/all">
                 <i class="bx bxs-user-pin"></i>
-                <span data-key="t-dashboard">All Tests</span>
+                <span data-key="t-dashboard">Assign Tests</span>
               </a>
             </li>
 
             <li class="active1">
               <a href="/department/all">
                 <i data-feather="grid" class="active1"></i>
-                <span data-key="t-apps">All Departments</span>
+                <span data-key="t-apps">Test Departments</span>
               </a>
-              <!-- <ul class="sub-menu" aria-expanded="true">
-                <li class="active1">
-                  <a href="apps-calendar.html" class="active1">
-                    <span data-key="t-calendar">Add/Edit Test</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="apps-chat.html">
-                    <span data-key="t-chat">Pricing</span>
-                  </a>
-                </li>
-              </ul> -->
             </li>
           </ul>
 

@@ -23,6 +23,7 @@ const loginRoutes = require('./routes/Login/login')
 const forgotRoutes = require('./routes/Login/forgot')
 const changePassRoutes = require('./routes/Login/changePass')
 const adminRoutes = require('./routes/Admin')
+const managerRoutes = require('./routes/Manager/manager')
 //
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
@@ -83,6 +84,7 @@ app.use('/client',clientRoutes)
 app.use('/inward',inwardRoutes)
 // Manager
 app.use('/department',departmentRoutes)
+app.use('/manager',managerRoutes)
 //admin
 app.use('/admin',adminRoutes)
 app.use('/test',managerTestRoutes)

@@ -20,8 +20,8 @@
                                         <th>Report No.</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
+                                        <th>Date Approved</th>
                                         <th>Details</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -35,15 +35,11 @@
                                             <td><%= test.reportNo %></td>
                                             <td><%= test.reportDate %></td>
                                             <td><%= test.letterDate %></td>
+                                            <td><%= test.approveDate %></td>
                                             <td>
                                                 <a href="/inward/invoice/<%= test.invoice %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
                                                 </a>
-                                            </td>
-                                            <td>
-                                                <form action="/department/test/<%= test._id %>/status/processing" method="POST">
-                                                    <button><%= test.status %></button>
-                                                </form>
                                             </td>
                                         </tr>
                                     <% }) %>

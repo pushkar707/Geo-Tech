@@ -196,7 +196,7 @@ router.route('/test/:id/status/processing')
 }))
 
 router.route('/test/:id/upload')
-.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['manager','department']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const test = await InwardTest.findById(id)
     const tests = await InwardTest.find({sampleNo:test.sampleNo})

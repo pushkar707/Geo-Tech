@@ -103,6 +103,9 @@
                                                                                             <th>Test</th>
                                                                                             <th>Report No.</th>
                                                                                             <th>Status</th>
+                                                                                            <% if (currentUserPos == 'manager' && currentUserCity == 'VAD') { %>
+                                                                                             <th>Info</th>
+                                                                                            <% } %>
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody>
@@ -115,7 +118,14 @@
                                                                                                 <td><%= test.reportNo %></td>
                                                                                                 <td>
                                                                                                     <span style="color: <%= test.status == 'completed' ? 'green' : 'red'%>"><%= test.status %> </span>
-                                                                                                  </td>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <% if (currentUserPos == 'manager' && currentUserCity == 'VAD') { %>
+                                                                                                    <a href="/department/test/<%= test._id %>/upload" class="btn btn-success waves-effect waves-light me-1">
+                                                                                                        <i class=" bx bxs-info-circle"></i>
+                                                                                                    </a>
+                                                                                                    <% } %>
+                                                                                                </td>
                                                                                             </tr>
                                                                                         <% }) %>
                                                                                     </tbody>

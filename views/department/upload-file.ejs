@@ -90,15 +90,25 @@
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
-                                                                            <form action="/department/test/<%= tests[0]._id %>/upload" method="POST" enctype="multipart/form-data">
-                                                                                <div class="mb-3">
-                                                                                    <label for="file" class="form-label">Select Report File: </label>
-                                                                                    <input type="file" name="report" class="form-control" id="file" multiple>
-                                                                                </div>
-                                                                                <div class="mb-3">
-                                                                                    <button class="btn btn-info">Upload File</button>                            
-                                                                                </div>
-                                                                            </form>
+                                                                            <% if (currentUserPos == "department") { %>
+                                                                                <form action="/department/test/<%= tests[0]._id %>/upload" method="POST" enctype="multipart/form-data">
+                                                                                    <div class="mb-3">
+                                                                                        <label for="file" class="form-label">Select Report File: </label>
+                                                                                        <input type="file" name="report" class="form-control" id="file" multiple>
+                                                                                    </div>
+                                                                                    <div class="mb-3">
+                                                                                        <button class="btn btn-info">Upload File</button>                            
+                                                                                    </div>
+                                                                                </form>
+                                                                            <% } %>
+                                                                            <% if (currentUserPos == "manager" && currentUserCity == "VAD" && !["approved","processing","pending"].includes(tests[0].status)) { %>
+                                                                             <div class="d-flex justify-content-center">
+                                                                                <form action="/manager/test/<%= tests[0].sampleNo %>/approve" method="POST">
+                                                                                    <button class="btn btn-success m-4 btn-md">Approve</button>
+                                                                                </form>
+                                                                                <button class="btn btn-info m-4 btn-md" data-bs-toggle="modal" data-bs-target="#remarkReport" onclick="handleRemark('<%= tests[0].sampleNo %>')">Remark</button>
+                                                                             </div>
+                                                                            <% } %>
                                                                         </div>
                                                                         <!-- end card body -->
                                                                     </div>
@@ -139,25 +149,25 @@
     </div>
     <!-- End Page-content -->
     <!-- Modal -->
-    <div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="remarkReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header border-bottom-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add New Material</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="text-center">
+                <form action="" method="POST" id="remarkForm">
+                    <div class="modal-body">
                         <div class="mb-3">
-                            <i class="bx bx-check-circle display-4 text-success"></i>
+                            <label for="example-text-input" class="form-label">Remarked Text</label>
+                            <input class="form-control" type="text" placeholder="Remarked Text" id="example-text-input" name="remarkedText" required>
                         </div>
-                        <h5>Confirm Save Changes</h5>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal"
-                        onclick="nextTab()">Save changes</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -177,3 +187,9 @@
         </div>
     </footer>
 </div>
+<script>
+    const handleRemark = sampleNo => {
+        const remarkForm = document.getElementById('remarkForm')
+        remarkForm.setAttribute('action',`/manager/test/${sampleNo}/remark`)
+    }
+</script>
