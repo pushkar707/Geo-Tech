@@ -49,7 +49,7 @@ router.route('/new')
 }))
 
 router.route('/:id/all')
-.get(loginRequired(['manager','department']),wrapAsync(async(req,res)=>{
+.get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const department = await Department.findById(id).populate('inwards')
     const tests = department.inwards
@@ -140,6 +140,16 @@ router.route('/processing')
     res.render('department/processing',{tests})
 }))
 
+router.route('/approval-pending')
+.get(loginRequired('department'),wrapAsync(async(req,res)=>{
+    const {deptId} = req.session
+    const department = await Department.findById(deptId).populate('inwards')
+    const tests = department.inwards.filter(test => {
+        return test.status == 'approval pending'
+    })
+    res.render('department/approval-pending',{tests})
+}))
+
 router.route('/remarked')
 .get(loginRequired('department'),wrapAsync(async(req,res)=>{
     const {deptId} = req.session
@@ -194,17 +204,30 @@ router.route('/test/:id/upload')
     res.render('department/upload-file',{tests})
 }))
 .post(loginRequired('department'),upload.array('report'),wrapAsync(async(req,res)=>{
-    const reports = req.files
-    let results = []
-    for (let report of reports){
-        const result = await uploadFile(report)
-        results.push(result.Key)
-        // console.log(result);
-        // console.log("----------");
+    const {id} = req.params
+    const test = await InwardTest.findById(id)
+    const sampleNo = test.sampleNo
+    const tests = await InwardTest.find({sampleNo})
+    const today = new Date()
+    const uploadDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    for (let test of tests){
+        test.report = "Report XD"
+        test.status = "approval pending"
+        test.uploadDate = uploadDate
+        test.save()
     }
-    for (let result of results){
-        const readStream = getFileStream(result)
-    }
+    res.redirect("/department/aprroval-pending")
+    // const reports = req.files
+    // let results = []
+    // for (let report of reports){
+    //     const result = await uploadFile(report)
+    //     results.push(result.Key)
+    //     // console.log(result);
+    //     // console.log("----------");
+    // }
+    // for (let result of results){
+    //     const readStream = getFileStream(result)
+    // }
     // res.send(results)
 }))
 

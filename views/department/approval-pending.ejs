@@ -21,7 +21,6 @@
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Details</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,11 +38,6 @@
                                                 <a href="/inward/invoice/<%= test.invoice %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
                                                 </a>
-                                            </td>
-                                            <td>
-                                                <form action="/department/test/<%= test._id %>/status/processing" method="POST">
-                                                    <button><%= test.status %></button>
-                                                </form>
                                             </td>
                                         </tr>
                                     <% }) %>
