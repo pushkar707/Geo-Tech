@@ -15,6 +15,7 @@ const inwardTestSchema = new Schema({
     approveDate:String,
     remarkedText:String,
     previousReport:[String],
+    payRequired:Boolean,
     dept:{
         type:Schema.Types.ObjectId,
         ref:'Department'

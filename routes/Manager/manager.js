@@ -55,4 +55,13 @@ router.route('/test/:sampleDay/:sampleNo/remark')
     res.redirect('/manager/reports/remarked')
 }))
 
+router.route('/:id/pay')
+.post(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findById(id)
+    test.payRequired = !test.payRequired
+    await test.save()
+    res.redirect('/manager/reports/approved')
+}))
+
 module.exports = router

@@ -135,7 +135,7 @@ router.route('/new/save')
     const newInvoice = new Invoice()
     await newInvoice.save()
     for (let test of tests){
-        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId,invoice:newInvoice._id})
+        const newTest = new InwardTest({...test,inward:inward._id,status:'pending',reportDate,jobId,invoice:newInvoice._id,payRequired:true})
         await newTest.save()
         inward.tests.push(newTest._id)
         // const dept = await Department.findByIdAndUpdate(test.dept,{$push:{inwards:newTest._id}})
@@ -283,7 +283,7 @@ router.route('/:id/edit-test')
         for (const test of newAllTests) {
             const price = test[inward.clientType]
             const sampleNo = `${daysDiff}/${sampleOfTheDay}`
-            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id,jobId:inward.jobId,reportDate:inward.reportDate,letterDate:inward.letterDate,status:'pending'})
+            const newTest = new InwardTest({material:req.body.material,sampleNo,test:test._id,testName:test.name,price,reportNo,dept:test['dept'+req.session.city],inward:inward._id,jobId:inward.jobId,reportDate:inward.reportDate,letterDate:inward.letterDate,status:'pending',payRequired:true})
             await newTest.save()
             testArr.push(newTest)
             inward.tests.push(newTest._id)

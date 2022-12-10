@@ -25,6 +25,9 @@
                          <th>Status</th>
                         <% } %>
                         <th>Info</th>
+                        <% if (tests.length && tests[0].status == 'approved') { %>
+                         <th>Pay Required</th>
+                        <% } %>
                       </tr>
                     </thead>
                     <tbody>
@@ -44,6 +47,13 @@
                                 <i class=" bx bxs-info-circle"></i>
                             </a>
                         </td>
+                        <% if (tests.length && tests[0].status == 'approved') { %>
+                          <td>
+                            <form action="/manager/<%= test._id %>/pay" method="POST">
+                              <button class="btn btn-info"><%= test.payRequired %></button>
+                            </form>
+                          </td>
+                         <% } %>
                         </tr>
                         <% }) %>
                       </tbody>
