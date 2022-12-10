@@ -1,0 +1,56 @@
+<% layout('/includes/manager') -%>
+<% block('title').append('<h5>All Departments</h5>') %>
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="row">
+            <div class="col-12">
+              <br />
+              <div class="card">
+                <div class="card-body">
+                  <table
+                    id="datatable-buttons"
+                    class="table table-bordered dt-responsive nowrap w-100"
+                  >
+                    <thead>
+                      <tr>
+                        <th>S. No.</th>
+                        <th>Job No.</th>
+                        <th>Sample Number</th>
+                        <th>Material</th>
+                        <th>Test</th>
+                        <% if (tests.length && tests[0].status == 'remarked') { %>
+                         <th>Remarked Text</th>
+                        <% } %>
+                        <th>Info</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% tests.forEach((test,index) => { %>
+                        <tr>
+                          <td><%= index+1 %></td>
+                          <td><%= test.jobId %></td>
+                          <td><%= test.sampleNo %></td>
+                          <td><%= test.material %></td>
+                          <td><%= test.testName %></td>
+                          <% if (tests.length && tests[0].status == 'remarked') { %>
+                          <td><%= test.remarkedText %> </td>
+                           <% } %>
+                          <td>
+                            <a href="/department/test/<%= test._id %>/upload" class="btn btn-success waves-effect waves-light me-1">
+                                <i class=" bx bxs-info-circle"></i>
+                            </a>
+                        </td>
+                        </tr>
+                        <% }) %>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- end cardaa -->
+            </div>
+            <!-- end col -->
+        </div>
+    </div>
+</div>

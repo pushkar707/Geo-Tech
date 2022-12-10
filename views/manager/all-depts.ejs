@@ -1,163 +1,263 @@
-<% layout('/includes/manager') -%>
+<% layout('/includes/manager') -%> 
 <% block('title').append('<h5>All Departments</h5>') %>
 <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="main-content">
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <%- include('../flash.ejs') %>
+          <div style="float: right">
+            <button
+              type="button"
+              class="btn btn-primary waves-effect waves-light"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              <i class="bx bx-plus me-1"></i> Add New Department
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <br />
+        <div class="card">
+          <div class="card-body">
+            <table
+              id="datatable-buttons"
+              class="table table-bordered dt-responsive nowrap w-100"
+            >
+              <thead>
+                <tr>
+                  <th>S. No.</th>
+                  <th>Department</th>
+                  <th>Email</th>
+                  <th>Assigned Tests</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% departments.forEach((dept,index) => { %>
+                <tr>
+                  <td><%= index %></td>
+                  <td><%= dept.name %></td>
+                  <td><%= dept.email %></td>
+                  <td><%= dept.tests.length %></td>
+                  <td>
+                    <a
+                      href=""
+                      class="btn btn-info waves-effect waves-light me-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdropEdit"
+                      onclick="handleEdit('<%= dept._id %>','<%= dept.name %>','<%= dept.email %>')"
+                    >
+                      <i class="bx bx-edit"></i>
+                    </a>
+                    <form
+                      action="/department/<%= dept._id %>?_method=DELETE"
+                      method="POST"
+                      style="display: inline"
+                      id="delete-form-<%= index %>"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-danger waves-effect waves-light me-1"
+                        onclick="handleDelete('<%= index %>','<%= dept.name %>')"
+                      >
+                        <i class="bx bxs-trash"></i>
+                      </button>
+                    </form>
+                    <a
+                      href="/department/<%= dept._id %>/all"
+                      class="btn btn-success waves-effect waves-light me-1"
+                    >
+                      <i class="bx bxs-info-circle"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- end cardaa -->
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
 
-                <div class="page-content">
-                    <div class="container-fluid">
+<!-- Static Backdrop Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add New Department</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/department/new" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label"
+              >Department Name</label
+            >
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Add Department Name"
+              id="example-text-input"
+              name="name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label">Email</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Email"
+              id="example-text-input"
+              name="email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label">Password</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Password"
+              id="example-text-input"
+              name="password"
+              required
+            />
+          </div>
+          <input type="hidden" name="city" value="<%= currentUserCity %>" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-                       <div class="row">
-                           <div class="col-md-12">
-                               <%- include('../flash.ejs')  %> 
-                                <div style="float: right;">
-                                  <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                      <i class="bx bx-plus me-1"></i> Add New Department
-                                  </button>
-                                </div>
-                        </div>
-                       
-                    </div>
-                       </div>
-                        <div class="row">
-                            <div class="col-12"><br>
-                                <div class="card">
-                                   
-                                    <div class="card-body">
-                                        <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
-                                            <thead>
-                                            <tr>
-                                                <th>S. No. </th>
-                                                <th>Department</th>
-                                                <th>Email</th>
-                                                <th>Assigned Tests</th>                                              
-                                                <th>Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <% departments.forEach((dept,index) => { %>
-                                                <tr>
-                                                    <td><%= index %></td>
-                                                    <td><%= dept.name %></td>
-                                                    <td><%= dept.email %></td>
-                                                    <td><%= dept.tests.length %></td>
-                                                    <td>
-                                                        <a href="" class="btn btn-info waves-effect waves-light me-1"  data-bs-toggle="modal" data-bs-target="#staticBackdropEdit" onclick="handleEdit('<%= dept._id %>','<%= dept.name %>','<%= dept.email %>')">
-                                                            <i class=" bx bx-edit"></i>
-                                                        </a>
-                                                        <form action="/department/<%= dept._id %>?_method=DELETE" method="POST" style="display: inline;" id="delete-form-<%= index %>">
-                                                            <button type="button" class="btn btn-danger waves-effect waves-light me-1" onclick="handleDelete('<%= index %>','<%= dept.name %>')">
-                                                                <i class=" bx bxs-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                        <a href="/department/<%= dept._id %>/all" class="btn btn-success waves-effect waves-light me-1">
-                                                            <i class=" bx bxs-info-circle"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            <% }) %>                                            
-                                            </tbody>
-        
-                                            
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- end cardaa -->
-                            </div> <!-- end col -->
-                        </div> <!-- end row -->
-                    </div> <!-- container-fluid -->
-                </div>
-                <!-- End Page-content -->
+<div
+  class="modal fade"
+  id="staticBackdropEdit"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Department</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/department/new" method="POST" id="edit-department">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label"
+              >Department Name</label
+            >
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Add Department Name"
+              id="modal-dept-name"
+              name="name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label">Email</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Email"
+              id="modal-dept-email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="example-text-input" class="form-label">Password</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Password"
+              id="example-text-input"
+              name="password"
+            />
+          </div>
+          <input type="hidden" name="city" value="<%= currentUserCity %>" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-                
-                        <!-- Static Backdrop Modal -->
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Add New Department</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <form action="/department/new" method="POST">
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="example-text-input" class="form-label">Department Name</label>
-                                                <input class="form-control" type="text" placeholder="Add Department Name" id="example-text-input" name="name" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="example-text-input" class="form-label">Email</label>
-                                                <input class="form-control" type="text" placeholder="Email" id="example-text-input" name="email" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="example-text-input" class="form-label">Password</label>
-                                                <input class="form-control" type="text" placeholder="Password" id="example-text-input" name="password" required>
-                                            </div>
-                                            <input type="hidden" name="city" value="<%= currentUserCity %>">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+<!-- Right bar overlay-->
+<div class="rightbar-overlay"></div>
 
-                        <div class="modal fade" id="staticBackdropEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Edit Department</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <form action="/department/new" method="POST" id="edit-department">
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="example-text-input" class="form-label">Department Name</label>
-                                                <input class="form-control" type="text" placeholder="Add Department Name" id="modal-dept-name" name="name" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="example-text-input" class="form-label">Email</label>
-                                                <input class="form-control" type="text" placeholder="Email" id="modal-dept-email" name="email" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="example-text-input" class="form-label">Password</label>
-                                                <input class="form-control" type="text" placeholder="Password" id="example-text-input" name="password">
-                                            </div>
-                                            <input type="hidden" name="city" value="<%= currentUserCity %>">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+<!-- JAVASCRIPT -->
+<script>
+  const handleDelete = (index, dept) => {
+    const deleteForm = document.getElementById(`delete-form-${index}`);
+    let text = `Are you sure you want to delete ${dept}`;
+    if (confirm(text) == true) {
+      deleteForm.submit();
+    }
+  };
 
-
-
-        <!-- Right bar overlay-->
-        <div class="rightbar-overlay"></div>
-
-        <!-- JAVASCRIPT -->
-        <script>
-            const handleDelete = (index,dept) => {
-                const deleteForm = document.getElementById(`delete-form-${index}`)
-                let text = `Are you sure you want to delete ${dept}`;
-                if (confirm(text) == true) {
-                    deleteForm.submit()
-                }
-            }
-
-            const handleEdit = (id,name,email) => {
-                const editForm = document.getElementById('edit-department')
-                editForm.setAttribute('action',`/department/${id}?_method=PUT`)
-                const inputs = {name,email}
-                for (i in inputs){
-                    console.log(i);
-                    document.getElementById('modal-dept-'+i).setAttribute('value',inputs[i])
-                }
-            }
-        </script>
+  const handleEdit = (id, name, email) => {
+    const editForm = document.getElementById("edit-department");
+    editForm.setAttribute("action", `/department/${id}?_method=PUT`);
+    const inputs = { name, email };
+    for (i in inputs) {
+      console.log(i);
+      document
+        .getElementById("modal-dept-" + i)
+        .setAttribute("value", inputs[i]);
+    }
+  };
+</script>

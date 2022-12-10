@@ -9,7 +9,29 @@ const Inward = require('../../models/Inward')
 const InwardTest = require('../../models/InwardTest')
 const wrapAsync = require('../../utils/wrapAsync')
 
-// router.route('.')
+router.route('/reports/new')
+.get(loginRequired('manager'),checkManagerVad,wrapAsync(async(req,res)=>{
+    const tests = await InwardTest.find({status:{$in:['approval pending','remarked approval pending']}})
+    res.render('manager/reports',{tests})
+}))
+
+router.route('/reports/approved')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const tests = await InwardTest.find({status:'approved'})
+    res.render('manager/reports',{tests})
+}))
+
+router.route('/reports/remarked')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const tests = await InwardTest.find({status:'remarked'})
+    res.render('manager/reports',{tests})
+}))
+
+router.route('/reports/remarked')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const tests = await InwardTest.find({report:{$exists:true,$ne:[]}})
+    res.render('manager/reports',{tests})
+}))
 
 router.route('/test/:sampleDay/:sampleNo/approve')
 .post(loginRequired('manager'),checkManagerVad,wrapAsync(async(req,res)=>{
