@@ -21,6 +21,7 @@
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Date Approved</th>
+                                        <th>Report</th>
                                         <th>Details</th>
                                     </tr>
                                 </thead>
@@ -36,6 +37,11 @@
                                             <td><%= test.reportDate %></td>
                                             <td><%= test.letterDate %></td>
                                             <td><%= test.approveDate %></td>
+                                            <td>
+                                                <a href="/department/test/<%= test._id %>/upload" class="btn btn-warning waves-effect waves-light me-1">
+                                                    <i class=" bx bxs-save"></i>
+                                                </a>
+                                            </td>
                                             <td>
                                                 <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>

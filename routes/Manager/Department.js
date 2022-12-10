@@ -220,7 +220,7 @@ router.route('/test/:id/upload')
     const today = new Date()
     const uploadDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
     for (let test of tests){
-        test.report = "Report XD"
+        // test.report = "Report XD"
         test.status = "approval pending"
         test.uploadDate = uploadDate
         test.report = results
