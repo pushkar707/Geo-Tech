@@ -88,6 +88,15 @@ router.route('/new/tests')
     return res.redirect('/inward/new/tests')
 }))
 
+router.route('/clear')
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    res.clearCookie('inward')
+    res.clearCookie('sampleOfTheDay')
+    res.clearCookie('reportNo')
+    res.clearCookie('retailType')
+    res.redirect('/inward/new')
+}))
+
 router.route('/new/:reportNo')
 .delete(loginRequired('cse'),(req,res)=>{
     let inward = req.cookies.inward
