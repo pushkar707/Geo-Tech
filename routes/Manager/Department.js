@@ -192,7 +192,7 @@ router.route('/test/:id/status/processing')
     const processDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
     const test = await InwardTest.findByIdAndUpdate(id,{status:'processing',processDate})
     req.flash('success',"Status changed to processing")
-    res.redirect('back')
+    res.redirect('/department/processing')
 }))
 
 router.route('/test/:id/upload')
@@ -216,7 +216,7 @@ router.route('/test/:id/upload')
         test.uploadDate = uploadDate
         test.save()
     }
-    res.redirect("/department/aprroval-pending")
+    res.redirect("/department/approval-pending")
     // const reports = req.files
     // let results = []
     // for (let report of reports){

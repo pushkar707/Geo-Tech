@@ -9,6 +9,8 @@ const Inward = require('../../models/Inward')
 const InwardTest = require('../../models/InwardTest')
 const wrapAsync = require('../../utils/wrapAsync')
 
+// router.route('.')
+
 router.route('/test/:sampleDay/:sampleNo/approve')
 .post(loginRequired('manager'),checkManagerVad,wrapAsync(async(req,res)=>{
     const {sampleDay,sampleNo} = req.params
