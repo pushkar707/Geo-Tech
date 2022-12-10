@@ -11,6 +11,7 @@ const transporter = require('../../utils/nodeMailer')
 const multer = require('multer')
 const upload = multer({dest:'uploads/'})
 const {uploadFile,downloadFile} = require('../../utils/s3')
+const { application } = require('express')
 
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
@@ -205,6 +206,14 @@ router.route('/test/:id/upload')
 }))
 .post(loginRequired('department'),upload.array('report'),wrapAsync(async(req,res)=>{
     const {id} = req.params
+    // AWS
+    const reports = req.files
+    let results = []
+    for (let report of reports){
+        const result = await uploadFile(report)        
+        results.push(result.Key)
+    }
+    // *AWS
     const test = await InwardTest.findById(id)
     const sampleNo = test.sampleNo
     const tests = await InwardTest.find({sampleNo})
@@ -214,21 +223,19 @@ router.route('/test/:id/upload')
         test.report = "Report XD"
         test.status = "approval pending"
         test.uploadDate = uploadDate
+        test.report = results
         test.save()
     }
-    res.redirect("/department/approval-pending")
-    // const reports = req.files
-    // let results = []
-    // for (let report of reports){
-    //     const result = await uploadFile(report)
-    //     results.push(result.Key)
-    //     // console.log(result);
-    //     // console.log("----------");
-    // }
-    // for (let result of results){
-    //     const readStream = getFileStream(result)
-    // }
+    res.redirect(`/department/test/${id}/upload`)
+    
     // res.send(results)
+}))
+
+router.route('/images/:key')
+.get(wrapAsync(async(req,res)=>{
+    const {key} = req.params
+    const readStream = downloadFile(key)
+    readStream.pipe(res)
 }))
 
 module.exports = router

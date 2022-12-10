@@ -89,12 +89,19 @@
                                                                                         <% }) %>
                                                                                     </tbody>
                                                                                 </table>
+                                                                                <% if (tests[0].report) { %>
+                                                                                    <div class="mt-4 d-flex">
+                                                                                        <% tests[0].report.forEach(file => { %>
+                                                                                         <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
+                                                                                        <% }) %>
+                                                                                    </div>
+                                                                                <% } %>
                                                                             </div>
-                                                                            <% if (currentUserPos == "department") { %>
+                                                                            <% if (currentUserPos == "department" && !tests[0].report) { %>
                                                                                 <form action="/department/test/<%= tests[0]._id %>/upload" method="POST" enctype="multipart/form-data">
                                                                                     <div class="mb-3">
                                                                                         <label for="file" class="form-label">Select Report File: </label>
-                                                                                        <input type="file" name="report" class="form-control" id="file" multiple>
+                                                                                        <input type="file" name="report" class="form-control" id="file" multiple required>
                                                                                     </div>
                                                                                     <div class="mb-3">
                                                                                         <button class="btn btn-info">Upload File</button>                            
