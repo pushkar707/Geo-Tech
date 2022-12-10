@@ -222,7 +222,7 @@
                                                 </a>
                                                 &nbsp; | &nbsp; -->
                                                 <% if (!existing) { %>
-                                                  <form action="/inward/new/<%= test.reportNo %>?_method=DELETE" method="POST" style="display: inline;">
+                                                  <form action="/inward/new/<%= test.reportNo %>/<%= test.testName %>?_method=DELETE" method="POST" style="display: inline;">
                                                 <% }else{ %>
                                                   <form action="/inward/<%= test._id %>/edit-test?_method=DELETE" method="POST" style="display: inline;">
                                                 <% } %> 

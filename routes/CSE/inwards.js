@@ -97,11 +97,17 @@ router.route('/clear')
     res.redirect('/inward/new')
 }))
 
-router.route('/new/:reportNo')
+router.route('/new/:reportNo/:test')
 .delete(loginRequired('cse'),(req,res)=>{
     let inward = req.cookies.inward
     const newTests = inward.tests.filter(test=>{
-        return test.reportNo != req.params.reportNo
+        if (test.reportNo == req.params.reportNo){
+            if(test.testName != req.params.test){
+                return test
+            }
+        }else{
+            return test
+        }
     })
     inward = {...inward,tests:newTests}
     res.cookie('inward',inward)
