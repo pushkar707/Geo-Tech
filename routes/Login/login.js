@@ -33,6 +33,7 @@ router.route('/:city?')
             else if(user == "department"){
                 req.session.city = validUser.city
                 req.session.deptId = validUser.deptId
+                req.session.deptName = validUser.name
                 res.redirect('/department/'+validUser.deptId+'/all')
             }
             else if(user === "courier"){
