@@ -222,11 +222,11 @@
                                                 </a>
                                                 &nbsp; | &nbsp; -->
                                                 <% if (!existing) { %>
-                                                  <form action="/inward/new/<%= test.reportNo %>/<%= test.testName %>?_method=DELETE" method="POST" style="display: inline;">
+                                                  <form action="/inward/new/<%= test.reportNo %>/<%= test.testName %>?_method=DELETE" method="POST" style="display: inline;" id="delete-test-form">
                                                 <% }else{ %>
-                                                  <form action="/inward/<%= test._id %>/edit-test?_method=DELETE" method="POST" style="display: inline;">
+                                                  <form action="/inward/<%= test._id %>/edit-test?_method=DELETE" method="POST" style="display: inline;" id="delete-test-form">
                                                 <% } %> 
-                                                  <button class="btn btn-danger">
+                                                  <button type="button" onclick="testDelete('<%= test.testName %>','<%= test.reportNo %>')" class="btn btn-danger">
                                                     <i class="mdi mdi-delete"></i>Delete
                                                   </button>
                                                 </form>
@@ -332,6 +332,12 @@
     const clearInward = () =>{
       if(window.confirm("Do you want to clear current Inward?")){
         document.getElementById('clear-inward-form').submit()
+      }
+    }
+
+    const testDelete = (name,report) =>{
+      if(window.confirm(`Are you sure you want to delete ${name}(${report})?`)){
+        document.getElementById('delete-test-form').submit()
       }
     }
 
