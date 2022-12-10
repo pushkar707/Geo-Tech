@@ -21,6 +21,7 @@
                                         <th>End Date</th>
                                         <th>Remarked Text</th>
                                         <th>Details</th>
+                                        <th>Upload</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -38,6 +39,11 @@
                                             <td>
                                                 <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/department/test/<%= test._id %>/upload" class="btn btn-warning waves-effect waves-light me-1">
+                                                    <i class=" bx bxs-save"></i>
                                                 </a>
                                             </td>
                                         </tr>

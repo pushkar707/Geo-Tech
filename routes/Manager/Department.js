@@ -146,7 +146,7 @@ router.route('/approval-pending')
     const {deptId} = req.session
     const department = await Department.findById(deptId).populate('inwards')
     const tests = department.inwards.filter(test => {
-        return test.status == 'approval pending'
+        return test.status == 'approval pending' || test.status == 'remarked approval pending'
     })
     res.render('department/approval-pending',{tests})
 }))
@@ -221,7 +221,11 @@ router.route('/test/:id/upload')
     const uploadDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
     for (let test of tests){
         // test.report = "Report XD"
-        test.status = "approval pending"
+        if(test.status=='remarked'){
+            test.status = 'remarked approval pending'
+        }else{
+            test.status = 'approval pending'
+        }
         test.uploadDate = uploadDate
         test.report = results
         test.save()

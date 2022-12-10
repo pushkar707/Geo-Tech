@@ -89,7 +89,8 @@
                                                                                         <% }) %>
                                                                                     </tbody>
                                                                                 </table>
-                                                                                <% if (tests[0].report) { %>
+                                                                                <% if (tests[0].report.length) { %>
+                                                                                    <h4>Report</h4>
                                                                                     <div class="mt-4 d-flex">
                                                                                         <% tests[0].report.forEach(file => { %>
                                                                                          <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
@@ -108,13 +109,21 @@
                                                                                     </div>
                                                                                 </form>
                                                                             <% } %>
-                                                                            <% if (currentUserPos == "manager" && currentUserCity == "VAD" && !["approved","processing","pending"].includes(tests[0].status)) { %>
+                                                                            <% if (currentUserPos == "manager" && currentUserCity == "VAD" && !["approved","processing","pending",'remarked'].includes(tests[0].status)) { %>
                                                                              <div class="d-flex justify-content-center">
                                                                                 <form action="/manager/test/<%= tests[0].sampleNo %>/approve" method="POST">
                                                                                     <button class="btn btn-success m-4 btn-md">Approve</button>
                                                                                 </form>
                                                                                 <button class="btn btn-info m-4 btn-md" data-bs-toggle="modal" data-bs-target="#remarkReport" onclick="handleRemark('<%= tests[0].sampleNo %>')">Remark</button>
                                                                              </div>
+                                                                            <% } %>
+                                                                            <% if (tests[0].previousReport.length) { %>
+                                                                                <h4>Previous Report</h4>
+                                                                                <div class="mt-4 d-flex">
+                                                                                    <% tests[0].previousReport.forEach(file => { %>
+                                                                                     <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
+                                                                                    <% }) %>
+                                                                                </div>
                                                                             <% } %>
                                                                         </div>
                                                                         <!-- end card body -->

@@ -20,8 +20,9 @@
                         <th>Sample Number</th>
                         <th>Material</th>
                         <th>Test</th>
-                        <% if (tests.length && tests[0].status == 'remarked') { %>
+                        <% if (tests.length && (tests[0].status == 'remarked'||tests[0].status=='remarked approval pending')) { %>
                          <th>Remarked Text</th>
+                         <th>Status</th>
                         <% } %>
                         <th>Info</th>
                       </tr>
@@ -34,8 +35,9 @@
                           <td><%= test.sampleNo %></td>
                           <td><%= test.material %></td>
                           <td><%= test.testName %></td>
-                          <% if (tests.length && tests[0].status == 'remarked') { %>
+                          <% if (tests.length && (tests[0].status == 'remarked'||tests[0].status=='remarked approval pending')) { %>
                           <td><%= test.remarkedText %> </td>
+                          <td><%= test.status %> </td>
                            <% } %>
                           <td>
                             <a href="/department/test/<%= test._id %>/upload" class="btn btn-success waves-effect waves-light me-1">

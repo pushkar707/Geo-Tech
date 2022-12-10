@@ -23,13 +23,7 @@ router.route('/reports/approved')
 
 router.route('/reports/remarked')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const tests = await InwardTest.find({status:'remarked'})
-    res.render('manager/reports',{tests})
-}))
-
-router.route('/reports/remarked')
-.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const tests = await InwardTest.find({report:{$exists:true,$ne:[]}})
+    const tests = await InwardTest.find({status:{$in:['remarked','remarked approval pending']}})
     res.render('manager/reports',{tests})
 }))
 
@@ -44,7 +38,7 @@ router.route('/test/:sampleDay/:sampleNo/approve')
         test.approveDate = approveDate
         await test.save()
     }
-    res.redirect('/department/inward/'+tests[0].inward)
+    res.redirect('/manager/reports/approved')
 }))
 
 router.route('/test/:sampleDay/:sampleNo/remark')
@@ -54,9 +48,11 @@ router.route('/test/:sampleDay/:sampleNo/remark')
     for(let test of tests){
         test.remarkedText = req.body.remarkedText
         test.status = 'remarked'
+        test.previousReport = test.report
+        test.report = []
         await test.save()
     }
-    res.redirect('/department/inward/'+tests[0].inward)
+    res.redirect('/manager/reports/remarked')
 }))
 
 module.exports = router
