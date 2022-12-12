@@ -11,7 +11,7 @@ const transporter = require('../../utils/nodeMailer')
 const multer = require('multer')
 const upload = multer({dest:'uploads/'})
 const {uploadFile,downloadFile} = require('../../utils/s3')
-const { application } = require('express')
+const Other = require('../../models/Other')
 
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
@@ -183,7 +183,9 @@ router.route('/inward/:id')
 .get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('invoice').populate('clientId').populate('tests')
-    res.render('manager/inward.ejs',{inward,inWords})
+    const other = await Other.findOne({})
+    const {serviceTax} = other
+    res.render('manager/inward.ejs',{inward,inWords,serviceTax})
 }))
 
 router.route('/test/:id/status/processing')

@@ -169,8 +169,8 @@
                                                                                     </td>
                                                                                     <td><%= test.quantity %></td>
                                                                                     <td><%= test.rate %></td>
-                                                                                    <td><%= test.serviceTaxRate %></td>
-                                                                                    <td class="text-end"><%= test.serviceTaxRate*test.quantity %></td>
+                                                                                    <td><%= test.rate + Math.floor((serviceTax/100)*test.rate) %></td>
+                                                                                    <td class="text-end"><%= (test.rate + Math.floor((serviceTax/100)*test.rate))*test.quantity %></td>
                                                                                 </tr> 
                                                                             <% }) %>
                                                                         </tbody>
@@ -211,8 +211,8 @@
                                                                     <div class="col-sm-6">
                                                                     <h6><%= inward.invoice.subTotal %></h6>
                                                                     <h6>-<%= inward.invoice.discount %></h6>
-                                                                    <h6><%= inward.invoice.subTotal*(9/100) %></h6>
-                                                                    <h6><%= inward.invoice.subTotal*(9/100) %></h6>
+                                                                    <h6><%= Math.floor((inward.invoice.subTotal-inward.invoice.discount)*(9/100)*100)/100 %></h6>
+                                                                    <h6><%= Math.floor((inward.invoice.subTotal-inward.invoice.discount)*(9/100)*100)/100 %></h6>
                                                                     <h6><%= inward.invoice.grandTotal %> </h6>
                                                                     </div>
                                                                 </div>
