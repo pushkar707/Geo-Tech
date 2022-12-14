@@ -19,7 +19,7 @@
                                     <th>Client</th>
                                     <th>Total Test </th>
                                     <th>Date</th>
-                                    <th>Status</th>
+                                    <th>Type</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -30,7 +30,7 @@
                                         <td><%= inward.client %></td>
                                         <td><%= inward.tests.length %></td>
                                         <td><%= inward.reportDate %></td>
-                                        <td>Pending</td>
+                                        <td><%= inward.witnessName ? "Witness Inward" : "Normal Inward" %></td>
                                         <td>
                                             <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
                                         </td>
