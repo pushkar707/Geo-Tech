@@ -348,7 +348,6 @@ router.route('/:testId/edit-test')
             newOrder.push({...testi,quantity:testi.quantity-1})
         }
     })
-    console.log(newOrder);
     const dis = invoice.discountPer
     const discount = Math.floor(subTotal*(dis/100))
     const grandTotal = Math.floor(subTotal-discount + (18/100)*(subTotal-discount))

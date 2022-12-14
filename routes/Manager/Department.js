@@ -194,6 +194,16 @@ router.route('/test/:id/status/processing')
     const today = new Date()
     const processDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
     const test = await InwardTest.findByIdAndUpdate(id,{status:'processing',processDate})
+    // const inwardTests = await InwardTest.find({inward:test.inward})
+    // let check = 0
+    // for(let test of inwardTests){
+    //     if(test.status != 'pending'){
+    //         check+=1
+    //     }
+    // }
+    // if(check == inwardTests.length){
+    //     await Inward.findByIdAndUpdate(test.inward,{status:'processing'})
+    // }
     req.flash('success',"Status changed to processing")
     res.redirect('/department/processing')
 }))
