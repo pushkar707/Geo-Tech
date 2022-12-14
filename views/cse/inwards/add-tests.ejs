@@ -202,6 +202,7 @@
                                           </tr>
                                         </thead>
                                         <tbody>
+                                          <form action="" id="delete-test-form" method="POST" existing="<%= existing %>"></form>
                                           <% inward.tests.forEach((test,index) => { %>
                                             <tr>
                                               <th scope="row"><%= index+1 %></th>
@@ -211,22 +212,7 @@
                                               <td><%= test.price %></td>
                                               <td><%= test.reportNo %></td>
                                               <td>
-                                                <!-- <a
-                                                  href=""
-                                                  data-bs-toggle="modal"
-                                                  data-bs-target="#staticBackdrop"
-                                                  class="btn btn-primary"
-                                                  onclick="handleEdit('<%=test.reportNo%>','<%=test.price%>')"
-                                                  ><i class="bx bx-edit"></i>
-                                                  EDIT
-                                                </a>
-                                                &nbsp; | &nbsp; -->
-                                                <% if (!existing) { %>
-                                                  <form action="/inward/new/<%= test.reportNo %>/<%= test.testName %>?_method=DELETE" method="POST" style="display: inline;" id="delete-test-form">
-                                                <% }else{ %>
-                                                  <form action="/inward/<%= test._id %>/edit-test?_method=DELETE" method="POST" style="display: inline;" id="delete-test-form">
-                                                <% } %> 
-                                                  <button type="button" onclick="testDelete('<%= test.testName %>','<%= test.reportNo %>')" class="btn btn-danger">
+                                                  <button type="button" onclick="testDelete('<%= test.testName %>','<%= test.reportNo %>','<%= test._id %>')" class="btn btn-danger">
                                                     <i class="mdi mdi-delete"></i>Delete
                                                   </button>
                                                 </form>
@@ -335,9 +321,18 @@
       }
     }
 
-    const testDelete = (name,report) =>{
+    const testDelete = (name,report,id) =>{
+      const deleteTestForm = document.getElementById('delete-test-form')
+      const existing = deleteTestForm.getAttribute('existing')
+      let action
+      if(existing==='false'){
+        action = `/inward/new/${report}/${name}?_method=DELETE`
+      }else{
+        action = `/inward/${id}/edit-test?_method=DELETE`
+      }
+      deleteTestForm.setAttribute('action',action)
       if(window.confirm(`Are you sure you want to delete ${name}(${report})?`)){
-        document.getElementById('delete-test-form').submit()
+        deleteTestForm.submit()
       }
     }
 

@@ -110,6 +110,8 @@ router.route('/new/:reportNo/:test')
         }
     })
     inward = {...inward,tests:newTests}
+    res.cookie('sampleOfTheDay',inward.tests[inward.tests.length-1].reportNo)
+    res.cookie('reportNo',inward.tests[inward.tests.length-1].reportNo)
     res.cookie('inward',inward)
     return res.redirect('/inward/new/tests')
 })
@@ -264,11 +266,19 @@ router.route('/:id/edit-test')
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
     lastRecord = await Inward.find({}).populate('tests').skip(await Inward.count() - 1)
-    let sampleOfTheDay = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+    let reportNo,sampleOfTheDay
+    if(!req.cookies.reportNo){
+        reportNo = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+        res.cookie('reportNo',reportNo)
+        res.cookie('sampleOfTheDay',reportNo)
+    }else{
+        reportNo = req.cookies.reportNo
+    }
+    sampleOfTheDay = reportNo
     const start = new Date('04/01/2022')
     const today = new Date()
     const daysDiff = Math.ceil(Math.abs(today-start)/(1000*60*60*24))
-    reportNo = inward.tests[inward.tests.length-1].reportNo
+    // reportNo = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].reportNo)
     let allTests = req.body.tests
     if(!Array.isArray(allTests)){
         allTests = [allTests]
@@ -291,6 +301,7 @@ router.route('/:id/edit-test')
         }
     };
     await inward.save()
+    res.cookie('reportNo',reportNo)
 
     // EDITING INVOICE
     const other = await Other.findOne({})
