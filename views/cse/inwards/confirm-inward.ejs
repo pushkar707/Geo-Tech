@@ -102,22 +102,26 @@
                                       <p class="mb-1">Phone : <%= invoice.client.telephone %> </p>
                                       <p class="mb-1">GST
                                           : <%= invoice.client.gstNo %></p>
-                                      <p class="mb-1">Retail : <%= invoice.client.retailType %></p>
+                                      <% if (invoice.witnessName) { %>
+                                        <p class="mb-1">Witness Name : <%= invoice.witnessName %>
+                                        </p>
+                                      <% } %>
                                   </div>
-
-                                  <div class="col-md-6">
-                                      <p class="mb-1">Type : Normal / Witness
-                                      </p>
-                                      <p class="mb-1">Ref No. :
-                                        <%= invoice.refNo %>
-                                      </p>
-                                      <p class="mb-1">Client : <%= invoice.clientTemp %>
-                                      </p>
-                                      <p class="mb-1">Consultant : <%= invoice.consultantName %>
-                                      </p>
-                                      <p class="mb-1">Witness Name : <%= invoice.witnessName %>
-                                      </p>
-                                      <p class="mb-1">Witness Date : <%= invoice.witnessDate %>
+                                        
+                                        <div class="col-md-6">
+                                          <p class="mb-1">Type : Normal / Witness
+                                          </p>
+                                          <p class="mb-1">Ref No. :
+                                            <%= invoice.refNo %>
+                                          </p>
+                                          <p class="mb-1">Client : <%= invoice.clientTemp %>
+                                          </p>
+                                          <p class="mb-1">Consultant : <%= invoice.consultantName %>
+                                          </p>
+                                          <p class="mb-1">Retail : <%= invoice.client.retailType %></p>
+                                          <% if (invoice.witnessDate) { %>
+                                            <p class="mb-1">Witness Date : <%= invoice.witnessDate %>
+                                          <% } %>
                                       </p>
                                   </div>
                               </div>

@@ -25,52 +25,83 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="invoice-title">
-                                                                <div class="d-flex align-items-start">
-                                                                    <div class="flex-grow-1">
-                                                                        <div class="mb-4">
-                                                                            <img src="assets/images/logo2-2.png" alt="" height="24"><span class="logo-txt">GEO DESIGN</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="flex-shrink-0">
-                                                                        <div class="mb-4">
-                                                                            <h4 class="float-end font-size-16">JOB : <%= inward.jobId %></h4>
-                                                                            
-                                                                        </div>
-                                                                        
-                                                                    </div>
-                                                                </div>
-                                                                
-                    
-                                                                <p class="mb-1"><%= inward.clientId.name %></p>
-                                                                <p class="mb-1"><%= inward.clientId.address %></p>
-                                                                <p class="mb-1"><i class="mdi mdi-email align-middle me-1"></i>GST : <%= inward.clientId.gstNo %></p>
-                                                                <p><i class="mdi mdi-phone align-middle me-1"></i> <%= inward.clientId.city %></p>
-                                                            </div>
-                                                            <hr class="my-4">
+                                                        <div class="card-body">                                                            
                                                             <div class="row">
-                                                                <div class="col-sm-6">
+                                                                <div class="col-md-6">
+                                                                    <p class="mb-1">Contracter : <%= inward.clientId.name %> 
+                                                                    </p>
+                                                                    <p class="mb-1">City : <%= inward.clientId.city %> </p>
+                                                                    <p class="mb-1">Email : <%= inward.clientId.email %> </p>
+                                                                    <p class="mb-1">Phone : <%= inward.clientId.telephone %> </p>
+                                                                    <p class="mb-1">GST
+                                                                        : <%= inward.clientId.gstNo %></p>
+                                                                    <% if (inward.invoice.witnessName) { %>
+                                                                    <p class="mb-1">Witness Name : <%= inward.invoice.witnessName %>
+                                                                    </p>
+                                                                    <% } %>
+                                                                </div>
+                                                                    
+                                                                    <div class="col-md-6">
+                                                                        <p class="mb-1">Type : Normal / Witness
+                                                                        </p>
+                                                                        <p class="mb-1">Ref No. :
+                                                                        <%= inward.invoice.refNo %>
+                                                                        </p>
+                                                                        <p class="mb-1">Client : <%= inward.invoice.clientTemp %>
+                                                                        </p>
+                                                                        <p class="mb-1">Consultant : <%= inward.invoice.consultantName %>
+                                                                        </p>
+                                                                        <p class="mb-1">Retail : <%= inward.clientId.retailType %></p>
+                                                                        <% if (inward.invoice.witnessDate) { %>
+                                                                        <p class="mb-1">Witness Date : <%= inward.invoice.witnessDate %>
+                                                                        <% } %>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="my-4" />
+                                                            <div class="row mb-4">
+                                                                <div class="col-sm-4">
+                                                                <div>
+                                                                    <h5 class="font-size-15 mb-3">Contact
+                                                                        Person:</h5>
+                                                                    <h5 class="font-size-14 mb-2">Name:
+                                                                        <%= inward.clientId.contactPerson.name %></h5>
+                                                                    <p class="mb-1">Contact : <%= inward.clientId.contactPerson.mobile %>
+                                                                    </p>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
                                                                     <div>
-                                                                        <h5 class="font-size-15 mb-3">Contact Person:</h5>
-                                                                        <h5 class="font-size-14 mb-2">Name: <%= inward.clientId.contactPerson.name %> </h5>
-                                                                        <p class="mb-1">Contact : <%= inward.clientId.contactPerson.mobileNo %> 
-                                                                            </p>
-                                                                        <p class="mb-1">RichardSaul@rhyta.com</p>
-                                                                        
+                                                                        <h5 class="font-size-15 mb-3">Other
+                                                                            Person:</h5>
+                                                                        <h5 class="font-size-14 mb-2">Accountant
+                                                                            :
+                                                                            <%= inward.clientId.contactPerson.accountantName %></h5>
+                                                                        <p class="mb-1">Contact : <%= inward.clientId.contactPerson.accountantNumber %>
+                                                                        </p>
+                            
+                                                                        <h5 class="font-size-14 mb-2">Manager
+                                                                            :
+                                                                            <%= inward.clientId.contactPerson.managerName %></h5>
+                                                                        <p class="mb-1">Contact : <%= inward.clientId.contactPerson.managerNumber %>
+                                                                        </p>
+                            
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-sm-6">
+                            
+                                                                <div class="col-sm-4">
                                                                     <div>
                                                                         <div>
-                                                                            <h5 class="font-size-15">Report Date:</h5>
-                                                                            <p><%= inward.reportDate %></p>
+                                                                            <h5 class="font-size-15">Report
+                                                                                Date:</h5>
+                                                                            <p><%= inward.invoice.reportDate %></p>
                                                                         </div>
                                                                         <div>
-                                                                            <h5 class="font-size-15">Letter Date:</h5>
-                                                                            <p><%= inward.letterDate %></p>
+                                                                            <h5 class="font-size-15">Letter
+                                                                                Date:</h5>
+                                                                            <p><%= inward.invoice.letterDate %></p>
                                                                         </div>
-                                                                        
+                            
                                                                     </div>
                                                                 </div>
                                                             </div>
