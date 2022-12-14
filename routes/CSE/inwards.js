@@ -213,6 +213,7 @@ router.route('/:inwardId/:invoiceId/date')
 
 router.route('/invoice/:id')
 .get(loginRequired(['cse','department','manager']),wrapAsync(async(req,res)=>{
+    res.clearCookie('reportNo')
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
     const other = await Other.findOne({})
@@ -265,12 +266,12 @@ router.route('/:id/edit-test')
 .put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
-    lastRecord = await Inward.find({}).populate('tests').skip(await Inward.count() - 1)
+    lastRecord = await InwardTest.find({}).skip(await InwardTest.count() - 1)
     let reportNo,sampleOfTheDay
     if(!req.cookies.reportNo){
-        reportNo = Number(lastRecord[0].tests[lastRecord[0].tests.length-1].sampleNo.split('/')[1])
+        reportNo = Number(lastRecord[0].reportNo)
         res.cookie('reportNo',reportNo)
-        res.cookie('sampleOfTheDay',reportNo)
+        // res.cookie('sampleOfTheDay',reportNo)
     }else{
         reportNo = req.cookies.reportNo
     }
