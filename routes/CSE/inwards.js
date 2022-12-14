@@ -37,7 +37,7 @@ router.route('/new')
         }
     }
     const jobId = `${city}/${currClient.clientCode}/${daysDiff}/${jobOfTheDay}`
-    const reportDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    const reportDate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
     const newInward = new Inward({name:inward,city,client:currClient.name,clientId:client,jobId,tests:[],reportDate,clientTemp,refNo,witnessName,type,witnessDate,consultantName})
     res.cookie('inward',{...newInward['_doc']});
     res.cookie('retailType',currClient.retailType)

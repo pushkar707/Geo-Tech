@@ -32,7 +32,7 @@ router.route('/test/:sampleDay/:sampleNo/approve')
     const {sampleDay,sampleNo} = req.params
     const tests = await InwardTest.find({sampleNo:`${sampleDay}/${sampleNo}`})
     const today = new Date()
-    const approveDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    const approveDate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
     for (let test of tests){
         test.status = "approved"
         test.approveDate = approveDate

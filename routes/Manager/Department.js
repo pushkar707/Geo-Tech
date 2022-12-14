@@ -192,7 +192,7 @@ router.route('/test/:id/status/processing')
 .post(loginRequired('department'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const today = new Date()
-    const processDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    const processDate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
     const test = await InwardTest.findByIdAndUpdate(id,{status:'processing',processDate})
     await Inward.findByIdAndUpdate(test.inward,{status:"processing"})
     req.flash('success',"Status changed to processing")
@@ -221,7 +221,7 @@ router.route('/test/:id/upload')
     const sampleNo = test.sampleNo
     const tests = await InwardTest.find({sampleNo})
     const today = new Date()
-    const uploadDate = `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`
+    const uploadDate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
     for (let test of tests){
         // test.report = "Report XD"
         if(test.status=='remarked'){
