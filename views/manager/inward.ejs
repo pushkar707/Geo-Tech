@@ -227,7 +227,7 @@
                                                                         Sub Total :
                                                                     </h5>
                                                                     <h5 class="font-size-15">
-                                                                        Discount :
+                                                                        Discount (<%= inward.clientId.discount %>%) :
                                                                     </h5>
                                                                     <h6 class="font-size-15">
                                                                         9% SGST :
@@ -241,7 +241,7 @@
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                     <h6><%= inward.invoice.subTotal %></h6>
-                                                                    <h6>-<%= inward.invoice.discount %></h6>
+                                                                    <h6 style="height: 37px;">-<%= inward.invoice.discount %></h6>
                                                                     <h6><%= Math.floor((inward.invoice.subTotal-inward.invoice.discount)*(9/100)*100)/100 %></h6>
                                                                     <h6><%= Math.floor((inward.invoice.subTotal-inward.invoice.discount)*(9/100)*100)/100 %></h6>
                                                                     <h6><%= inward.invoice.grandTotal %> </h6>
