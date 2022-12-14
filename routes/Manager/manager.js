@@ -38,6 +38,17 @@ router.route('/test/:sampleDay/:sampleNo/approve')
         test.approveDate = approveDate
         await test.save()
     }
+    const inward = await Inward.findById(tests[0].inward).populate("tests")
+    let check = 0
+    for (let test of inward.tests){
+        if(test.status == "approved"){
+            check+=1
+        }
+    }
+    if(check == inward.tests.length){
+        inward.status = 'approved'
+        await inward.save()
+    }
     res.redirect('/manager/reports/approved')
 }))
 
@@ -52,6 +63,7 @@ router.route('/test/:sampleDay/:sampleNo/remark')
         test.report = []
         await test.save()
     }
+    await Inward.findByIdAndUpdate(tests[0].inward,{status:'remarked'})
     res.redirect('/manager/reports/remarked')
 }))
 

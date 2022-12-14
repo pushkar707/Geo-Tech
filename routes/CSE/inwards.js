@@ -202,7 +202,7 @@ router.route('/:inwardId/:invoiceId/date')
     const {inwardId,invoiceId} = req.params
     await InwardTest.updateMany({inward:inwardId},{letterDate})
     await Invoice.findByIdAndUpdate(invoiceId,{letterDate})
-    const inward = await Inward.findByIdAndUpdate(inwardId,{letterDate,status:'under-test'}).populate('tests')
+    const inward = await Inward.findByIdAndUpdate(inwardId,{letterDate,status:'with-department'}).populate('tests')
     for (let test of inward.tests){
         await Department.findByIdAndUpdate(test.dept,{$push:{inwards:test._id}})
     }
@@ -376,7 +376,7 @@ router.route('/all')
 router.route('/under-test')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
-    const inwards = await Inward.find({city,status:'under-test'})
+    const inwards = await Inward.find({city,status:'processing'})
     res.render('cse/inwards/all',{inwards})
 }))
 
@@ -387,7 +387,7 @@ router.route('/:id')
     res.render('cse/inwards/inward',{inward})
 }))
 
-router.route('/test')
+router.route('/')
 .get((req,res)=>{
     res.send(req.cookies)
 })
