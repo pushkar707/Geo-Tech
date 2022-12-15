@@ -36,11 +36,7 @@
                                         <td><%= inward.witnessName ? "Witness Inward" : "Normal Inward" %></td>
                                         <td><%= inward.status %></td>
                                         <td>
-                                            <% if (currentUserPos == 'cse') { %>
-                                                <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
-                                            <% }else if(currentUserPos == 'manager') { %>
-                                                <a href="/department/inward/<%= inward._id %>"><i class="dripicons-information"></i></a>
-                                            <% } %> 
+                                            <a href="/inward/<%= inward._id %>/final-ver"><i class="dripicons-information"></i></a>
                                         </td>
                                     </tr>
                                 <% }) %>

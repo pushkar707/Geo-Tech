@@ -112,8 +112,13 @@ router.route('/new/:reportNo/:test')
         }
     })
     inward = {...inward,tests:newTests}
-    res.cookie('sampleOfTheDay',inward.tests[inward.tests.length-1].reportNo)
-    res.cookie('reportNo',inward.tests[inward.tests.length-1].reportNo)
+    if(inward.tests.length){
+        res.cookie('sampleOfTheDay',inward.tests[inward.tests.length-1].reportNo)
+        res.cookie('reportNo',inward.tests[inward.tests.length-1].reportNo)
+    }else{
+        res.cookie('sampleOfTheDay',req.cookies.sampleOfTheDay-1)
+        res.cookie('reportNo',req.cookies.reportNo-1)
+    }
     res.cookie('inward',inward)
     return res.redirect('/inward/new/tests')
 })
@@ -221,6 +226,15 @@ router.route('/invoice/:id')
     const other = await Other.findOne({})
     const {serviceTax} = other
     res.render('cse/inwards/confirm-inward',{invoice,inWords,serviceTax})
+}))
+
+router.route('/invoice/:id/upload')
+.post(loginRequired('cse'),upload.single('inward-image'),wrapAsync(async(req,res)=>{
+    const report = req.file
+    const result = await uploadFile(report)
+    const {id} = req.params
+    await Invoice.findByIdAndUpdate(id,{image:result.Key})
+    res.redirect('/inward/invoice/'+id)
 }))
 
 router.route('/performa/:id')
@@ -394,20 +408,46 @@ router.route('/under-test')
     res.render('cse/inwards/all',{inwards})
 }))
 
+router.route('/final-verification')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({city,status:'approved'})
+    res.render('cse/inwards/final-ver',{inwards})
+}))
+
+router.route('/:id/final-ver')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const inward = await Inward.findById(id).populate('invoice').populate('clientId').populate('tests')
+    const other = await Other.findOne({})
+    const {serviceTax} = other
+    res.render('cse/inwards/job-details',{inward,inWords,serviceTax})
+}))
+
+router.route('/test/:id/accept')
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findByIdAndUpdate(id,{status:'cse-verified'})
+    res.redirect(`/inward/${test.inward}/final-ver`)
+}))
+
+router.route('/test/:id/reject')
+.post(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findById(id)
+    test.status = 'remarked'
+    test.remarkedText = 'Rejected By Cse'
+    test.previousReport = test.report
+    test.report = []
+    await test.save()
+    res.redirect(`/inward/${test.inward}/final-ver`)
+}))
+
 router.route('/:id')
 .get(loginRequired(['cse','manager']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
     res.render('cse/inwards/inward',{inward})
-}))
-
-router.route('/invoice/:id/upload')
-.post(loginRequired('cse'),upload.single('inward-image'),wrapAsync(async(req,res)=>{
-    const report = req.file
-    const result = await uploadFile(report)
-    const {id} = req.params
-    await Invoice.findByIdAndUpdate(id,{image:result.Key})
-    res.redirect('/inward/invoice/'+id)
 }))
 
 router.route('/')

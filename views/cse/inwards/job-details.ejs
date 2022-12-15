@@ -1,0 +1,323 @@
+<% layout(`/includes/${currentUserPos}`) -%> 
+<% block('title').append('<h5>Job Details</h5>') %>
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+          
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <div id="basic-pills-wizard" class="twitter-bs-wizard">
+                                
+                                <!-- wizard-nav -->
+
+                                <div class=" twitter-bs-wizard-tab-content">
+                                    
+                                    <div class="tab-pane" id="bank-detail">
+                                        <div>
+                                          
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+                                                        <div class="card-body">                                                            
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <p class="mb-1">Contracter : <%= inward.clientId.name %> 
+                                                                    </p>
+                                                                    <p class="mb-1">City : <%= inward.clientId.city %> </p>
+                                                                    <p class="mb-1">Email : <%= inward.clientId.email %> </p>
+                                                                    <p class="mb-1">Phone : <%= inward.clientId.telephone %> </p>
+                                                                    <p class="mb-1">GST
+                                                                        : <%= inward.clientId.gstNo %></p>
+                                                                    <% if (inward.invoice.witnessName) { %>
+                                                                    <p class="mb-1">Witness Name : <%= inward.invoice.witnessName %>
+                                                                    </p>
+                                                                    <% } %>
+                                                                </div>
+                                                                    
+                                                                    <div class="col-md-6">
+                                                                        <p class="mb-1">Type : Normal / Witness
+                                                                        </p>
+                                                                        <p class="mb-1">Ref No. :
+                                                                        <%= inward.invoice.refNo %>
+                                                                        </p>
+                                                                        <p class="mb-1">Client : <%= inward.invoice.clientTemp %>
+                                                                        </p>
+                                                                        <p class="mb-1">Consultant : <%= inward.invoice.consultantName %>
+                                                                        </p>
+                                                                        <p class="mb-1">Retail : <%= inward.clientId.retailType %></p>
+                                                                        <% if (inward.invoice.witnessDate) { %>
+                                                                        <p class="mb-1">Witness Date : <%= inward.invoice.witnessDate %>
+                                                                        <% } %>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="my-4" />
+                                                            <div class="row mb-4">
+                                                                <div class="col-sm-4">
+                                                                <div>
+                                                                    <h5 class="font-size-15 mb-3">Contact
+                                                                        Person:</h5>
+                                                                    <h5 class="font-size-14 mb-2">Name:
+                                                                        <%= inward.clientId.contactPerson.name %></h5>
+                                                                    <p class="mb-1">Contact : <%= inward.clientId.contactPerson.mobile %>
+                                                                    </p>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div>
+                                                                        <h5 class="font-size-15 mb-3">Other
+                                                                            Person:</h5>
+                                                                        <h5 class="font-size-14 mb-2">Accountant
+                                                                            :
+                                                                            <%= inward.clientId.contactPerson.accountantName %></h5>
+                                                                        <p class="mb-1">Contact : <%= inward.clientId.contactPerson.accountantNumber %>
+                                                                        </p>
+                            
+                                                                        <h5 class="font-size-14 mb-2">Manager
+                                                                            :
+                                                                            <%= inward.clientId.contactPerson.managerName %></h5>
+                                                                        <p class="mb-1">Contact : <%= inward.clientId.contactPerson.managerNumber %>
+                                                                        </p>
+                            
+                                                                    </div>
+                                                                </div>
+                            
+                                                                <div class="col-sm-4">
+                                                                    <div>
+                                                                        <div>
+                                                                            <h5 class="font-size-15">Report
+                                                                                Date:</h5>
+                                                                            <p><%= inward.invoice.reportDate %></p>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5 class="font-size-15">Letter
+                                                                                Date:</h5>
+                                                                            <p><%= inward.invoice.letterDate %></p>
+                                                                        </div>
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div>
+                                                                        <h5 class="font-size-15 mb-3">Name of Work :</h5>
+                                                                        <p class="mb-1"><%= inward.name %> 
+                                                                            </p>
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <br>    
+
+                                                            <div class="row">
+                                                                <div class="col-xl-12">
+                                                                    <div class="card">
+                                                                        
+                                                                        <div class="card-body">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-bordered border-primary mb-0">
+                                        
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>#</th>
+                                                                                            <th>Sample No.</th>
+                                                                                            <th>Material</th>
+                                                                                            <th>Test</th>
+                                                                                            <th>Report No.</th>
+                                                                                            <th>Status</th>
+                                                                                            <th>Report</th>
+                                                                                            <th>Action</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <% inward.tests.forEach((test,index) => { %>
+                                                                                            <tr>
+                                                                                                <th scope="row"><%= index+1 %> </th>
+                                                                                                <td><%= test.sampleNo %></td>
+                                                                                                <td><%= test.material %></td>
+                                                                                                <td><%= test.testName %></td>
+                                                                                                <td><%= test.reportNo %></td>
+                                                                                                <td><%= test.status %></td>
+                                                                                                <td>
+                                                                                                    <a href="/department/test/<%= test._id %>/upload" class="btn btn-success waves-effect waves-light me-1">
+                                                                                                        <i class=" bx bxs-info-circle"></i>
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <form action="/inward/test/<%= test._id %>/accept" method="POST" style="display: inline-block;">
+                                                                                                        <button class="btn btn-success m-1">ok</button>
+                                                                                                    </form>
+                                                                                                    <form action="/inward/test/<%= test._id %>/reject" method="POST" style="display: inline-block;">
+                                                                                                        <button class="btn btn-danger m-1" >No</button>
+                                                                                                    </form>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        <% }) %>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- end card body -->
+                                                                    </div>
+                                                                    <!-- end card -->
+                                                                </div>
+                                                                <!-- end col -->
+                                                            </div>
+                                                            <div class="py-2 mt-3">
+                                                                <h5 class="font-size-15">Order summary</h5>
+                                                            </div>
+                                                            <div class="p-4 border rounded">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-nowrap align-middle mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th style="width: 70px;">S. No.</th>
+                                                                                <th>Material</th>
+                                                                                <th>Test</th>
+                                                                                <th>Qty</th>
+                                                                                <th>Rate</th>
+                                                                                <th>Rate(Incl. ST)</th>
+                                                                                <th class="text-end" style="width: 120px;">Amount(Rs.)</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <% inward.invoice.order.forEach((test,index) => { %>
+                                                                                <tr>
+                                                                                    <th scope="row">0<%= index+1 %></th>
+                                                                                    <td>
+                                                                                    <h5 class="font-size-15 mb-1">
+                                                                                        <%= test.material %> 
+                                                                                    </h5>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    <%= test.test %>
+                                                                                    </td>
+                                                                                    <td><%= test.quantity %></td>
+                                                                                    <td><%= test.rate %></td>
+                                                                                    <td><%= test.rate + Math.floor((serviceTax/100)*test.rate) %></td>
+                                                                                    <td class="text-end"><%= (test.rate + Math.floor((serviceTax/100)*test.rate))*test.quantity %></td>
+                                                                                </tr> 
+                                                                            <% }) %>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-10">
+                                                                <div>
+                                                                    <h5 class="font-size-15 mb-3">
+                                                                    In Words:
+                                                                    </h5>
+                                                                    <p class="mb-1">
+                                                                      <%= inWords(inward.invoice.grandTotal) %>
+                                                                    </p>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                    <h5 class="font-size-15">
+                                                                        Sub Total :
+                                                                    </h5>
+                                                                    <h5 class="font-size-15">
+                                                                        Discount (<%= inward.clientId.discount %>%) :
+                                                                    </h5>
+                                                                    <h6 class="font-size-15">
+                                                                        9% SGST :
+                                                                    </h6>
+                                                                    <h6 class="font-size-15">
+                                                                        9% CGST :
+                                                                    </h6>
+                                                                    <h5 class="font-size-15">
+                                                                        Grand Total :
+                                                                    </h5>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                    <h6><%= inward.invoice.subTotal %></h6>
+                                                                    <h6 style="height: 37px;">-<%= inward.invoice.discount %></h6>
+                                                                    <h6><%= Math.floor((inward.invoice.subTotal-inward.invoice.discount)*(9/100)*100)/100 %></h6>
+                                                                    <h6><%= Math.floor((inward.invoice.subTotal-inward.invoice.discount)*(9/100)*100)/100 %></h6>
+                                                                    <h6><%= inward.invoice.grandTotal %> </h6>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-print-none mt-3">
+                                                                <div class="float-end">
+                                                                    Save in A2 size <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+                                                                    <!-- <a href="#" class="btn btn-primary w-md waves-effect waves-light">Send</a> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                    <!-- tab pane -->
+                                </div>
+                                <!-- end tab content -->
+                            </div>
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    <!-- Modal -->
+    <div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirm Save Changes</h5>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal"
+                        onclick="nextTab()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © GEO DESIGN.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by <a href="#!" class="text-decoration-underline">Themesbrand</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
