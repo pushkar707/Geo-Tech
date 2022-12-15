@@ -54,6 +54,7 @@ router.route('/:id/all')
     const {id} = req.params
     const department = await Department.findById(id).populate('inwards')
     const tests = department.inwards
+    tests.reverse()
     res.render('manager/tests',{tests})
 }))
 .put(loginRequired('manager'),wrapAsync(async(req,res)=>{
@@ -102,6 +103,7 @@ router.route('/inward/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {city} = req.session
     const inwards = await Inward.find({city})
+    // inwards.reverse()
     res.render('manager/all-inwards',{inwards})
 }))
 
@@ -128,6 +130,7 @@ router.route('/pending')
     const tests = department.inwards.filter((test)=>{
         return test.status == 'pending'
     })
+    tests.reverse()
     res.render('department/pending',{tests})
 }))
 
@@ -138,6 +141,7 @@ router.route('/processing')
     const tests = department.inwards.filter((test)=>{
         return test.status == 'processing'
     })
+    tests.reverse()
     res.render('department/processing',{tests})
 }))
 
@@ -148,6 +152,7 @@ router.route('/approval-pending')
     const tests = department.inwards.filter(test => {
         return test.status == 'approval pending' || test.status == 'remarked approval pending'
     })
+    tests.reverse()
     res.render('department/approval-pending',{tests})
 }))
 
@@ -158,6 +163,7 @@ router.route('/remarked')
     const tests = department.inwards.filter((test)=>{
         return test.status == 'remarked'
     })
+    tests.reverse()
     res.render('department/remarked',{tests})
 }))
 
@@ -168,6 +174,7 @@ router.route('/approved')
     const tests = department.inwards.filter((test)=>{
         return test.status == 'approved'
     })
+    tests.reverse()
     res.render('department/approved',{tests})
 }))
 
