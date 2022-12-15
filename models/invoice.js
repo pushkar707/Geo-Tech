@@ -37,7 +37,8 @@ const invoiceSchema = {
     }],
     subTotal:Number,
     discount:Number,
-    grandTotal:Number
+    grandTotal:Number,
+    image:String
 }
 
 module.exports = model('Invoice',invoiceSchema)

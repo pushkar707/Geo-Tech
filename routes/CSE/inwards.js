@@ -10,7 +10,9 @@ const InwardTest = require('../../models/InwardTest')
 const Other = require('../../models/Other')
 const wrapAsync = require('../../utils/wrapAsync')
 const Department = require('../../models/Department')
-const invoice = require('../../models/invoice')
+const multer = require('multer')
+const upload = multer({dest:'uploads/'})
+const {uploadFile,downloadFile} = require('../../utils/s3')
 
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -397,6 +399,15 @@ router.route('/:id')
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
     res.render('cse/inwards/inward',{inward})
+}))
+
+router.route('/invoice/:id/upload')
+.post(loginRequired('cse'),upload.single('inward-image'),wrapAsync(async(req,res)=>{
+    const report = req.file
+    const result = await uploadFile(report)
+    const {id} = req.params
+    await Invoice.findByIdAndUpdate(id,{image:result.Key})
+    res.redirect('/inward/invoice/'+id)
 }))
 
 router.route('/')
