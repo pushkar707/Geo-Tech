@@ -1,0 +1,25 @@
+<% layout(`/includes/${currentUserPos}`) -%> 
+<% block('title').append('<h5>Pending Tests</h5>') %>
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="row">
+            <div class="col-12"><br>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Report</h4>
+                        <div class="my-4 d-flex">
+                            <% test.report.forEach(file => { %>
+                                <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
+                            <% }) %>
+                        </div>
+                        <h4>Worksheet</h4>
+                        <div class="mt-4">
+                            <img src="/department/images/<%= test.worksheet %>" alt="" width="400px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -90,12 +90,18 @@
                                                                                     </tbody>
                                                                                 </table>
                                                                                 <% if (tests[0].report.length) { %>
-                                                                                    <h4>Report</h4>
+                                                                                    <div class="d-flex my-4 justify-content-center">
+                                                                                        <a target="_blank" class="btn btn-info mx-4" href="/department/<%= tests[0]._id %>/preview">Preview</a>
+                                                                                        <form action="/department/<%= tests[0]._id %>/download" method="POST">
+                                                                                            <button class="btn btn-primary mx-4">Download</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                    <!-- <h4>Report</h4>
                                                                                     <div class="mt-4 d-flex">
                                                                                         <% tests[0].report.forEach(file => { %>
                                                                                          <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
                                                                                         <% }) %>
-                                                                                    </div>
+                                                                                    </div> -->
                                                                                 <% } %>
                                                                             </div>
                                                                             <% if (currentUserPos == "department" && !tests[0].report.length) { %>
@@ -103,6 +109,10 @@
                                                                                     <div class="mb-3">
                                                                                         <label for="file" class="form-label">Select Report File: </label>
                                                                                         <input type="file" name="report" class="form-control" id="file" multiple required>
+                                                                                    </div>
+                                                                                    <div class="mb-3">
+                                                                                        <label for="file" class="form-label">Select Worksheet File: </label>
+                                                                                        <input type="file" name="worksheet" class="form-control" id="file" required>
                                                                                     </div>
                                                                                     <div class="mb-3">
                                                                                         <button class="btn btn-info">Upload File</button>                            

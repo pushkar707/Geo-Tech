@@ -11,6 +11,7 @@ const inwardTestSchema = new Schema({
     jobId:String,
     processDate:String,
     report:[String],
+    worksheet:String,
     uploadDate:String,
     approveDate:String,
     remarkedText:String,

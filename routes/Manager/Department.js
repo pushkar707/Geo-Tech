@@ -12,6 +12,7 @@ const multer = require('multer')
 const upload = multer({dest:'uploads/'})
 const {uploadFile,downloadFile} = require('../../utils/s3')
 const Other = require('../../models/Other')
+const downloadReport = require('../../utils/downloadFile')
 
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
@@ -214,15 +215,17 @@ router.route('/test/:id/upload')
     // res.render('cse/inwards/inward',{tests})
     res.render('department/upload-file',{tests})
 }))
-.post(loginRequired('department'),upload.array('report'),wrapAsync(async(req,res)=>{
+.post(loginRequired('department'),upload.fields([{name:'report'},{name:'worksheet',maxCount:1}]),wrapAsync(async(req,res)=>{
     const {id} = req.params
     // AWS
-    const reports = req.files
+    const reports = req.files.report
+    const worksheet = req.files.worksheet
     let results = []
     for (let report of reports){
         const result = await uploadFile(report)        
         results.push(result.Key)
     }
+    const sheetRes = await uploadFile(worksheet[0])
     // *AWS
     const test = await InwardTest.findById(id)
     const sampleNo = test.sampleNo
@@ -238,12 +241,31 @@ router.route('/test/:id/upload')
         }
         test.uploadDate = uploadDate
         test.report = results
+        test.worksheet = sheetRes.Key
         test.save()
     }
     await Inward.findByIdAndUpdate(tests[0].inward,{status:"approval-pending"})
     res.redirect(`/department/test/${id}/upload`)
     
     // res.send(results)
+}))
+
+router.route('/:id/preview')
+.get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findById(id)
+    res.render('department/preview',{test})
+}))
+
+router.route('/:id/download')
+.post(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
+    const {id} = req.params
+    const test = await InwardTest.findById(id)
+    for(let report of test.report){
+        downloadReport(`http://${req.headers.host}/department/images/${report}`,'report.jpg')
+    }
+    downloadReport(`http://${req.headers.host}/department/images/${test.worksheet}`,'worksheet.jpg')
+    res.redirect(`/department/test/${id}/upload`)
 }))
 
 router.route('/images/:key')
