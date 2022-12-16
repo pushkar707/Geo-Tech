@@ -38,13 +38,13 @@
                                             <td><%= test.letterDate %></td>
                                             <td><%= test.type %> Inward</td>
                                             <td>
-                                                <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
+                                                <a href="/department/inward/<%= test.inward %>" class="btn btn-info waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
                                                 </a>
                                             </td>
                                             <td>
                                                 <form action="/department/test/<%= test._id %>/status/processing" method="POST">
-                                                    <button><%= test.status %></button>
+                                                    <button class="btn btn-success">Process</button>
                                                 </form>
                                             </td>
                                         </tr>
