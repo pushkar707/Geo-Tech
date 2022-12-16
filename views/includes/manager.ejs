@@ -225,27 +225,27 @@
               <li>
                 <a href="/manager/reports/new">
                   <i class="bx bx-book"></i>
-                  <span data-key="t-dashboard">New Reports</span>
+                  <span data-key="t-dashboard">New Reports <span style="color: red;"><%= managerTables.has('approval-pending') || managerTables.has('remarked-approval-pending') ? '*' : "" %></span></span>
                 </a>
               </li>
             <% } %>
             <li>
               <a href="/manager/reports/approved">
                 <i class="bx bx-book"></i>
-                <span data-key="t-dashboard">Approved Reports</span>
+                <span data-key="t-dashboard">Approved Reports <span style="color: red;"><%= managerTables.has('approved') ? '*' : "" %></span></span>
               </a>
             </li>
             <li>
               <a href="/manager/reports/remarked">
                 <i class="bx bx-test-tube"></i>
-                <span data-key="t-dashboard">Remarked Reports</span>
+                <span data-key="t-dashboard">Remarked Reports <span style="color: red;"><%= managerTables.has('remarked') || managerTables.has('remarked-approval-pending') ? '*' : "" %></span></span>
               </a>
             </li>
 
             <li>
               <a href="/manager/reports/cse-verified">
                 <i class="bx bx-test-tube"></i>
-                <span data-key="t-dashboard">CSE-Verified Reports</span>
+                <span data-key="t-dashboard">CSE-Verified Reports <span style="color: red;"><%= managerTables.has('cse-verified') ? '*' : "" %></span></span>
               </a>
             </li>
 

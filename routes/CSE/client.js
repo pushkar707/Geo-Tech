@@ -2,20 +2,9 @@ const express = require('express')
 const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
-const Inward = require('../../models/Inward')
 const CseInfo = require('../../models/CseInfo')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
-
-router.use(async(req,res,next)=>{
-    req.session.inwardTables = new Set()
-    const inwards = await Inward.find({})
-    for (let inward of inwards){
-        req.session.inwardTables.add(inward.status)
-    }
-    res.locals.inwardTables = req.session.inwardTables
-    next()
-})
 
 router.route('/all')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{

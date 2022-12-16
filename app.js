@@ -9,8 +9,8 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
 // MODELS
-const User = require('./models/User')
-const Material = require('./models/Material')
+const Inward = require('./models/Inward')
+const InwardTest = require('./models/InwardTest')
 const Test = require('./models/Test')
 //ROUTES
 const userRoutes = require('./routes/CSE/material')
@@ -59,10 +59,34 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(flash());
 
-app.use((req,res,next)=>{
+app.use(async(req,res,next)=>{
     res.locals.currentUser = req.session.userId
     res.locals.currentUserCity = req.session.city
     res.locals.currentUserPos = req.session.userPos
+    if(req.session.userPos == 'cse'){
+        req.session.inwardTables = new Set()
+        const inwards = await Inward.find({})
+        for (let inward of inwards){
+            req.session.inwardTables.add(inward.status)
+        }
+        res.locals.inwardTables = req.session.inwardTables
+    }else if(req.session.userPos == 'manager'){
+        req.session.managerTables = new Set()
+        const tests = await InwardTest.find({})
+        for (let test of tests){
+            req.session.managerTables.add(test.status)
+        }
+        res.locals.managerTables = req.session.managerTables
+    }else if(req.session.userPos == 'department'){
+        res.locals.currentDeptId = req.session.deptId
+        res.locals.currentDeptName = req.session.deptName
+        req.session.departmentTables = new Set()
+        const tests = await InwardTest.find({dept:req.session.deptId})
+        for(let test of tests){
+            req.session.departmentTables.add(test.status)
+        }
+        res.locals.departmentTables = req.session.departmentTables
+    }
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
     next()
