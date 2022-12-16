@@ -243,7 +243,7 @@
             <li>
               <a href="/department/approval-pending">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Approval Pending <span style="color: red;"><%= departmentTables.has('approval pending') ? '*' : "" %></span></span>
+                <span data-key="t-dashboard">Approval Pending <span style="color: red;"><%= departmentTables.has('approval pending') || departmentTables.has('remarked approval pending') ? '*' : "" %></span></span>
               </a>
             </li>
             <li>

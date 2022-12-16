@@ -154,11 +154,11 @@
                                                                                                 </td>
                                                                                                 <td>
                                                                                                     <% if (test.status=='approved') { %>
-                                                                                                        <form action="/inward/test/<%= test._id %>/accept" method="POST" style="display: inline-block;">
-                                                                                                            <button class="btn btn-success m-1">ok</button>
+                                                                                                        <form action="/inward/test/<%= test._id %>/accept" id="approve-form-<%= test._id %>" method="POST" style="display: inline-block;">
+                                                                                                            <button type="button" onclick="approveConfirm('<%=test._id%>','<%=test.testName%>','<%=test.reportNo%>')" class="btn btn-success m-1">ok</button>
                                                                                                         </form>
-                                                                                                        <form action="/inward/test/<%= test._id %>/reject" method="POST" style="display: inline-block;">
-                                                                                                            <button class="btn btn-danger m-1" >No</button>
+                                                                                                        <form action="/inward/test/<%= test._id %>/reject" id="reject-form-<%= test._id %>" method="POST" style="display: inline-block;">
+                                                                                                            <button type="button" onclick="rejectConfirm('<%=test._id%>','<%=test.testName%>','<%=test.reportNo%>')" class="btn btn-danger m-1" >No</button>
                                                                                                         </form>
                                                                                                     <% } %>
                                                                                                 </td>
@@ -323,3 +323,17 @@
         </div>
     </footer>
 </div>
+
+<script>
+    const approveConfirm = (testId,name,report) => {
+        if(window.confirm(`Are you sure you want to APPROVE ${name}(${report})`)){
+            document.getElementById('approve-form-'+testId).submit()
+        }
+    }
+
+    const rejectConfirm = (testId,name,report) => {
+        if(window.confirm(`Are you sure you want to REJECT ${name}(${report})`)){
+            document.getElementById('reject-form-'+testId).submit()
+        }
+    }
+</script>

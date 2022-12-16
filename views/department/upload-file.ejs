@@ -135,8 +135,8 @@
                                                                             <% } %>
                                                                             <% if (currentUserPos == "manager" && currentUserCity == "VAD" && !["approved","processing","pending",'remarked'].includes(tests[0].status)) { %>
                                                                              <div class="d-flex justify-content-center">
-                                                                                <form action="/manager/test/<%= tests[0].sampleNo %>/approve" method="POST">
-                                                                                    <button class="btn btn-success m-4 btn-md">Approve</button>
+                                                                                <form action="/manager/test/<%= tests[0].sampleNo %>/approve" method="POST" id="approve-form">
+                                                                                    <button type="button" onclick="approveConfirm()" class="btn btn-success m-4 btn-md">Approve</button>
                                                                                 </form>
                                                                                 <button class="btn btn-info m-4 btn-md" data-bs-toggle="modal" data-bs-target="#remarkReport" onclick="handleRemark('<%= tests[0].sampleNo %>')">Remark</button>
                                                                              </div>
@@ -235,5 +235,11 @@
     const handleRemark = sampleNo => {
         const remarkForm = document.getElementById('remarkForm')
         remarkForm.setAttribute('action',`/manager/test/${sampleNo}/remark`)
+    }
+
+    const approveConfirm = () => {
+        if(window.confirm("Are you sure you want to approve the report?")){
+            document.getElementById('approve-form').submit()
+        }
     }
 </script>
