@@ -21,6 +21,7 @@
                                         <th>Status</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
+                                        <th>Type</th>
                                         <th>Details</th>
                                     </tr>
                                 </thead>
@@ -36,6 +37,7 @@
                                             <td><%= test.status %></td>
                                             <td><%= test.reportDate %></td>
                                             <td><%= test.letterDate %></td>
+                                            <td><%= test.type %> Inward</td>
                                             <td>
                                                 <% if (currentUserPos == "department") { %>
                                                     <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">

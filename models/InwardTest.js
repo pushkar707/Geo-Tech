@@ -17,6 +17,10 @@ const inwardTestSchema = new Schema({
     remarkedText:String,
     previousReport:[String],
     payRequired:Boolean,
+    type:{
+        type:String,
+        enum:['normal','witness']
+    },
     dept:{
         type:Schema.Types.ObjectId,
         ref:'Department'

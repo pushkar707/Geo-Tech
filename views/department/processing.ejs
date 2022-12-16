@@ -20,6 +20,7 @@
                                         <th>Report No.</th>
                                         <th>Processing Start</th>
                                         <th>End Date</th>
+                                        <th>Type</th>
                                         <th>Details</th>
                                         <th>Upload</th>
                                     </tr>
@@ -35,6 +36,7 @@
                                             <td><%= test.reportNo %></td>
                                             <td><%= test.processDate %></td>
                                             <td><%= test.letterDate %></td>
+                                            <td><%= test.type %> Inward</td>
                                             <td>
                                                 <a href="/department/inward/<%= test.inward %>" class="btn btn-success waves-effect waves-light me-1">
                                                     <i class=" bx bxs-info-circle"></i>
