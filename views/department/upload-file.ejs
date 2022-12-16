@@ -89,26 +89,40 @@
                                                                                         <% }) %>
                                                                                     </tbody>
                                                                                 </table>
-                                                                                <% if (tests[0].report.length) { %>
-                                                                                    <div class="d-flex my-4 justify-content-center">
-                                                                                        <a target="_blank" class="btn btn-info mx-4" href="/department/<%= tests[0]._id %>/preview">Preview</a>
-                                                                                        <form action="/department/<%= tests[0]._id %>/download" method="POST">
-                                                                                            <button class="btn btn-primary mx-4">Download</button>
-                                                                                        </form>
+                                                                                <% if (tests[0].report) { %>
+                                                                                    <div class="d-flex">
+                                                                                        <div class="w-50 m-3">
+                                                                                            <h4>Report</h4>
+                                                                                            <div>
+                                                                                                <img src="/department/images/<%= tests[0].report %>" alt="Click the button below to view the report" width="400px" class="mx-3">
+                                                                                            </div>
+                                                                                            <div class="d-flex my-4 justify-content-center">
+                                                                                                <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= tests[0].report %>">Preview</a>
+                                                                                                <form action="/department/images/<%= tests[0].report %>/download" method="POST">
+                                                                                                    <button class="btn btn-primary mx-4">Download</button>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="m-3 w-50">
+                                                                                            <h4>Worksheet</h4>
+                                                                                            <div>
+                                                                                                <img src="/department/images/<%= tests[0].worksheet %>" onerror="this.src=''" alt="Click the button below to view the report" width="400px" class="mx-3">
+                                                                                            </div>
+                                                                                            <div class="d-flex my-4 justify-content-center">
+                                                                                                <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= tests[0].worksheet %>">Preview</a>
+                                                                                                <form action="/department/images/<%=tests[0].worksheet %>/download" method="POST">
+                                                                                                    <button class="btn btn-primary mx-4">Download</button>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <!-- <h4>Report</h4>
-                                                                                    <div class="mt-4 d-flex">
-                                                                                        <% tests[0].report.forEach(file => { %>
-                                                                                         <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
-                                                                                        <% }) %>
-                                                                                    </div> -->
                                                                                 <% } %>
                                                                             </div>
-                                                                            <% if (currentUserPos == "department" && !tests[0].report.length) { %>
+                                                                            <% if (currentUserPos == "department" && !tests[0].report) { %>
                                                                                 <form action="/department/test/<%= tests[0]._id %>/upload" method="POST" enctype="multipart/form-data">
                                                                                     <div class="mb-3">
                                                                                         <label for="file" class="form-label">Select Report File: </label>
-                                                                                        <input type="file" name="report" class="form-control" id="file" multiple required>
+                                                                                        <input type="file" name="report" class="form-control" id="file" required>
                                                                                     </div>
                                                                                     <div class="mb-3">
                                                                                         <label for="file" class="form-label">Select Worksheet File: </label>
@@ -127,12 +141,16 @@
                                                                                 <button class="btn btn-info m-4 btn-md" data-bs-toggle="modal" data-bs-target="#remarkReport" onclick="handleRemark('<%= tests[0].sampleNo %>')">Remark</button>
                                                                              </div>
                                                                             <% } %>
-                                                                            <% if (tests[0].previousReport.length) { %>
+                                                                            <% if (tests[0].previousReport) { %>
                                                                                 <h4>Previous Report</h4>
-                                                                                <div class="mt-4 d-flex">
-                                                                                    <% tests[0].previousReport.forEach(file => { %>
-                                                                                     <img src="/department/images/<%= file %>" alt="" width="400px" class="mx-3">
-                                                                                    <% }) %>
+                                                                                <div class="mt-4 w-100">
+                                                                                    <img src="/department/images/<%= tests[0].previousReport %>" alt="Click Below to view Previous Report" width="400px" class="mx-3 d-block mx-auto">
+                                                                                </div>
+                                                                                <div class="d-flex my-4 justify-content-center">
+                                                                                    <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= tests[0].previousReport %>">Preview</a>
+                                                                                    <form action="/department/images/<%= tests[0].previousReport %>/download" method="POST">
+                                                                                        <button class="btn btn-primary mx-4">Download</button>
+                                                                                    </form>
                                                                                 </div>
                                                                             <% } %>
                                                                         </div>

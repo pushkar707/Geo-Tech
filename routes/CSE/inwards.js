@@ -11,8 +11,9 @@ const Other = require('../../models/Other')
 const wrapAsync = require('../../utils/wrapAsync')
 const Department = require('../../models/Department')
 const multer = require('multer')
-const upload = multer({dest:'uploads/'})
-const {uploadFile,downloadFile} = require('../../utils/s3')
+const {upload} = require('../../utils/s3')
+// const upload = multer({dest:'uploads/'})
+// const {uploadFile,downloadFile} = require('../../utils/s3')
 
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
@@ -230,10 +231,8 @@ router.route('/invoice/:id')
 
 router.route('/invoice/:id/upload')
 .post(loginRequired('cse'),upload.single('inward-image'),wrapAsync(async(req,res)=>{
-    const report = req.file
-    const result = await uploadFile(report)
     const {id} = req.params
-    await Invoice.findByIdAndUpdate(id,{image:result.Key})
+    await Invoice.findByIdAndUpdate(id,{image:req.file.key})
     res.redirect('/inward/invoice/'+id)
 }))
 

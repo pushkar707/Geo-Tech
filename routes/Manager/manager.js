@@ -60,7 +60,7 @@ router.route('/test/:sampleDay/:sampleNo/remark')
         test.remarkedText = req.body.remarkedText
         test.status = 'remarked'
         test.previousReport = test.report
-        test.report = []
+        test.report = ''
         await test.save()
     }
     await Inward.findByIdAndUpdate(tests[0].inward,{status:'remarked'})

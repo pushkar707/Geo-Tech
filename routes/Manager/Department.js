@@ -9,8 +9,9 @@ const InwardTest = require('../../models/InwardTest')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 const multer = require('multer')
-const upload = multer({dest:'uploads/'})
-const {uploadFile,viewFile,downloadFile} = require('../../utils/s3')
+// const upload = multer({dest:'uploads/'})
+const {uploadFile,viewFile,upload,downloadFile} = require('../../utils/s3')
+// const {downloadFile} = require('../../utils/s3DownloadFile')
 const Other = require('../../models/Other')
 const downloadReport = require('../../utils/downloadFile')
 
@@ -215,17 +216,20 @@ router.route('/test/:id/upload')
     // res.render('cse/inwards/inward',{tests})
     res.render('department/upload-file',{tests})
 }))
-.post(loginRequired('department'),upload.fields([{name:'report'},{name:'worksheet',maxCount:1}]),wrapAsync(async(req,res)=>{
+.post(loginRequired('department'),upload.fields([{name:'report',maxCount:1},{name:'worksheet',maxCount:1}]),wrapAsync(async(req,res)=>{
     const {id} = req.params
+    // return res.send(req.files)
+    const report = req.files.report[0].key
+    const worksheet = req.files.worksheet[0].key
     // AWS
-    const reports = req.files.report
-    const worksheet = req.files.worksheet
-    let results = []
-    for (let report of reports){
-        const result = await uploadFile(report)        
-        results.push(result.Key)
-    }
-    const sheetRes = await uploadFile(worksheet[0])
+    // const reports = req.files.report
+    // const worksheet = req.files.worksheet
+    // let results = []
+    // for (let report of reports){
+    //     const result = await uploadFile(report)        
+    //     results.push(result.Key)
+    // }
+    // const sheetRes = await uploadFile(worksheet[0])
     // *AWS
     const test = await InwardTest.findById(id)
     const sampleNo = test.sampleNo
@@ -240,33 +244,31 @@ router.route('/test/:id/upload')
             test.status = 'approval pending'
         }
         test.uploadDate = uploadDate
-        test.report = results
-        test.worksheet = sheetRes.Key
+        test.report = report
+        test.worksheet = worksheet
         test.save()
     }
     await Inward.findByIdAndUpdate(tests[0].inward,{status:"approval-pending"})
     res.redirect(`/department/test/${id}/upload`)
-    
-    // res.send(results)
 }))
 
-router.route('/:id/preview')
-.get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
-    const {id} = req.params
-    const test = await InwardTest.findById(id)
-    res.render('department/preview',{test})
-}))
+// router.route('/:id/preview')
+// .get(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
+//     const {id} = req.params
+//     const test = await InwardTest.findById(id)
+//     res.render('department/preview',{test})
+// }))
 
-router.route('/:id/download')
-.post(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
-    const {id} = req.params
-    const test = await InwardTest.findById(id)
-    for(let report of test.report){
-        downloadReport(`http://${req.headers.host}/department/images/${report}`,'report.jpg')
-    }
-    downloadReport(`http://${req.headers.host}/department/images/${test.worksheet}`,'worksheet.jpg')
-    res.redirect(`/department/test/${id}/upload`)
-}))
+// router.route('/:id/download')
+// .post(loginRequired(['department','manager']),wrapAsync(async(req,res)=>{
+//     const {id} = req.params
+//     const test = await InwardTest.findById(id)
+//     for(let report of test.report){
+//         downloadReport(`http://${req.headers.host}/department/images/${report}`,'report.jpg')
+//     }
+//     downloadReport(`http://${req.headers.host}/department/images/${test.worksheet}`,'worksheet.jpg')
+//     res.redirect(`/department/test/${id}/upload`)
+// }))
 
 router.route('/images/:key')
 .get(wrapAsync(async(req,res)=>{
@@ -276,7 +278,7 @@ router.route('/images/:key')
 }))
 
 router.route('/images/:key/download')
-.get(wrapAsync(async(req,res)=>{
+.post(wrapAsync(async(req,res)=>{
     const {key} = req.params
     const readStream = await downloadFile(key)
     res.send(readStream.Body)
