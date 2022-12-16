@@ -27,6 +27,12 @@ router.route('/reports/remarked')
     res.render('manager/reports',{tests})
 }))
 
+router.route('/reports/cse-verified')
+.get(loginRequired('manager'),wrapAsync(async(req,res)=>{
+    const tests = await InwardTest.find({status:'cse-verified'})
+    res.render('manager/reports',{tests})
+}))
+
 router.route('/test/:sampleDay/:sampleNo/approve')
 .post(loginRequired('manager'),checkManagerVad,wrapAsync(async(req,res)=>{
     const {sampleDay,sampleNo} = req.params

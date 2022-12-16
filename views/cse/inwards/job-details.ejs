@@ -153,12 +153,14 @@
                                                                                                     </a>
                                                                                                 </td>
                                                                                                 <td>
-                                                                                                    <form action="/inward/test/<%= test._id %>/accept" method="POST" style="display: inline-block;">
-                                                                                                        <button class="btn btn-success m-1">ok</button>
-                                                                                                    </form>
-                                                                                                    <form action="/inward/test/<%= test._id %>/reject" method="POST" style="display: inline-block;">
-                                                                                                        <button class="btn btn-danger m-1" >No</button>
-                                                                                                    </form>
+                                                                                                    <% if (test.status=='approved') { %>
+                                                                                                        <form action="/inward/test/<%= test._id %>/accept" method="POST" style="display: inline-block;">
+                                                                                                            <button class="btn btn-success m-1">ok</button>
+                                                                                                        </form>
+                                                                                                        <form action="/inward/test/<%= test._id %>/reject" method="POST" style="display: inline-block;">
+                                                                                                            <button class="btn btn-danger m-1" >No</button>
+                                                                                                        </form>
+                                                                                                    <% } %>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         <% }) %>

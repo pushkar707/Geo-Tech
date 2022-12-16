@@ -407,6 +407,13 @@ router.route('/under-test')
     res.render('cse/inwards/all',{inwards})
 }))
 
+router.route('/cse-verified')
+.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+    const {city} = req.session
+    const inwards = await Inward.find({city,status:'cse-verified'})
+    res.render('cse/inwards/all',{inwards})
+}))
+
 router.route('/final-verification')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {city} = req.session
@@ -427,6 +434,18 @@ router.route('/test/:id/accept')
 .post(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const test = await InwardTest.findByIdAndUpdate(id,{status:'cse-verified'})
+    await Department.findByIdAndUpdate(test.dept,{$pull:{inwards:test._id}})
+    const inward = await Inward.findById(test.inward).populate("tests")
+    let check = 0
+    for (let test of inward.tests){
+        if(test.status == "cse-verified"){
+            check+=1
+        }
+    }
+    if(check == inward.tests.length){
+        inward.status = 'cse-verified'
+        await inward.save()
+    }
     res.redirect(`/inward/${test.inward}/final-ver`)
 }))
 
@@ -437,7 +456,7 @@ router.route('/test/:id/reject')
     test.status = 'remarked'
     test.remarkedText = 'Rejected By Cse'
     test.previousReport = test.report
-    test.report = []
+    test.report = ''
     await test.save()
     res.redirect(`/inward/${test.inward}/final-ver`)
 }))
