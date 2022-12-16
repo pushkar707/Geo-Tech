@@ -20,6 +20,7 @@
                         <th>Sample Number</th>
                         <th>Material</th>
                         <th>Test</th>
+                        <th>Type</th>
                         <% if (tests.length && (tests[0].status == 'remarked'||tests[0].status=='remarked approval pending')) { %>
                          <th>Remarked Text</th>
                          <th>Status</th>
@@ -38,6 +39,7 @@
                           <td><%= test.sampleNo %></td>
                           <td><%= test.material %></td>
                           <td><%= test.testName %></td>
+                          <td><%= test.type %> inward</td>
                           <% if (tests.length && (tests[0].status == 'remarked'||tests[0].status=='remarked approval pending')) { %>
                           <td><%= test.remarkedText %> </td>
                           <td><%= test.status %> </td>
