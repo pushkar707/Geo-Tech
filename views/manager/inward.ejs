@@ -1,6 +1,13 @@
 <% layout(`/includes/${currentUserPos}`) -%> 
 <% block('title').append('<h5>Job Details</h5>') %>
 
+<style>
+    .highlight{
+        font-weight: bold;
+        color: blue;
+    }
+</style>
+
 <div class="main-content">
 
     <div class="page-content">
@@ -141,14 +148,18 @@
                                                                                     </thead>
                                                                                     <tbody>
                                                                                         <% inward.tests.forEach((test,index) => { %>
+                                                                                            <% if (currentUserPos == 'department' && currentDeptId == test.dept) { %>
+                                                                                            <tr class="highlight">
+                                                                                            <% }else{ %>
                                                                                             <tr>
+                                                                                            <% } %> 
                                                                                                 <th scope="row"><%= index+1 %> </th>
                                                                                                 <td><%= test.sampleNo %></td>
                                                                                                 <td><%= test.material %></td>
                                                                                                 <td><%= test.testName %></td>
                                                                                                 <td><%= test.reportNo %></td>
                                                                                                 <td>
-                                                                                                    <span style="color: <%= test.status == 'completed' ? 'green' : 'red'%>"><%= test.status %> </span>
+                                                                                                    <span style="color:red"><%= test.status %> </span>
                                                                                                 </td>
                                                                                                 <% if (currentUserPos == 'manager' && currentUserCity == 'VAD') { %>
                                                                                                 <td>
