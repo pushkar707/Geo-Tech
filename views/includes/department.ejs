@@ -231,31 +231,31 @@
             <li>
               <a href="/department/pending">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Pending</span>
+                <span data-key="t-dashboard">Pending <span style="color: red;"><%= departmentTables.has('pending') ? '*' : "" %></span> </span>
               </a>
             </li>
             <li>
               <a href="/department/processing">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Processing</span>
+                <span data-key="t-dashboard">Processing <span style="color: red;"><%= departmentTables.has('processing') ? '*' : "" %></span></span>
               </a>
             </li>
             <li>
               <a href="/department/approval-pending">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Approval Pending</span>
+                <span data-key="t-dashboard">Approval Pending <span style="color: red;"><%= departmentTables.has('approval pending') ? '*' : "" %></span></span>
               </a>
             </li>
             <li>
               <a href="/department/remarked">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Remarked</span>
+                <span data-key="t-dashboard">Remarked <span style="color: red;"><%= departmentTables.has('remarked') ? '*' : "" %></span></span>
               </a>
             </li>
             <li>
               <a href="/department/approved">
                 <i data-feather="home"></i>
-                <span data-key="t-dashboard">Approved</span>
+                <span data-key="t-dashboard">Approved <span style="color: red;"><%= departmentTables.has('approved') ? '*' : "" %></span></span>
               </a>
             </li>
             <li>

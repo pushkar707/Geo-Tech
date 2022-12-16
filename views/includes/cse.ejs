@@ -231,14 +231,14 @@
             <li>
               <a href="/inward/pending">
                 <i class="bx bx-book"></i>
-                <span data-key="t-dashboard">Pending Inwards</span>
+                <span data-key="t-dashboard">Pending Inwards <span style="color: red;"><%= inwardTables.has('pending') ? '*' : "" %></span></span>
               </a>
             </li>
 
             <li>
               <a href="/inward/under-test">
                 <i class="bx bx-test-tube"></i>
-                <span data-key="t-dashboard">Under Test</span>
+                <span data-key="t-dashboard">Under Test <span style="color: red;"><%= inwardTables.has('processing') ? '*' : "" %></span></span>
               </a>
             </li>
             
@@ -252,14 +252,14 @@
             <li>
               <a href="/inward/final-verification">
                 <i class="bx bx-check-double"></i>
-                <span data-key="t-dashboard">Final Verification</span>
+                <span data-key="t-dashboard">Final Verification <span style="color: red;"><%= inwardTables.has('approved') ? '*' : "" %></span></span>
               </a>
             </li>
 
             <li>
               <a href="/inward/cse-verified">
                 <i class="bx bx-check-double"></i>
-                <span data-key="t-dashboard">CSE-Verified</span>
+                <span data-key="t-dashboard">CSE-Verified <span style="color: red;"><%= inwardTables.has('cse-verified') ? '*' : "" %></span></span>
               </a>
             </li>
 

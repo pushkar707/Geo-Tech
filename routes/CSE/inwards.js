@@ -15,6 +15,16 @@ const {upload} = require('../../utils/s3')
 // const upload = multer({dest:'uploads/'})
 // const {uploadFile,downloadFile} = require('../../utils/s3')
 
+router.use(async(req,res,next)=>{
+    req.session.inwardTables = new Set()
+    const inwards = await Inward.find({})
+    for (let inward of inwards){
+        req.session.inwardTables.add(inward.status)
+    }
+    res.locals.inwardTables = req.session.inwardTables
+    next()
+})
+
 router.route('/new')
 .get(loginRequired('cse'),wrapAsync(async(req,res)=>{
     if(req.cookies.inward){

@@ -15,6 +15,18 @@ const {uploadFile,viewFile,upload,downloadFile} = require('../../utils/s3')
 const Other = require('../../models/Other')
 const downloadReport = require('../../utils/downloadFile')
 
+router.use(async(req,res,next)=>{
+    res.locals.currentDeptId = req.session.deptId
+    res.locals.currentDeptName = req.session.deptName
+    req.session.departmentTables = new Set()
+    const tests = await InwardTest.find({dept:req.session.deptId})
+    for(let test of tests){
+        req.session.departmentTables.add(test.status)
+    }
+    res.locals.departmentTables = req.session.departmentTables
+    next()
+})
+
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {city} = req.session
