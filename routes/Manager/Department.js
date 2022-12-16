@@ -10,7 +10,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
 const multer = require('multer')
 const upload = multer({dest:'uploads/'})
-const {uploadFile,downloadFile} = require('../../utils/s3')
+const {uploadFile,viewFile,downloadFile} = require('../../utils/s3')
 const Other = require('../../models/Other')
 const downloadReport = require('../../utils/downloadFile')
 
@@ -271,8 +271,15 @@ router.route('/:id/download')
 router.route('/images/:key')
 .get(wrapAsync(async(req,res)=>{
     const {key} = req.params
-    const readStream = downloadFile(key)
+    const readStream = viewFile(key)
     readStream.pipe(res)
+}))
+
+router.route('/images/:key/download')
+.get(wrapAsync(async(req,res)=>{
+    const {key} = req.params
+    const readStream = await downloadFile(key)
+    res.send(readStream.Body)
 }))
 
 module.exports = router

@@ -15,6 +15,7 @@ const s3 = new S3({
 // UPLAODS FILE TO S3
 
 module.exports.uploadFile = async(file) => {
+    console.log(file);
     const fileStream = fs.createReadStream(file.path)
     // await sharp(fileStream).resize({height:200,width:300}).toFile(fileStream)
     const randNum = Math.floor(Math.random()*100)
@@ -22,7 +23,7 @@ module.exports.uploadFile = async(file) => {
     const uploadParams = {
         Bucket:process.env.AWS_BUCKET_NAME,
         Body: fileStream,
-        Key:file.filename
+        Key:`${file.filename}.${file.originalname.split('.').slice(-1)[0]}`
     }
 
     return s3.upload(uploadParams).promise()
@@ -30,11 +31,21 @@ module.exports.uploadFile = async(file) => {
 
 // DOWNLAODS FILE FROM S3
 
-module.exports.downloadFile = fileKey => {
+module.exports.viewFile = fileKey => {
     const downloadParams = {
         Key:fileKey,
         Bucket:process.env.AWS_BUCKET_NAME
     }
 
     return s3.getObject(downloadParams).createReadStream()
+}
+
+module.exports.downloadFile = async(fileKey) => {
+    const downloadParams = {
+        Key:fileKey,
+        Bucket:process.env.AWS_BUCKET_NAME,
+    }
+
+    const res = await s3.getObject(downloadParams).promise()
+    return res
 }
