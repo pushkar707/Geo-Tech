@@ -189,6 +189,7 @@ router.route('/new/save')
     // invoice.name = inward.name
     // await invoice.save()
     inward.invoice = invoice._id
+    inward.grandTotal = grandTotal
     await inward.save()
     res.redirect('/inward/invoice/'+invoice._id)
 }))
@@ -233,7 +234,8 @@ router.route('/invoice/:id')
 router.route('/invoice/:id/upload')
 .post(loginRequired('cse'),upload.single('inward-image'),wrapAsync(async(req,res)=>{
     const {id} = req.params
-    await Invoice.findByIdAndUpdate(id,{image:req.file.key})
+    const invoice = await Invoice.findByIdAndUpdate(id,{image:req.file.key})
+    await Inward.findByIdAndUpdate(invoice.inward,{image:req.file.key})
     res.redirect('/inward/invoice/'+id)
 }))
 
@@ -269,6 +271,7 @@ router.route('/new/:invoiceId/:testId')
     invoice.discount = discount
     invoice.grandTotal = grandTotal
     await invoice.save()
+    await Inward.findByIdAndUpdate(invoice.inward,{grandTotal})
     res.redirect('/inward/invoice/'+invoiceId)
 }))
 
@@ -282,10 +285,15 @@ router.route('/:id/edit-test')
 .put(loginRequired('cse'),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('tests')
-    lastRecord = await InwardTest.find({}).skip(await InwardTest.count() - 1)
     let reportNo,sampleOfTheDay
     if(!req.cookies.reportNo){
-        reportNo = Number(lastRecord[0].reportNo)
+        const totalTests = await InwardTest.count()
+        if(totalTests){
+            lastRecord = await InwardTest.find({}).skip(totalTests-1)
+            reportNo = Number(lastRecord[0].reportNo)
+        }else{
+            reportNo = 0
+        }
         res.cookie('reportNo',reportNo)
         // res.cookie('sampleOfTheDay',reportNo)
     }else{
@@ -317,7 +325,6 @@ router.route('/:id/edit-test')
             await Department.findByIdAndUpdate(newTest.dept,{$push:{inwards:newTest._id}})
         }
     };
-    await inward.save()
     res.cookie('reportNo',reportNo)
 
     // EDITING INVOICE
@@ -353,6 +360,8 @@ router.route('/:id/edit-test')
     invoice.discount = discount
     invoice.grandTotal = grandTotal
     await invoice.save()
+    inward.grandTotal = grandTotal
+    await inward.save()
     res.redirect(`/inward/${inward._id}/edit-test`)
 }))
 
@@ -373,6 +382,7 @@ router.route('/:testId/edit-test')
             subTotal+=(testi.rate+(serviceTax/100)*testi.rate)*testi.quantity
             newOrder.push(testi)
         }else if(testi.quantity>1){
+            subTotal+=(testi.rate+(serviceTax/100)*testi.rate)*(testi.quantity-1)
             newOrder.push({...testi,quantity:testi.quantity-1})
         }
     })
@@ -383,6 +393,7 @@ router.route('/:testId/edit-test')
     invoice.subTotal = subTotal
     invoice.discount = discount
     invoice.grandTotal = grandTotal
+    await Inward.findByIdAndUpdate(invoice.inward,{grandTotal})
     await invoice.save()
     res.redirect(`/inward/${inward._id}/edit-test`)
 }))

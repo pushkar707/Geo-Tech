@@ -17,13 +17,14 @@ const userRoutes = require('./routes/CSE/material')
 const testRoutes = require('./routes/CSE/test')
 const clientRoutes = require('./routes/CSE/client')
 const inwardRoutes = require('./routes/CSE/inwards')
+const managerRoutes = require('./routes/Manager/manager')
 const departmentRoutes = require('./routes/Manager/Department')
 const managerTestRoutes = require('./routes/Manager/test')
 const loginRoutes = require('./routes/Login/login')
 const forgotRoutes = require('./routes/Login/forgot')
 const changePassRoutes = require('./routes/Login/changePass')
 const adminRoutes = require('./routes/Admin')
-const managerRoutes = require('./routes/Manager/manager')
+const accountRoutes = require('./routes/Accounts')
 //
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
@@ -108,9 +109,11 @@ app.use('/inward',inwardRoutes)
 // Manager
 app.use('/department',departmentRoutes)
 app.use('/manager',managerRoutes)
+app.use('/test',managerTestRoutes)
 //admin
 app.use('/admin',adminRoutes)
-app.use('/test',managerTestRoutes)
+//accounts
+app.use('/accounts',accountRoutes)
 
 app.get('/test',(req,res)=>{res.render('test')})
 

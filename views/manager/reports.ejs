@@ -26,7 +26,7 @@
                          <th>Status</th>
                         <% } %>
                         <th>Info</th>
-                        <% if (tests.length && tests[0].status == 'approved') { %>
+                        <% if (tests.length && (tests[0].status == 'approved' || tests[0].status == 'cse-verified')) { %>
                          <th>Pay Required</th>
                         <% } %>
                       </tr>
@@ -49,7 +49,7 @@
                                 <i class=" bx bxs-info-circle"></i>
                             </a>
                         </td>
-                        <% if (tests.length && tests[0].status == 'approved') { %>
+                        <% if (tests.length && (tests[0].status == 'approved' || tests[0].status == 'cse-verified')) { %>
                           <td>
                             <form action="/manager/<%= test._id %>/pay" method="POST">
                               <button class="btn btn-info"><%= test.payRequired %></button>

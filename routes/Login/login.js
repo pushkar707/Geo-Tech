@@ -40,7 +40,7 @@ router.route('/:city?')
                 res.send("done")
             }
             else if(user === "accounts"){
-                res.send("done")
+                res.redirect('/accounts/pending')
             }
         }else{
             req.flash("error","Invalid login details")

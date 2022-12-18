@@ -76,7 +76,19 @@ router.route('/:id/pay')
     const test = await InwardTest.findById(id)
     test.payRequired = !test.payRequired
     await test.save()
-    res.redirect('/manager/reports/approved')
+    if(test.payRequired==false){
+        await Inward.findByIdAndUpdate(test.inward,{payRequired:false})
+    }else{
+        const inward = await Inward.findById(test.inward).populate('tests')
+        const check = inward.tests.find(test=>test.payRequired==false)
+        if(check){
+            inward.payRequired = false
+        }else{
+            inward.payRequired = true
+        }
+        await inward.save()
+    }
+    res.redirect('back')
 }))
 
 module.exports = router

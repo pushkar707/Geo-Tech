@@ -32,7 +32,11 @@ const inwardSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Invoice'
     },
-    status:String
+    status:String,
+    image:String,
+    payRequired:Boolean,
+    grandTotal:Number,
+    payDate:String
 })
 
 module.exports = model('Inward',inwardSchema)
