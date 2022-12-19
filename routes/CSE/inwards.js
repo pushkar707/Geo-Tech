@@ -222,7 +222,7 @@ router.route('/:inwardId/:invoiceId/date')
 }))
 
 router.route('/invoice/:id')
-.get(loginRequired(['cse','department','manager','accounts']),wrapAsync(async(req,res)=>{
+.get(loginRequired(['cse','department','manager','accounts','courier']),wrapAsync(async(req,res)=>{
     res.clearCookie('reportNo')
     const {id} = req.params
     const invoice = await Invoice.findById(id).populate('client')
@@ -456,6 +456,7 @@ router.route('/test/:id/accept')
     }
     if(check == inward.tests.length){
         inward.status = 'cse-verified'
+        inward.dispatched = false
         await inward.save()
     }
     res.redirect(`/inward/${test.inward}/final-ver`)

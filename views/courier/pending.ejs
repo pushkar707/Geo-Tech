@@ -1,0 +1,109 @@
+<% layout('/includes/courier') -%> 
+<% block('title').append('<h5>Pending Inwards</h5>') %>
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                                <thead>
+                                <tr>
+                                    <th>Job No.</th>
+                                    <th>Pay Required</th>
+                                    <th>Status</th>
+                                    <th>Report Date</th>
+                                    <th>Letter Date</th>
+                                    <th>Client</th>
+                                    <th>Action</th>
+                                    <th>Info</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% inwards.forEach(inward => { %>
+                                    <tr>
+                                        <td><%= inward.jobId %></td>
+                                        <td><%= inward.payRequired %></td>
+                                        <td><%= inward.status==='paid' ? 'Paid' : 'Not Paid' %></td>
+                                        <td><%= inward.reportDate %></td>
+                                        <td><%= inward.letterDate %></td>
+                                        <td><%= inward.client %></td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" onclick="dispatchInward('<%= inward._id %>','<%= inward.jobId %>')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Dispatch</button>
+                                        </td>
+                                        <td>
+                                            <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- end cardaa -->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div> <!-- container-fluid -->
+    </div>
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © GEO DESIGN.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by <a href="#!" class="text-decoration-underline">KAMI LABS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dispatch-form-label">Add Courier Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" id="dispatch-form" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Tracking Id</label>
+                        <input id="formEmail" name="trackingId" class="form-control" type="text" placeholder="Tracking Id" id="example-text-input" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Tracking Company</label>
+                        <input name="trackingCompany" class="form-control" type="text" placeholder="Tracking Company" id="example-text-input">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="example-text-input" class="form-label">Courier Details</label>
+                        <input name="courierDetails" class="form-control" type="text" placeholder="Courier Details" id="example-text-input">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>   
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dispatchInward = (id,jobId) => {
+        const dispatchForm = document.getElementById('dispatch-form')
+        dispatchForm.setAttribute('action',`/courier/${id}/dispatch`)
+        const formLabel = document.getElementById('dispatch-form-label')
+        formLabel.innerHTML=`Add Inward Details (${jobId})`
+    }
+</script>

@@ -37,7 +37,7 @@ router.route('/:city?')
                 res.redirect('/department/'+validUser.deptId+'/all')
             }
             else if(user === "courier"){
-                res.send("done")
+                res.redirect('/courier/pending')
             }
             else if(user === "accounts"){
                 res.redirect('/accounts/pending')

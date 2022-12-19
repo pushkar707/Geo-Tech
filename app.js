@@ -25,6 +25,7 @@ const forgotRoutes = require('./routes/Login/forgot')
 const changePassRoutes = require('./routes/Login/changePass')
 const adminRoutes = require('./routes/Admin')
 const accountRoutes = require('./routes/Accounts')
+const courierRoutes = require('./routes/Courier')
 //
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
@@ -114,6 +115,8 @@ app.use('/test',managerTestRoutes)
 app.use('/admin',adminRoutes)
 //accounts
 app.use('/accounts',accountRoutes)
+//courier
+app.use('/courier',courierRoutes)
 
 app.get('/test',(req,res)=>{res.render('test')})
 

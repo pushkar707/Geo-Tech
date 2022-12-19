@@ -36,7 +36,11 @@ const inwardSchema = new Schema({
     image:String,
     payRequired:Boolean,
     grandTotal:Number,
-    payDate:String
+    payDate:String,
+    dispatched:Boolean,
+    trackingId:String,
+    trackingCompany:String,
+    courierDetails:String
 })
 
 module.exports = model('Inward',inwardSchema)

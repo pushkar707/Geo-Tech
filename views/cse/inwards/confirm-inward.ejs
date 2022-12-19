@@ -206,7 +206,9 @@
                                             <th>Qty</th>
                                             <th>Rate</th>
                                             <th>Rate(Incl. ST)</th>
-                                            <th>Edit Rate</th>
+                                            <% if (currentUserPos=='cse') { %>
+                                              <th>Edit Rate</th>
+                                            <% } %>
                                             <th
                                             class="text-end"
                                             style="width: 120px"
@@ -231,17 +233,19 @@
                                                 <td><%= test.rate %></td>
                                                 <% const serviceTaxRate = Math.floor(test.rate+((serviceTax/100)*test.rate)) %>
                                                 <td><%= serviceTaxRate %></td>
-                                                <td>
-                                                  <a
-                                                  href=""
-                                                  data-bs-toggle="modal"
-                                                  data-bs-target="#editPrice"
-                                                  class="btn btn-primary"
-                                                  onclick="handleEdit('<%= invoice._id %>','<%=test._id%>','<%=test.rate%>')"
-                                                  ><i class="bx bx-edit"></i>
-                                                  EDIT
-                                                </a>
-                                                </td>
+                                                <% if (currentUserPos=='cse') { %>
+                                                  <td>
+                                                    <a
+                                                    href=""
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editPrice"
+                                                    class="btn btn-primary"
+                                                    onclick="handleEdit('<%= invoice._id %>','<%=test._id%>','<%=test.rate%>')"
+                                                    ><i class="bx bx-edit"></i>
+                                                    EDIT
+                                                  </a>
+                                                  </td>
+                                                <% } %>
                                                 <td class="text-end"><%= serviceTaxRate*test.quantity %></td>
                                             </tr> 
                                         <% }) %>
@@ -294,6 +298,8 @@
                             </div>
                           </div>
                         </div>
+                        <% if (currentUserPos=='cse') { %>
+                         
                         <% if (invoice.image) { %>
                           <img src="/department/images/<%= invoice.image %>" alt="" height="200px" width="300px" class="m-3 d-block">
                         <% } %>
@@ -316,6 +322,7 @@
                                   Edit Inward
                                 </a>
                             <% } %> 
+                        <% } %>
 
                             <a href="/inward/performa/<%= invoice._id %>" class="btn btn-primary"
                                 >Get Performa Invoice

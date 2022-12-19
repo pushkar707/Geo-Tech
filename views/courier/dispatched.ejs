@@ -1,12 +1,10 @@
-<% layout('/includes/accounts') -%> 
-<% block('title').append('<h5>Paid Inwards</h5>') %>
+<% layout('/includes/courier') -%> 
+<% block('title').append('<h5>Pending Inwards</h5>') %>
 
 <div class="main-content">
 
     <div class="page-content">
         <div class="container-fluid">
-
-           
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -15,14 +13,15 @@
                             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                                 <thead>
                                 <tr>
-                                    <th>Job No. </th>
-                                    <th>Client</th>
-                                    <th>Total Tests</th>
-                                    <th>Total Amount</th>
-                                    <th>Payment Date</th>
+                                    <th>Job No.</th>
                                     <th>Pay Required</th>
+                                    <th>Status</th>
                                     <th>Report Date</th>
-                                    <th>Last Date</th>
+                                    <th>Letter Date</th>
+                                    <th>Client</th>
+                                    <th>Tracking Id</th>
+                                    <th>Tracking Comapny</th>
+                                    <th>Courier Details</th>
                                     <th>Info</th>
                                 </tr>
                                 </thead>
@@ -30,20 +29,19 @@
                                 <% inwards.forEach(inward => { %>
                                     <tr>
                                         <td><%= inward.jobId %></td>
-                                        <td><%= inward.client %></td>
-                                        <td><%= inward.tests.length %></td>
-                                        <td><%= inward.grandTotal %></td>
-                                        <td><%= inward.payDate %></td>
                                         <td><%= inward.payRequired %></td>
+                                        <td><%= inward.status==='paid' ? 'Paid' : 'Not Paid' %></td>
                                         <td><%= inward.reportDate %></td>
                                         <td><%= inward.letterDate %></td>
+                                        <td><%= inward.client %></td>
+                                        <td><%= inward.trackingId %></td>
+                                        <td><%= inward.trackingCompany %></td>
+                                        <td><%= inward.courierDetails %></td>
                                         <td>
                                             <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
                                         </td>
                                     </tr>
                                 <% }) %>
-
-                                
                                 </tbody>
                             </table>
                         </div>
