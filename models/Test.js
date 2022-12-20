@@ -15,14 +15,14 @@ const testSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Department'
     },
-    'dept2':{
+    deptBRH:{
         type:Schema.Types.ObjectId,
         ref:"Department"
     },
-    "dept3":{
+    deptBJ3:{
         type:Schema.Types.ObjectId,
         ref:'Department'
-    }
+    },
 })
 
 module.exports = model('Test',testSchema)

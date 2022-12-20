@@ -10,14 +10,7 @@ const transporter = require('../../utils/nodeMailer')
 
 router.route('/all')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    let city
-    if(req.session.city == 'CITY - 2'){
-        city = '2'
-    } else if(req.session.city == 'CITY - 3'){
-        city = '3'
-    }else{
-        city = 'VAD'
-    }
+    const {city} = req.session
     const tests = await Test.find({}).populate(`dept${city}`)
     const departments = await Department.find({city:req.session.city})
     res.render('manager/all-tests.ejs',{tests,city,departments})
@@ -26,14 +19,7 @@ router.route('/all')
 router.route('/:testId/dept/:deptId')
 .post(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {testId,deptId} = req.params
-    let city
-    if(req.session.city == 'CITY - 2'){
-        city = '2'
-    } else if(req.session.city == 'CITY - 3'){
-        city = '3'
-    }else{
-        city = 'VAD'
-    }
+    const {city} = req.session
     await Department.findOneAndUpdate({tests:testId},{$pull:{tests:testId}})
     if(deptId == 'none'){
         await Test.findByIdAndUpdate(testId,{$unset:{['dept'+city]:1}})
