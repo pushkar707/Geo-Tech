@@ -118,13 +118,13 @@
                                                                                     </div>
                                                                                 <% } %>
                                                                             </div>
-                                                                            <% let check=false %> 
+                                                                            <% let check=false %>
                                                                             <% for(let test of tests){ %>
-                                                                             <% if (test.report) { %>
-                                                                              <% check=true; break; %> 
+                                                                             <% if (!test.report) { %>
+                                                                              <% check=true;  break; %> 
                                                                              <% } %>
                                                                             <% } %>
-                                                                            <% if (currentUserPos == "department" && !check) { %>
+                                                                            <% if (currentUserPos == "department" && check) { %>
                                                                                 <form action="/department/test/<%= tests[0]._id %>/upload" method="POST" enctype="multipart/form-data">
                                                                                     <div class="mb-3">
                                                                                         <label for="file" class="form-label">Select Report File: </label>
