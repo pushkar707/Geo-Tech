@@ -7,7 +7,7 @@ const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/pending')
 .get(loginRequired('courier'),wrapAsync(async(req,res)=>{
-    const inwards = await Inward.find({dispatched:false,status:{$in:['cse-verfied','paid']}})
+    const inwards = await Inward.find({dispatched:false,status:{$in:['cse-verified','paid']}})
     res.render('courier/pending',{inwards})
 }))
 

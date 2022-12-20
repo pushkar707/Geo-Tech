@@ -8,25 +8,45 @@ const wrapAsync = require('../../utils/wrapAsync')
 
 router.route('/reports/new')
 .get(loginRequired('manager'),checkManagerVad,wrapAsync(async(req,res)=>{
-    const tests = await InwardTest.find({status:{$in:['approval pending','remarked approval pending']}})
+    let tests
+    if(req.session.city=='VAD'){
+        tests = await InwardTest.find({status:{$in:['approval pending','remarked approval pending']}})
+    }else{
+        tests = await InwardTest.find({city:req.session.city,status:{$in:['approval pending','remarked approval pending']}})
+    }
     res.render('manager/reports',{tests})
 }))
 
 router.route('/reports/approved')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const tests = await InwardTest.find({status:'approved'})
+    let tests
+    if(req.session.city=='VAD'){
+        tests = await InwardTest.find({status:'approved'})
+    }else{
+        tests = await InwardTest.find({city:req.session.city,status:'approved'})
+    }
     res.render('manager/reports',{tests})
 }))
 
 router.route('/reports/remarked')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const tests = await InwardTest.find({status:{$in:['remarked','remarked approval pending']}})
+    let tests
+    if(req.session.city=='VAD'){
+        tests = await InwardTest.find({status:{$in:['remarked','remarked approval pending']}})
+    }else{
+        tests = await InwardTest.find({city:req.session.city,status:{$in:['remarked','remarked approval pending']}})
+    }
     res.render('manager/reports',{tests})
 }))
 
 router.route('/reports/cse-verified')
 .get(loginRequired('manager'),wrapAsync(async(req,res)=>{
-    const tests = await InwardTest.find({status:'cse-verified'})
+    let tests
+    if(req.session.city=='VAD'){
+        tests = await InwardTest.find({status:'cse-verified'})
+    }else{
+        tests = await InwardTest.find({city:req.session.city,status:'cse-verified'})
+    }
     res.render('manager/reports',{tests})
 }))
 

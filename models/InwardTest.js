@@ -1,6 +1,7 @@
 const {Schema,model} = require('mongoose')
 
 const inwardTestSchema = new Schema({
+    city:String,
     sampleNo:String,
     reportNo:Number,
     material:String,

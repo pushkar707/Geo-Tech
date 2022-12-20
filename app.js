@@ -67,16 +67,23 @@ app.use(async(req,res,next)=>{
     res.locals.currentUserPos = req.session.userPos
     if(req.session.userPos == 'cse'){
         req.session.inwardTables = new Set()
-        const inwards = await Inward.find({})
+        const inwards = await Inward.find({city:req.session.city})
         for (let inward of inwards){
             req.session.inwardTables.add(inward.status)
         }
         res.locals.inwardTables = req.session.inwardTables
     }else if(req.session.userPos == 'manager'){
         req.session.managerTables = new Set()
-        const tests = await InwardTest.find({})
-        for (let test of tests){
-            req.session.managerTables.add(test.status)
+        if(req.session.city=='VAD'){
+            const tests = await InwardTest.find({})
+            for (let test of tests){
+                req.session.managerTables.add(test.status)
+            }
+        }else{
+            const tests = await InwardTest.find({city:req.session.city})
+            for (let test of tests){
+                req.session.managerTables.add(test.status)
+            }
         }
         res.locals.managerTables = req.session.managerTables
     }else if(req.session.userPos == 'department'){

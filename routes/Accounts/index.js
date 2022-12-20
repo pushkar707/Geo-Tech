@@ -4,6 +4,7 @@ const {loginRequired} = require('../../utils/loginMiddleware')
 const Inward = require('../../models/Inward')
 const transporter = require('../../utils/nodeMailer')
 const wrapAsync = require('../../utils/wrapAsync')
+const InwardTest = require('../../models/InwardTest')
 
 router.route('/pending')
 .get(loginRequired('accounts'),wrapAsync(async(req,res)=>{
@@ -16,7 +17,11 @@ router.route('/payment/:id')
     const {id} = req.params
     const today = new Date()
     const payDate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
-    await Inward.findByIdAndUpdate(id,{status:'paid',payDate})
+    const inward = await Inward.findByIdAndUpdate(id,{status:'paid',payDate}).populate('tests')
+    for (let test of inward.tests){
+        test.status == 'paid'
+        await test.save()
+    }
     res.redirect('back')
 }))
 
