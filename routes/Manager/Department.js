@@ -280,8 +280,8 @@ router.route('/images/:key')
 router.route('/images/:key/download')
 .post(wrapAsync(async(req,res)=>{
     const {key} = req.params
-    const readStream = await downloadFile(key)
-    res.send(readStream.Body)
+    const fileUrl =  downloadFile(key)
+    res.redirect(fileUrl)
 }))
 
 module.exports = router

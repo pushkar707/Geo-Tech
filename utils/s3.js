@@ -18,12 +18,10 @@ const multerS3 = require('multer-s3');
 module.exports.upload = multer({
     storage: multerS3({
         s3: s3,
-        // acl: "public-read",
+        acl: "public-read",
         bucket: process.env.AWS_BUCKET_NAME,
         key: function (req, file, cb) {
-            console.log(file);
             const randNum = Date.now().toString()
-            console.log(randNum.slice(randNum.length-3,randNum.length-1));
             cb(null, randNum.slice(randNum.length-3,randNum.length-1)+'-'+file.originalname)
         }
     })
@@ -55,11 +53,13 @@ module.exports.viewFile = fileKey => {
     return s3.getObject(downloadParams).createReadStream()
 }
 
-module.exports.downloadFile = async(fileKey) => {
-    const downloadParams = {
-        Key:fileKey,
-        Bucket:process.env.AWS_BUCKET_NAME,
-    }
+module.exports.downloadFile = (fileKey) => {
+    // const downloadParams = {
+    //     Key:fileKey,
+    //     Bucket:process.env.AWS_BUCKET_NAME,
+    // }
 
-    return s3.getObject(downloadParams).promise()
+    // return s3.getObject(downloadParams).promise()
+    const URL = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${fileKey}`
+    return URL
 }

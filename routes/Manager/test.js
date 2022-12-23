@@ -20,11 +20,11 @@ router.route('/:testId/dept/:deptId')
 .post(loginRequired('manager'),wrapAsync(async(req,res)=>{
     const {testId,deptId} = req.params
     const {city} = req.session
-    await Department.findOneAndUpdate({tests:testId},{$pull:{tests:testId}})
+    await Department.findOneAndUpdate({tests:testId,city},{$pull:{tests:testId}})
     if(deptId == 'none'){
         await Test.findByIdAndUpdate(testId,{$unset:{['dept'+city]:1}})
     }else{        
-        const dept = await Department.findByIdAndUpdate(deptId,{$push:{tests:testId}})
+        await Department.findByIdAndUpdate(deptId,{$push:{tests:testId}})
         const test = await Test.findById(testId)
         test['dept'+city] = deptId
         await test.save()
