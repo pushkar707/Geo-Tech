@@ -298,20 +298,26 @@
                             </div>
                           </div>
                         </div>
-                        <% if (currentUserPos=='cse') { %>
-                         
+                        
                         <% if (invoice.image) { %>
                           <img src="/department/images/<%= invoice.image %>" alt="" height="200px" width="300px" class="m-3 d-block">
-                        <% } %>
-                              <form action="/inward/invoice/<%= invoice._id %>/upload" method="POST" enctype="multipart/form-data">
-                                <div class="mb-3">
-                                  <label for="form-label">Select Image</label>
-                                  <input type="file" required class="form-control" name="inward-image">
-                                </div>
-                                <div class="mb-3">
-                                  <input type="submit" value="Upload" class="btn btn-success">
-                                </div>
+                          <div class="d-flex my-4 w-25 justify-content-center">
+                              <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= invoice.image %>">Preview</a>
+                              <form action="/department/images/<%= invoice.image %>/download" method="POST">
+                                  <button class="btn btn-primary mx-4">Download</button>
                               </form>
+                          </div>
+                          <% } %>
+                        <% if (currentUserPos=='cse') { %>
+                            <form action="/inward/invoice/<%= invoice._id %>/upload" method="POST" enctype="multipart/form-data">
+                              <div class="mb-3">
+                                <label for="form-label">Select Image</label>
+                                <input type="file" required class="form-control" name="inward-image">
+                              </div>
+                              <div class="mb-3">
+                                <input type="submit" value="Upload" class="btn btn-success">
+                              </div>
+                            </form>
                             <% if (!invoice.letterDate) { %>
                                 <a href="" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop">
