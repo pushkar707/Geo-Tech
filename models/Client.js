@@ -30,7 +30,11 @@ const clientSchema = new mongoose.Schema({
         managerNumber:String
     },
     remarks:String,
-    cse:String
+    cse:String,
+    inwards:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Inward'
+    }]
 })
 
 clientSchema.pre('save', async function (next) {

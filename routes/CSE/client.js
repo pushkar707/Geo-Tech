@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router({mergeParams:true})
 const {loginRequired} = require('../../utils/loginMiddleware')
 const Client = require('../../models/Client')
+const User = require('../../models/User')
 const CseInfo = require('../../models/CseInfo')
 const wrapAsync = require('../../utils/wrapAsync')
 const transporter = require('../../utils/nodeMailer')
@@ -31,6 +32,10 @@ router.route('/new')
     client.cse = city
     await client.save()
     await CseInfo.findOneAndUpdate({city},{$push:{clients:client._id}})
+    const {name,email,password} = req.body
+    const user = new User({name,email,password,city,position:'client',clientId:client._id})
+    await user.save()
+
     req.flash('success',"Client added successfully")
     res.redirect('/client/all')
 

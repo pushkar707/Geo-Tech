@@ -15,7 +15,7 @@ const Test = require('./models/Test')
 //ROUTES
 const userRoutes = require('./routes/CSE/material')
 const testRoutes = require('./routes/CSE/test')
-const clientRoutes = require('./routes/CSE/client')
+const cseClientRoutes = require('./routes/CSE/client')
 const inwardRoutes = require('./routes/CSE/inwards')
 const managerRoutes = require('./routes/Manager/manager')
 const departmentRoutes = require('./routes/Manager/Department')
@@ -26,6 +26,7 @@ const changePassRoutes = require('./routes/Login/changePass')
 const adminRoutes = require('./routes/Admin')
 const accountRoutes = require('./routes/Accounts')
 const courierRoutes = require('./routes/Courier')
+const clientRoutes = require('./routes/Client')
 //
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
@@ -112,7 +113,7 @@ app.use('/changePass',changePassRoutes)
 // CSE
 app.use('/material',userRoutes)
 app.use('/test',testRoutes)
-app.use('/client',clientRoutes)
+app.use('/client',cseClientRoutes)
 app.use('/inward',inwardRoutes)
 // Manager
 app.use('/department',departmentRoutes)
@@ -124,6 +125,8 @@ app.use('/admin',adminRoutes)
 app.use('/accounts',accountRoutes)
 //courier
 app.use('/courier',courierRoutes)
+//client
+app.use('/client/user',clientRoutes)
 
 app.get('/test',(req,res)=>{res.render('test')})
 

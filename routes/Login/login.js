@@ -42,6 +42,10 @@ router.route('/:city?')
             else if(user === "accounts"){
                 res.redirect('/accounts/pending')
             }
+            else if(user == 'client'){
+                req.session.clientId = validUser.clientId
+                res.redirect('/client/user/all')
+            }
         }else{
             req.flash("error","Invalid login details")
             res.redirect("/login/"+user)

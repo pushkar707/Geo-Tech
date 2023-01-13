@@ -26,24 +26,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <% inwards.forEach(inward => { %>
-                                    <tr>
-                                        <td><%= inward.jobId %></td>
-                                        <td><%= inward.client %></td>
-                                        <td><%= inward.tests.length %></td>
-                                        <td><%= inward.reportDate %></td>
-                                        <td><%= inward.letterDate %></td>
-                                        <td><%= inward.witnessName ? "Witness Inward" : "Normal Inward" %></td>
-                                        <td><%= inward.status %></td>
-                                        <td>
-                                            <% if (currentUserPos == 'cse') { %>
-                                                <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
-                                            <% }else if(currentUserPos == 'manager') { %>
-                                                <a href="/department/inward/<%= inward._id %>"><i class="dripicons-information"></i></a>
-                                            <% } %> 
-                                        </td>
-                                    </tr>
-                                <% }) %>
+                                <% //if (inwards) { %>
+                                    <% inwards.forEach(inward => { %>
+                                        <tr>
+                                            <td><%= inward.jobId %></td>
+                                            <td><%= inward.client %></td>
+                                            <td><%= inward.tests.length %></td>
+                                            <td><%= inward.reportDate %></td>
+                                            <td><%= inward.letterDate %></td>
+                                            <td><%= inward.witnessName ? "Witness Inward" : "Normal Inward" %></td>
+                                            <td><%= inward.status %></td>
+                                            <td>
+                                                <% if (currentUserPos == 'cse') { %>
+                                                    <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                                <% }else if(currentUserPos == 'manager') { %>
+                                                    <a href="/department/inward/<%= inward._id %>"><i class="dripicons-information"></i></a>
+                                                <% } %> 
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% //} %>
                                 </tbody>
                             </table>
                         </div>

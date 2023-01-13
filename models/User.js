@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     name:String,
     position:String,
     city:String,
+    clientId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Client'
+    },
     deptId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Department'

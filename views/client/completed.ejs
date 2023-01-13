@@ -1,0 +1,74 @@
+<% layout('/includes/client') -%> 
+<% block('title').append('<h5>Completed Inwards</h5>') %>
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+           
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                                <thead>
+                                <tr>
+                                    <th>Job No. </th>
+                                    <th>Client</th>
+                                    <th>Total Tests</th>
+                                    <th>Total Amount</th>
+                                    <th>Payment</th>
+                                    <th>Pay Required</th>
+                                    <th>Report Date</th>
+                                    <th>Last Date</th>
+                                    <th>Info</th>
+                                    <th>Report</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% inwards.forEach(inward => { %>
+                                    <tr>
+                                        <td><%= inward.jobId %></td>
+                                        <td><%= inward.client %></td>
+                                        <td><%= inward.tests.length %></td>
+                                        <td><%= inward.grandTotal %></td>
+                                        <td><%= inward.status=='paid' ? 'Paid' : "Not Paid" %></td>
+                                        <td><%= inward.payRequired %></td>
+                                        <td><%= inward.reportDate %></td>
+                                        <td><%= inward.letterDate %></td>
+                                        <td>
+                                            <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                        </td>
+                                        <td>
+                                            <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- end cardaa -->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div> <!-- container-fluid -->
+    </div>
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © GEO DESIGN.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by <a href="#!" class="text-decoration-underline">KAMI LABS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
