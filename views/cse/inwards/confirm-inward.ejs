@@ -8,70 +8,22 @@
           <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <ul class="nav nav-pills nav-justified my-4">
-                        <li class="nav-item">
-                          <a
-                            href="#seller-details"
-                            class="nav-link"
-                            data-toggle="tab"
-                          >
-                            <div
-                              class="step-icon"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Seller Details"
-                            >
-                              <i class="bx bx-list-ul"></i>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a
-                            href="#company-document"
-                            class="nav-link"
-                            data-toggle="tab"
-                          >
-                            <div
-                              class="step-icon"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Company Document"
-                            >
-                              <i class="bx bx-book-bookmark"></i>
-                            </div>
-                          </a>
-                        </li>
-
-                        <li class="nav-item">
-                          <a
-                            href="#bank-detail"
-                            class="nav-link active"
-                            data-toggle="tab"
-                          >
-                            <div
-                              class="step-icon"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Bank Details"
-                            >
-                              <i class="bx bxs-bank"></i>
-                            </div>
-                          </a>
-                        </li>
-                    </ul>
                     <div class="tab-pane" id="bank-detail">
                         <div>
-                        <div class="text-center mb-4">
+                        <% if (currentUserPos!='client') { %>
+                          <div class="text-center mb-4">
                             <h5>Bank Details</h5>
                             <p class="card-title-desc">
                             Fill all information below
                             </p>
                         </div>
+                        <% } %>
                         <div class="row">
                             <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                <div class="invoice-title">
+                                <% if (currentUserPos!='client') { %>
+                                  <div class="invoice-title">
                                     <div class="d-flex align-items-start">
                                     <div class="flex-grow-1">
                                         <div class="mb-4">
@@ -185,6 +137,7 @@
                                     </div>
                                     </div>
                                 </div>
+                                <% } %>
 
                                 <div class="py-2 mt-3">
                                     <h5 class="font-size-15">
@@ -299,7 +252,7 @@
                           </div>
                         </div>
                         
-                        <% if (invoice.image) { %>
+                        <% if (invoice.image && currentUserPos!='client') { %>
                           <img src="/department/images/<%= invoice.image %>" alt="" height="200px" width="300px" class="m-3 d-block">
                           <div class="d-flex my-4 w-25 justify-content-center">
                               <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= invoice.image %>">Preview</a>
@@ -330,9 +283,11 @@
                             <% } %> 
                         <% } %>
 
-                            <a href="/inward/performa/<%= invoice._id %>" class="btn btn-primary"
+                            <% if (currentUserPos!='client') { %>
+                              <a href="/inward/performa/<%= invoice._id %>" class="btn btn-primary"
                                 >Get Performa Invoice
                             </a>
+                            <% } %>
                         </div>
                     </div>
                 </div>

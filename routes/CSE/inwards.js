@@ -434,7 +434,7 @@ router.route('/final-verification')
 }))
 
 router.route('/:id/final-ver')
-.get(loginRequired('cse'),wrapAsync(async(req,res)=>{
+.get(loginRequired(['cse','client']),wrapAsync(async(req,res)=>{
     const {id} = req.params
     const inward = await Inward.findById(id).populate('invoice').populate('clientId').populate('tests')
     const other = await Other.findOne({})

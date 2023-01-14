@@ -103,18 +103,20 @@
                                                                                                 </form>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="m-3 w-50">
-                                                                                            <h4>Worksheet</h4>
-                                                                                            <div>
-                                                                                                <img src="/department/images/<%= tests[0].worksheet %>" onerror="this.src=''" alt="Click the button below to view the report" width="400px" class="mx-3">
+                                                                                        <% if (currentUserPos!='client') { %>
+                                                                                            <div class="m-3 w-50">
+                                                                                                <h4>Worksheet</h4>
+                                                                                                <div>
+                                                                                                    <img src="/department/images/<%= tests[0].worksheet %>" onerror="this.src=''" alt="Click the button below to view the report" width="400px" class="mx-3">
+                                                                                                </div>
+                                                                                                <div class="d-flex my-4 justify-content-center">
+                                                                                                    <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= tests[0].worksheet %>">Preview</a>
+                                                                                                    <form action="/department/images/<%=tests[0].worksheet %>/download" method="POST">
+                                                                                                        <button class="btn btn-primary mx-4">Download</button>
+                                                                                                    </form>
+                                                                                                </div>
                                                                                             </div>
-                                                                                            <div class="d-flex my-4 justify-content-center">
-                                                                                                <a target="_blank" class="btn btn-info mx-4" href="/department/images/<%= tests[0].worksheet %>">Preview</a>
-                                                                                                <form action="/department/images/<%=tests[0].worksheet %>/download" method="POST">
-                                                                                                    <button class="btn btn-primary mx-4">Download</button>
-                                                                                                </form>
-                                                                                            </div>
-                                                                                        </div>
+                                                                                        <% } %>
                                                                                     </div>
                                                                                 <% } %>
                                                                             </div>
@@ -147,7 +149,7 @@
                                                                                 <button class="btn btn-info m-4 btn-md" data-bs-toggle="modal" data-bs-target="#remarkReport" onclick="handleRemark('<%= tests[0].sampleNo %>')">Remark</button>
                                                                              </div>
                                                                             <% } %>
-                                                                            <% if (tests[0].previousReport) { %>
+                                                                            <% if (tests[0].previousReport && currentUserPos!='client') { %>
                                                                                 <h4>Previous Report</h4>
                                                                                 <div class="mt-4 w-100">
                                                                                     <img src="/department/images/<%= tests[0].previousReport %>" alt="Click Below to view Previous Report" width="400px" class="mx-3 d-block mx-auto">

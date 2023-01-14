@@ -42,7 +42,8 @@
                                             <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
                                         </td>
                                         <td>
-                                            <a href="/inward/invoice/<%= inward.invoice %>"><i class="dripicons-information"></i></a>
+                                            <form action="/inward/<%= inward._id %>/final-ver" id="show-report-form"></form>
+                                            <a onclick="checkReport('<%=inward.payRequired%>','<%=inward.status%>')"><i class="dripicons-information"></i></a>
                                         </td>
                                     </tr>
                                 <% }) %>
@@ -72,3 +73,12 @@
         </div>
     </footer>
 </div>
+<script>
+const checkReport = (payRequired,status) => {
+    if(status != 'paid' && payRequired=='true'){
+        alert("Please contact the accounts department to see the report.")
+    }else{
+        document.getElementById('show-report-form').submit()
+    }
+}
+</script>
